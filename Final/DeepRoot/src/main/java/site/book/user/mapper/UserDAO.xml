@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.book.user.dao.UserDAO">
+	<!-- 태웅 -->
+	
+	
+	<!-- 희준 -->
+	<select id="allUser" resultType="Integer">
+		SELECT Count(*) FROM USER
+	</select>
+	
+	<select id="newUser" resultType="Integer">
+		SELECT COUNT(*) FROM USER WHERE REGDATE >= DATE_FORMAT(CURDATE( ), '%Y-%m-%d')
+	</select>
+	
+	<update id="blacklist">
+		UPDATE USER SET enabled = 2 WHERE uid=#{uid}
+	</update>
+	
+	<select id="getUserList" resultType="site.book.user.dto.UserDTO">
+		SELECT * FROM `USER` WHERE Enabled <![CDATA[<>]]> 2
+	</select>
+	
+	<delete id="deleteUserBook">
+		DELETE FROM U_BOOK WHERE uid = #{uid}
+	</delete>
+
+	<!-- 명수 -->
+	
+</mapper>

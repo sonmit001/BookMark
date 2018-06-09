@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.book.team.dao.G_BookDAO">
+	<select id="numOfBookByDate" resultType="java.util.HashMap">
+		SELECT DATE_FORMAT(regdate,'%Y-%m-%d') d, COUNT(*) as c FROM G_BOOK GROUP BY d
+	</select>
+	
+	<delete id="deleteGroupBook">
+		DELETE FROM G_BOOK WHERE uid = #{uid} AND URL IS NOT NULL
+	</delete>
+</mapper>

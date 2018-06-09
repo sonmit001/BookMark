@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.book.team.dao.TeamDAO">
+
+	<select id="socialGroupList" resultType="site.book.team.dto.S_TeamDTO">
+		SELECT t.GID, t.GNAME, u.NNAME, t.HTAG, t.REGDATE, t.DUEDATE 
+		FROM TEAM t JOIN G_MEMBER gm ON t.GID = gm.GID JOIN USER u ON gm.UID = u.UID 
+		WHERE t.HTAG IS NOT NULL AND gm.GRID = 1
+	</select>
+	
+	<delete id="deleteSocialGroup">
+		DELETE FROM TEAM WHERE GID = #{gid} AND HTAG IS NOT NULL
+	</delete>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.book.user.dao.U_BookDAO">
+	<!-- 태웅 -->
+	
+	
+	<!-- 희준 -->
+	<select id="numOfBookByDate" resultType="java.util.HashMap">
+		SELECT DATE_FORMAT(regdate,'%Y-%m-%d') d, COUNT(*) as c FROM U_BOOK GROUP BY d
+	</select>
+	
+	<select id="socialBookmarkList" resultType="site.book.user.dto.S_U_BookDTO">
+		SELECT ub.UBID, ub.URL, ub.UID, u.NNAME, ub.SNAME, ub.VIEW, ub.HTAG, ub.SDATE FROM U_BOOK ub JOIN USER u ON ub.UID = u.UID WHERE HTAG IS NOT NULL
+	</select>
+	
+	<delete id="deleteSocialBookmark">
+		DELETE FROM U_BOOK WHERE UBID = #{ubid} AND HTAG IS NOT NULL
+	</delete>
+	
+	<!-- 명수 -->
+	<select id="getCategoryList" resultType="site.book.user.dto.U_BookDTO">
+		SELECT * FROM U_BOOK WHERE UID=#{uid}; 
+	</select>
+
+	<insert id="insertRootFolder">
+		INSERT INTO U_BOOK (UBID, URLNAME,REGDATE,VIEW,UID)
+			VALUES (#{ubid},'카테고리 시작',SYSDATE(), 0, #{uid});
+	</insert>
+	
+	<select id="getMaxId" resultType="int">
+		select max(UBID) +1 from U_BOOK
+	</select>
+	
+	<update id="updateNodeText" >
+		UPDATE U_BOOK SET URLNAME = #{1} WHERE UBID= #{0}
+	</update>
+	
+	<insert id="addFolderOrUrl" parameterType="site.book.user.dto.U_BookDTO">
+		<if test="abid == 0 and htag !=null">
+			INSERT INTO U_BOOK(UBID,URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE)
+			VALUES(#{ubid},#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},SYSDATE())
+		</if>
+		<if test="abid == 0 and htag == null">
+		INSERT INTO U_BOOK(UBID,URL,URLNAME,REGDATE,VIEW,UID,PID)
+			VALUES(#{ubid},#{url},#{urlname},SYSDATE(),0,#{uid},#{pid})
+		</if>
+		<if test="abid != 0">
+		INSERT INTO U_BOOK(UBID,URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE,ABID)
+			VALUES(#{ubid},#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},#{sdate},#{abid})
+		</if>
+	</insert>
+	
+	<delete id="deleteFolderOrUrl">
+		DELETE FROM U_BOOK WHERE UBID=#{0}
+	</delete>
+	
+	<update id="editUrl" parameterType="site.book.user.dto.U_BookDTO">
+		UPDATE U_BOOK SET URL= #{url} WHERE UBID=#{ubid}
+	</update>
+
+</mapper>

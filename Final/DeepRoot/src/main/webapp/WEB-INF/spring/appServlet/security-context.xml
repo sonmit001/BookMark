@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security 
+						http://www.springframework.org/schema/security/spring-security.xsd">
+
+<security:http>
+	<security:csrf disabled="true" />
+	<security:form-login login-page="/joinus/login.htm" authentication-failure-url="/joinus/login.htm?error" />
+	<security:logout logout-success-url="/index.htm" />
+	<!-- 	
+	<security:intercept-url pattern="/customer/noticeDetail.htm" access="hasRole('ROLE_USER')" />
+	<security:intercept-url pattern="/customer/noticeReg.htm" access="hasRole('ROLE_ADMIN')" /> 
+	-->
+	<security:intercept-url pattern="/customer/*Reg.htm" access="hasRole('ROLE_USER')" />
+	<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+</security:http>
+<security:authentication-manager>
+	<security:authentication-provider>
+		<security:jdbc-user-service 
+			authorities-by-username-query="SELECT UID as USERID, RNAME FROM U_ROLE ur JOIN ROLE r ON ur.RID = r.RID WHERE ur.UID = ?"
+			users-by-username-query="SELECT UID AS userid, PWD AS password, ENABLED AS enabled FROM USER WHERE uid = ?"
+			data-source-ref="driverManagerDataSource" 
+		/><!-- db연결 -->
+		
+		<security:password-encoder ref="bCryptPasswordEncoder" />
+	</security:authentication-provider>
+</security:authentication-manager>
+
+</beans>
