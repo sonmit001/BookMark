@@ -1926,8 +1926,9 @@
 		 * @param  {String} p the parent ID
 		 * @param  {Array} ps list of all parents
 		 * @return {String} the ID of the object added to the model
+		 * 위치 지정
 		 */
-		_parse_model_from_html : function (d, p, ps) {
+		_parse_model_from_html : function (d, p, ps) { 
 			if(!ps) { ps = []; }
 			else { ps = [].concat(ps); }
 			if(p) { ps.unshift(p); }
@@ -4835,6 +4836,7 @@
 
 /**
  * ### Changed plugin
+ * 선택된것 아닌
  *
  * This plugin adds more information to the `changed.jstree` event. The new data is contained in the `changed` event data property, and contains a lists of `selected` and `deselected` nodes.
  */

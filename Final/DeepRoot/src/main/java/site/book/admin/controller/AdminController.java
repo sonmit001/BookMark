@@ -54,10 +54,10 @@ public class AdminController {
 	private U_BookService u_book_service;
 	
 	@Autowired
-	private TeamService teamService;
+	private TeamService team_service;
 	
 	@Autowired
-	private NoticeService noticeservice;
+	private NoticeService notice_service;
 	
 	@RequestMapping("admin.do")
 	public String admin(Model model) {
@@ -72,7 +72,7 @@ public class AdminController {
 		List<HashMap<String, String>> gCount = g_book_service.numOfBookByDate();
 		model.addAttribute("gCount", gCount);
 		
-		List<HashMap<String, String>> uCount = u_BookService.numOfBookByDate();
+		List<HashMap<String, String>> uCount = u_book_service.numOfBookByDate();
 		model.addAttribute("uCount", uCount);
 		
 		int allUser = user_service.getAllUser();
@@ -81,10 +81,10 @@ public class AdminController {
 		int newUser = user_service.getNewUser();
 		model.addAttribute("newUser", newUser);
 		
-		List<S_U_BookDTO> uBookList = u_BookService.getSocialBookmarkList();
+		List<S_U_BookDTO> uBookList = u_book_service.getSocialBookmarkList();
 		model.addAttribute("uBookList", uBookList);
 		
-		List<S_TeamDTO> sGroupList = teamService.getSocialGroupList();
+		List<S_TeamDTO> sGroupList = team_service.getSocialGroupList();
 		model.addAttribute("sGroupList", sGroupList);
 		
 		List<UserDTO> userList = user_service.getUserList();
@@ -160,7 +160,7 @@ public class AdminController {
 		System.out.println("소셜 개인 URL 삭제");
 		System.out.println("소셜 개인 URL 번호: " + ubid);
 		
-		u_BookService.deleteSocialBookmark(Integer.parseInt(ubid));
+		u_book_service.deleteSocialBookmark(Integer.parseInt(ubid));
 		
 		return "redirect:admin.do";
 	}
@@ -170,7 +170,7 @@ public class AdminController {
 		System.out.println("소셜 그룹 삭제");
 		System.out.println("소셜 그룹 번호: " + gid);
 		
-		teamService.deleteSocialGroup(Integer.parseInt(gid));
+		team_service.deleteSocialGroup(Integer.parseInt(gid));
 		
 		return "redirect:admin.do";
 	}
@@ -190,7 +190,7 @@ public class AdminController {
 		System.out.println("공지사항 쓰기");
 		System.out.println("공지사항 내용: " + ncontent);
 		
-		noticeservice.noticeReg(ncontent);
+		notice_service.noticeReg(ncontent);
 		
 		return "redirect:admin.do";
 	}

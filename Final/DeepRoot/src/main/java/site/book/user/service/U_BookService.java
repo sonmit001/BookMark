@@ -144,5 +144,20 @@ public class U_BookService {
 		return result;
 	}
 
+	public List<U_BookDTO> getUrl(int ubid) {
+
+		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
+		List<U_BookDTO> list = dao.getUrl(ubid);
+		
+		return list;
+	}
+
+	public int dropNode(int dragnode, int dropnode) {
+
+		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
+		int result = dao.dropNode(dragnode, dropnode);
+		return 0;
+	}
+
 	// 함수 End
 }

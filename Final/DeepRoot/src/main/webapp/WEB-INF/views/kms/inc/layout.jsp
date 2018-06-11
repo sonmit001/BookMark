@@ -34,6 +34,9 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			
+			var urlpid = null;
+			var firstclick = 0;
+			
 			$.ajax({
 				url : "getCategoryList.do",
 				type:"POST",
@@ -58,11 +61,32 @@
 									console.log(par.a_attr.href);
 									console.log(par.children_d);
 	
-									console.log(pos);
-									console.log(more.ref);// drop한 노드의 정보
-									if(par.a_attr.href != "#"){ // 최상단(root)와 동급 불가										
-										return false;	
-									}
+									console.log("선택 node 의 id 값");
+									console.log(node.id);
+									var dragnode = node.id;
+									console.log("드랍 당한 노드의 id");
+									console.log(par.id);
+									var dropnode = par.id;
+									
+									form = {dragnode : dragnode , dropnode : dropnode};
+									
+									$.ajax({
+										
+										url : 'dropNode.do',
+										type : 'POST',
+										data : form,
+										success : function(data){
+											console.log(data);
+											
+											
+										}
+										
+										
+										
+									})
+									
+									
+									
 									return true;
 								}							
 								return true;	
@@ -73,6 +97,7 @@
 						"contextmenu" : {
 							
 							"select_node" : false,
+							
 							"items" : function($node){
 						    	
 						    	  var href = $node.a_attr.href;
@@ -120,9 +145,6 @@
 									            					
 									            				  $('#linkAdd').modal("toggle"); // 모달 창 닫아주기
 									            					console.log(data);	//id 확인
-									            					 $('#jstree_container').jstree().create_node(par ,  { "id" : data , "text" : title, "a_attr" :{"href":url} }, "last", function(){
-													            		    alert("done");
-													          });
 								              			  }
 								          			  })
 								          			})
@@ -156,7 +178,6 @@
 								            					
 								            					//id 가져오는 문 만들기
 								            					 $('#jstree_container').jstree().create_node(par ,  { "id" : data , "text" : foldername}, "last", function(){
-												            		    alert("done");
 												          });
 							              			  }
 							          			  })
@@ -183,82 +204,7 @@
 								                }
 								            }
 								        };						
-									}else{ // 링크 우클릭
-										return {					           
-								            "rename": {
-								                "separator_before": false,
-								                "separator_after": false,
-								                "label": "이름 수정",
-								                "action": function (obj) { 
-								                	tree.edit($node);
-								                   
-								                }
-								            }, 
-								            "reurl": {
-								                "separator_before": false,
-								                "separator_after": false,
-								                "label": "url 수정",
-								                "action": function (obj) { 
-								                	
-								                	$('#form3')[0].reset();	// url 모달창 reset
-								                	$('#editurl').modal();	//url 수정 모달창 띄우기
-								                	 
-								                	var inst = $.jstree.reference(obj.reference);
-									                var url = inst.get_node(obj.reference).a_attr.href;
-									                var id = inst.get_node(obj.reference).id;
-									                
-								                	 console.log(url);
-								                	 $('#editurlval').val(url);
-								                	 
-								                	 $('#editurlsubmit').on("click",function(){
-								                		 
-								                		 var newurl = $('#editurlval').val();
-								                		 var form = {ubid : id, url : newurl }
-								                		 
-								                		 $.ajax({
-									                		 
-									                		 url: "editUrl.do",
-									                		 type: "POST",
-									                		 data: form ,
-									                		 success: function(data){
-									                			 console.log(data);
-									                			 $('#editurl').modal("toggle");
-									                			 
-									                			 
-									                		 }
-									                	 }) 
-								                		 
-								                		 
-								                	 })
-								                	 /* $.ajax({
-								                		 
-								                		 url: "editUrl.do",
-								                		 type: "POST",
-								                		 data: form ,
-								                		 success: function(data){
-								                			 console.log(data);
-								                			 
-								                			 
-								                		 }
-								                	 }) */
-								                	 
-								                	 
-
-								                	
-								                }
-								            },
-								            "remove": {
-								                "separator_before": false,
-								                "separator_after": false,
-								                "label": "삭제",
-								                "action": function (obj) { 
-								                  	console.log("누름");
-								                	tree.delete_node($node);
-								                   
-								                }
-								            }
-						                 }		
-						            }	
+									}
                             }
                         }			    
 					})	
@@ -279,34 +225,208 @@
 							
 							console.log(head);
 							console.log(data);
-							$("#"+head+"_anchor").addClass("added");
+							//$("#"+head+"_anchor").addClass("added");
 							
-							//3_anchor
-							//Object.keys(객체명).length
-							//console.log(data.parents.length());
-			            	//  console.log(inst.get_node(data.reference));
-							
-							
-							/* if(data.){
-								//aria-level
-							} */
 					})
 				.bind("select_node.jstree", function (e, data) {
-					console.log(data);
-	 					console.log(data.node.a_attr);
-	 					console.log(data.node.original);
-						console.log(" 위에 속성");
-						
-					 	var href = data.node.a_attr.href;
-						console.log(data.node.a_attr.href)
-						if(href == '#')
-						return '';
-
-						//jstree_container_child
-						console.log("아래");
-						console.log(data.element);
 					
-						 window.open(href); 
+	 					console.log(data.node.id);
+	 					var id = data.node.id;
+		
+	 					urlpid = id;
+	 					
+	 					$.ajax({
+	 						
+	 						url : "getUrl.do",
+	 						type : "POST",
+	 						dataType:"json",
+	 						data : {ubid : id},
+	 						success : function(data){
+	 							/* var json = JSON.parse(data)
+	 							console.log(json); */
+	 							console.log("under");
+	 							if(firstclick == 1){
+	 								console.log("dd");
+	 							$('#jstree_container_child').jstree(true).settings.core.data = data;
+	 							$('#jstree_container_child').jstree(true).refresh();
+	 							}
+	 							
+	 							
+	 							firstclick =1;
+	 							$("#jstree_container_child").jstree({
+	 								
+	 								"core" : {
+	 									'data' : data,
+	 									'themes' : { 
+	 										'name' : 'proton',
+	 										'responsive' : true,
+	 										"dots": false
+	 									},
+	 									"check_callback" : function(op, node, par, pos, more){
+	 										if(op === "move_node"){ // dnd 이벤트 일때 
+	 											console.log(op);//move_node
+	 											console.log(node);//실제 select 한node
+	 											console.log(par);// select node 사위 헐 여기서 나옴 childe
+	 											console.log(par.a_attr.href);
+	 											console.log(par.children_d);
+	 			
+	 											console.log(pos);
+	 											console.log(more.ref);// drop한 노드의 정보
+	 											if(par.a_attr.href != "#"){ // 최상단(root)와 동급 불가										
+	 												return false;	
+	 											}
+	 											return true;
+	 										}							
+	 										return true;	
+	 									}
+	 								},
+	 								"plugins" : [ "dnd","contextmenu" ],
+	 								
+	 								"contextmenu" : {
+	 									
+	 									"select_node" : false,
+	 									"items" : function($node){
+	 										
+	 										var tree_child = $("#jstree_container_child").jstree(true);
+	 										return{
+	 											
+	 									            "rename": {
+	 									                "separator_before": false,
+	 									                "separator_after": false,
+	 									                "label": "이름 수정",
+	 									                "action": function (obj) { 
+	 									                	tree_child.edit($node);
+	 									                   
+	 									                }
+	 									            }, 
+	 									            "reurl": {
+	 									                "separator_before": false,
+	 									                "separator_after": false,
+	 									                "label": "url 수정",
+	 									                "action": function (obj) { 
+	 									                	
+	 									                	$('#form3')[0].reset();	// url 모달창 reset
+	 									                	$('#editurl').modal();	//url 수정 모달창 띄우기
+	 									                	 
+	 									                	var inst = $.jstree.reference(obj.reference);
+	 										                var url = inst.get_node(obj.reference).a_attr.href;
+	 										                var id = inst.get_node(obj.reference).id;
+	 										                
+	 									                	 console.log(url);
+	 									                	 $('#editurlval').val(url);
+	 									                	 
+	 									                	 $('#editurlsubmit').on("click",function(){
+	 									                		 
+	 									                		 var newurl = $('#editurlval').val();
+	 									                		 var form = {ubid : id, url : newurl }
+	 									                		 
+	 									                		 $.ajax({
+	 										                		 
+	 										                		 url: "editUrl.do",
+	 										                		 type: "POST",
+	 										                		 data: form ,
+	 										                		 success: function(data){
+	 										                			 console.log(data);
+	 										                			 $('#editurl').modal("toggle");
+	 										                			 
+	 										                			 
+	 										                		 }
+	 										                	 }) 
+	 									                		 
+	 									                		 
+	 									                	 })
+	 									                }
+	 									            },
+	 									            "remove": {
+	 									                "separator_before": false,
+	 									                "separator_after": false,
+	 									                "label": "삭제",
+	 									                "action": function (obj) { 
+	 									                  	console.log("누름");
+	 									                  	tree_child.delete_node($node);
+	 									                   
+	 									                }
+	 									            },
+	 									            "recommend" :{
+	 									            	"separator_before": false,
+	 									                "separator_after": false,
+	 									                "label": "관리자 추천",
+	 									                "action": function (obj) { 
+	 									                	
+		 									               	var inst = $.jstree.reference(obj.reference);
+	 										                var url = inst.get_node(obj.reference).a_attr.href;
+	 										                var text = inst.get_node(obj.reference).text;
+	 										                
+	 										                form = {url : url , text : text }
+	 										                
+	 										                $.ajax({
+	 										                	
+	 										                	url : "recommend.do",
+	 										                	type : "POST",
+	 										                	data : form,
+	 										                	success : function(data){
+	 										                		
+	 										                		console.log(data);
+	 										                		
+	 										                	}
+	 										                	
+	 										                })
+	 										               
+	 									                }
+	 									            	
+	 									            }
+	 							                 }		
+	 									}
+	 									
+	 								}
+	 							})
+	 							.bind("select_node.jstree",function(e,data){
+	 								
+	 								var href = data.node.a_attr.href;
+	 								
+	 								console.log(href);
+	 								
+	 							window.open(href); 
+	 								
+	 							})
+	 							.bind('delete_node.jstree',function(event,data){
+
+			    		var node_id = data.node.id;
+			    		var form = {node : node_id}
+			    		
+	 		    		$.ajax({
+			    			url:'deleteNode.do',
+			    			type:'POST',
+			    			dataType : "json",
+			    			data: form,
+			    			success:function(result){
+			    				console.log(result);
+			    			}
+			    			
+			    		})  
+			    		
+			    	})
+			    	.bind('rename_node.jstree', function(event, data){
+			    		var node_id = data.node.id;
+			    		var node_text = data.text;
+			    		console.log(node_id);
+			    		console.log(node_text);
+			    		
+			    		$.ajax({
+		        			url : 'updateNodeText.do',
+		        			type: 'POST',
+		        			data: {'id' : node_id, 'text' : node_text},
+		        			success : function(result){
+		        				if(result == 1)
+		        					alert('수정되었습니다.');
+		        				else
+		        					alert('수정 실패');
+		        			}
+		        		});   
+			    	})
+	 							
+	 						}
+	 					});
 						 
 					}) 
 			    	.bind('rename_node.jstree', function(event, data){
@@ -332,35 +452,13 @@
 			    		console.log(obj);
 			    		console.log(stric);
 			    		console.log(c);
-			    		console.log(this);
-			    		console.log(this.get_node(obj,true));
+			    		//console.log(this);
+			    		//console.log(this.get_node(obj,true));
 			    		
 			    	})
 			    	.bind('delete_node.jstree',function(event,data){
-			    		console.log("삭제!!!");
-			    		console.log(data);
-			    		console.log("아래 자식들");
-			    		console.log(data.node.children_d);
-			    		var node_id = data.node.id;
-			    		var child_ids = [];
-			    		
-			    		child_ids[0] = node_id;
-			    		if(data.node.children_d.length !=0){
-			    			console.log(data.node.children_d.length);
-			    			console.log("자식있어");
-			    			
-			    			for(var i =0; i < data.node.children_d.length; i++){
-			    				console.log(data.node.children_d[i]);
-			    				child_ids[i+1] = data.node.children_d[i];
-			    			} 
 
-			    			console.log(child_ids);
-			    		}else{console.log("nochilde");
-			    			child_ids[0] = node_id;
-			    		}
-			    		
-			    		console.log(node_id);
-			    		
+			    		var node_id = data.node.id;
 			    		var form = {node : node_id}
 			    		
 	 		    		$.ajax({
@@ -373,11 +471,52 @@
 			    			}
 			    			
 			    		})  
-			    		
-			    		
 			    	})	;
 				}
 			})
+			
+			$("#testing").on("click",function(){
+				
+				console.log(urlpid);
+				
+
+          	  $('#form')[0].reset();// modal input text 창 초기화
+          	  
+          	  
+          	  $('#linkAdd').modal(); // url 추가하는 modal 창이 나온다.
+          	  
+          	  var par =urlpid; // 내가 우 클릭한 node의 id를 새로 생성하는 url의 부모로 지정
+          	  
+          	  $('#linkAddSubmit').on("click",function(){ // modal에서 보내기 선택한 것임
+          		  
+          		  var sharing = 0; //일단 default 0은 비공유
+          		  var url = $('#url').val(); //추가 url 값
+          		  var title = $('#title').val(); // 추가 url 명값
+          		 // var parent = par;
+          		  console.log(url,title,par); //확인
+          		  
+          		  var result = $("#share").prop("checked"); //공유 체크여부 확인
+          		  if(result){ sharing =1;}
+          		  console.log("sharing 여부")
+          		  console.log(sharing);
+          		  
+          		  var form = {url : url , urlname : title , pid : par, uid:  "user1@naver.com"}
+          		  
+          		  $.ajax({
+          			  url: "addFolderOrUrl.do",
+          			  type :"POST",
+          			  data : form,
+          			  success : function(data){//나중에 sequence 나 autoincrement 사용해서 하나 올린 값을 받아서 insert 해주고 data 보내주어 view단 node 생성해주기
+          					
+          				  $('#linkAdd').modal("toggle"); // 모달 창 닫아주기
+          					console.log(data);	//id 확인
+        			  }
+    			  })
+    			})
+				
+			});
+				
+			
 		});
 	</script>
 

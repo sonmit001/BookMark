@@ -10,6 +10,11 @@
 <body>
 	<h2>관리자 페이지</h2>
 
+	<!-- BEGIN Free Counter Code! counter -->
+	<script type="text/javascript" src="https://freecountercode.com/service/BbLjksOnMILSKx97uL55"></script>
+	<!-- END Free Counter Code! counter -->
+	<script src=http://zerocounter.com?TVRVeU9EVTVPVFl5TVE9PQ==></script>
+	
 	<h3>전체 회원수 : ${allUser}</h3>
 	<h3>신규 가입자수 : ${newUser}</h3>
 	
