@@ -5,7 +5,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="site.book.user.dao.UserDAO">
 	<!-- 태웅 -->
+	<select id="checkUserID" resultType="Integer">
+		SELECT Count(*) FROM USER WHERE UID=#{uid}
+	</select>
 	
+	<select id="checkUserNickname" resultType="Integer">
+		SELECT Count(*) FROM USER WHERE NNAME=#{nname}
+	</select>
 	
 	<!-- 희준 -->
 	<select id="allUser" resultType="Integer">
@@ -21,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<select id="getUserList" resultType="site.book.user.dto.UserDTO">
-		SELECT * FROM `USER` WHERE Enabled <![CDATA[<>]]> 2
+		SELECT UID, NNAME, PWD, ENABLED, REGDATE, PROFILE FROM `USER` WHERE Enabled <![CDATA[<>]]> 2
 	</select>
 	
 	<delete id="deleteUserBook">

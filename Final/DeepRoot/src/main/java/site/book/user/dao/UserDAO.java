@@ -13,6 +13,11 @@ import site.book.user.dto.UserDTO;
 public interface UserDAO {
 	
 	// 태웅
+	// 회원가입 ID check
+	public int checkUserID(String user) throws ClassNotFoundException, SQLException;
+	
+	// 회원가입 Nickname check
+	public int checkUserNickname(String user) throws ClassNotFoundException, SQLException;
 	
 	// 희준
 	

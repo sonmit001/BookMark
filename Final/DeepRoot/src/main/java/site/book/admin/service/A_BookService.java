@@ -96,4 +96,19 @@ public class A_BookService {
 		return row;
 	}
 	
+	/* 2018-06-11(MON): 김태웅 추가 */
+	// Main에서 URL 전체 보기
+	public List<A_BookDTO> getMainBooks() {
+		A_BookDAO bookDAO = sqlsession.getMapper(A_BookDAO.class);
+		List<A_BookDTO> list = null;
+		
+		try {
+			list = bookDAO.selectAllBookMain();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
 }

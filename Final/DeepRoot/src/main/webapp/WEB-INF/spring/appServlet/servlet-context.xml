@@ -34,7 +34,8 @@
 	<!-- Tiles 설정 END -->
 	
 	<!-- jsonview -->
-	<bean name="jsonview" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+	<bean name="jsonview" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+	
 	
 	<!-- Transaction -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -42,4 +43,6 @@
 	</bean>
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	
 </beans>

@@ -38,8 +38,6 @@ public interface U_BookDAO {
 
 	public int getMaxId();
 
-	public int updateNodeText(int id, String text);
-
 	public int addFolderOrUrl(U_BookDTO dto);
 
 	public void deleteFolderOrUrl(String str);
@@ -48,6 +46,10 @@ public interface U_BookDAO {
 
 	public List<U_BookDTO> getUrl(int ubid);
 
-	public int dropNode(int dragnode, int dropnode);
+	public int dropNode(HashMap<String, String> param);
+
+	public int updateNodeText(HashMap<String, String> param);
+
+	public int shareUrlEdit(U_BookDTO dto);
 
 }

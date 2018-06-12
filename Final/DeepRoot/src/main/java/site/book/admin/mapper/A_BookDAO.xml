@@ -24,4 +24,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteBook">
 		DELETE FROM A_BOOK WHERE ABID = #{abid}
 	</delete>
+	
+	<!-- 2018-06-11(MON): 김태웅 추가 -->
+	<select id="selectAllBookMain" resultType="site.book.admin.dto.A_BookDTO">
+		SELECT ABID, URL, URLNAME, VIEW, REGDATE, AC.ACID, AC.ACNAME
+		FROM A_BOOK AB
+		JOIN A_CATEGORY AC ON AB.ACID = AC.ACID
+		ORDER BY AC.ACID AND AC.ACNAME;
+	</select>
 </mapper>

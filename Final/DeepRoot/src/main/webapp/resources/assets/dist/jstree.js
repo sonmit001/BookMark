@@ -285,6 +285,7 @@
 		 *	// direct data
 		 *	$('#tree').jstree({
 		 *		'core' : {
+		 *
 		 *			'data' : [
 		 *				'Simple root node',
 		 *				{
@@ -562,7 +563,7 @@
 			_temp1.setAttribute('href','#');
 			_temp1.setAttribute('tabindex','-1');
 			_temp2 = document.createElement('I');
-			_temp2.className = 'jstree-icon jstree-themeicon';
+			_temp2.className = 'jstree-icon jstree-themeicon fa fa-folder-o jstree-themeicon-custom';
 			_temp2.setAttribute('role', 'presentation');
 			_temp1.appendChild(_temp2);
 			_node.appendChild(_temp1);

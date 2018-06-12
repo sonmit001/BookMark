@@ -113,14 +113,6 @@ public class U_BookService {
 		return maxid;
 	}
 
-	public int updateNodeText(int id, String text) {
-
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
-		int result = dao.updateNodeText(id, text);
-		
-		return result;
-	}
-
 	public int addFolderOrUrl(U_BookDTO dto) {
 
 		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
@@ -152,11 +144,26 @@ public class U_BookService {
 		return list;
 	}
 
-	public int dropNode(int dragnode, int dropnode) {
+
+	public int dropNode(HashMap<String, String> param) {
+		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
+		int result = dao.dropNode(param);
+		return result;
+	}
+
+	public int updateNodeText(HashMap<String, String> param) {
+		
+		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
+		int result = dao.updateNodeText(param);
+		
+		return result;
+	}
+
+	public int shareUrlEdit(U_BookDTO dto) {
 
 		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
-		int result = dao.dropNode(dragnode, dropnode);
-		return 0;
+		int result = dao.shareUrlEdit(dto);
+		return result;
 	}
 
 	// 함수 End

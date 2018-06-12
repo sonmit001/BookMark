@@ -34,7 +34,33 @@ public class UserService {
 	// 함수 Start
 	
 	// 태웅
+	// Roll in ID check
+	public int checkUserID(String uid) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		int row = 0;
+		
+		try {
+			row = userDAO.checkUserID(uid);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return row;
+	}
 	
+	// Roll in Nickname check
+	public int checkUserNickname(String nname) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		int row = 0;
+		
+		try {
+			row = userDAO.checkUserNickname(nname);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return row;
+	}
 	
 	// 희준
 	

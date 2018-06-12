@@ -9,11 +9,18 @@
 </head>
 <body>
 	<h2>관리자 페이지</h2>
-
-	<!-- BEGIN Free Counter Code! counter -->
-	<script type="text/javascript" src="https://freecountercode.com/service/BbLjksOnMILSKx97uL55"></script>
-	<!-- END Free Counter Code! counter -->
-	<script src=http://zerocounter.com?TVRVeU9EVTVPVFl5TVE9PQ==></script>
+	
+	<h3>사이트 총 방문자수 : ${total_visitors}</h3>
+	
+	<h3>날짜별 방문자수</h3>
+	<c:forEach items="${visitor_count}" var="v">
+		<ul>
+			<li>${v.d}</li>
+			<li>${v.c}</li>
+		</ul>
+	</c:forEach>
+	
+	<a href="readEmail.do">이메일</a>
 	
 	<h3>전체 회원수 : ${allUser}</h3>
 	<h3>신규 가입자수 : ${newUser}</h3>
@@ -42,7 +49,7 @@
 		<button type="submit">등록</button>
 	</form>
 	
-<%-- 	<h3>개인이 추가한 북마크수</h3>
+ 	<h3>개인이 추가한 북마크수</h3>
 	<c:forEach items="${uCount}" var="u">
 		<ul>
 			<li>${u.d}</li>
@@ -58,7 +65,8 @@
 		</ul>
 	</c:forEach>
 
-	<h3>소셜 개인 북마크 리스트</h3>
+	
+	<%-- <h3>소셜 개인 북마크 리스트</h3>
  	<c:forEach items="${uBookList}" var="uBook">
 		<ul>
 			<li>${uBook.ubid}</li>

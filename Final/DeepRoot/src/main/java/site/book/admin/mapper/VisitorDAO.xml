@@ -25,4 +25,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{vagent}
         )
 	</insert>
+	
+	<select id="selectAllVisitor" resultType="Integer">
+		SELECT COUNT(*) FROM VISITOR
+	</select>
+	
+	<select id="numOfVisitorByDate" resultType="java.util.HashMap">
+		SELECT DATE_FORMAT(VTIME,'%Y-%m-%d') d, COUNT(*) AS c FROM VISITOR GROUP BY d
+	</select>
 </mapper>

@@ -1,0 +1,195 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+/* 헤더 로고 폰트 */
+@import url('https://fonts.googleapis.com/css?family=Gugi');
+/* 한글 폰트*/
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+
+/*************************
+*******Header******
+**************************/
+.logo-text {
+    font-family: 'Gugi';
+    font-size: 45px;
+    color: #7bbfa8;
+    font-weight: 600;
+}
+
+.logo-text:hover {
+    font-family: 'Gugi';
+    font-size: 45px;
+    color:#9d9d9d;
+}
+
+.header-ico {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+}
+
+.shadow{
+  -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+#header {
+    margin-bottom: 0;
+    width: 100%;
+    padding: 15px 0 15px 0;
+    position: fixed;
+    z-index: 2;
+    background-color: #fff;
+}
+
+#header .navbar-inverse .container {
+    position: relative;
+    padding-left: 0px;
+}
+
+.field-toggle {
+    position: relative;
+    top: 30px;
+    right: 15px;
+    display: none;
+    height: 50px;
+}
+
+#header .navbar {
+    background: #fff;
+    border: 0;
+    margin-bottom: 0;
+}
+
+#header .navbar-toggle {
+    margin-top: 20px;
+}
+
+#header .navbar-brand {
+    padding: 15px;
+    margin-left: 0;
+}
+
+
+#header .navbar-nav.navbar-right > li:last-child {
+    margin-right: 20px;
+}
+
+#header .navbar-nav.navbar-right > li a {
+    margin-right: 3px;
+    padding-top: 5px;
+    color: #000;
+    font-size: 13px;
+    padding: 15px;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+
+#header .navbar-inverse .navbar-nav li.active > a,
+#header .navbar-inverse .navbar-nav li.active > a:focus,
+#header .navbar-nav.navbar-right li > a:hover,
+.navbar-inverse .navbar-nav > .open > a {
+    background-color: inherit;
+    border: 0;
+    color: #7bbfa8;
+}
+
+#header .navbar-inverse .navbar-nav li a:hover {
+    color: #7bbfa8;
+}
+
+/*  Dropdown menu*/
+
+ul.sub-menu {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#header .navbar-nav li ul.sub-menu li a {
+    color: #818285;
+    padding: 5px 0;
+    font-size: 14px;
+    display: block;
+    text-transform: capitalize;
+}
+
+#header .navbar-nav li ul.sub-menu li .active {
+    background: #7bbfa8;
+    color: #fff;
+    position: relative;
+}
+
+#header .navbar-nav li ul.sub-menu li .active i {
+    position: absolute;
+    font-size: 56px;
+    top: -13px;
+    color: #7bbfa8;
+}
+
+#header .navbar-nav li ul.sub-menu li .active .fa-angle-right {
+    left: -3px;
+}
+
+#header .navbar-nav li ul.sub-menu li .active .fa-angle-left {
+    right: -3px;
+}
+
+#header .navbar-nav li ul.sub-menu li a:hover,
+#header .navbar-nav li ul.sub-menu li a:focus {
+    background: #7bbfa8;
+    color: #fff;
+}
+
+.fa-angle-down {
+    padding-left: 5px;
+}
+
+.scaleIn {
+    -webkit-animation-name: scaleIn;
+    animation-name: scaleIn;
+}
+
+@-webkit-keyframes scaleIn {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+/* Notice Alarm Style CSS START */
+
+.notice-alarm{
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+}
+/* Notice Alarm Style CSS END */
+
