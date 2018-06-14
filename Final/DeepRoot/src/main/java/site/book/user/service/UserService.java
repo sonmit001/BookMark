@@ -2,16 +2,23 @@ package site.book.user.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import site.book.main.handler.RollinMailHandler;
+import site.book.main.handler.RollinTempKey;
 import site.book.team.dao.G_AlarmDAO;
 import site.book.team.dao.G_BookDAO;
 import site.book.team.dao.G_MemberDAO;
 import site.book.user.dao.UserDAO;
+import site.book.user.dto.EmailAuthDTO;
 import site.book.user.dto.UserDTO;
 
 @Service
@@ -20,7 +27,8 @@ public class UserService {
 	// 변수 Start
 	
 	// 태웅
-	
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	// 희준
 	@Autowired
@@ -57,6 +65,67 @@ public class UserService {
 			row = userDAO.checkUserNickname(nname);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+		}
+		
+		return row;
+	}
+	
+	// Roll in New User
+	public int rollinUser(UserDTO user) {
+		int row = 0;
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		ObjectMapper oMapper = new ObjectMapper();
+		
+		try {
+			Map<String, String> convert_user = oMapper.convertValue(user, Map.class);
+			row = userDAO.insertNewUser(convert_user);
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return row;
+	}
+	
+	// Send authcode to User's email
+	public int confirmEmail(EmailAuthDTO authcode) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		String key = new RollinTempKey().getKey(10, false);
+		int row = 0;
+		
+		// Auth Mail Form $ Send email
+		try {
+			RollinMailHandler sendMail = new RollinMailHandler(mailSender);
+			sendMail.setSubject("[뿌리깊은마크 이메일 인증]");
+			sendMail.setText(
+					new StringBuffer().append("<h1>메일인증</h1>")
+									  .append("<h3>사용자님의 인증키입니다.</h3>")
+									  .append("<h3>[Auth Key]: " + key + "</h3>")
+									  .append("<h5 style='color:red'>※주의: 5분 안에 인증이 안될 시 회원가입이 취소됩니다.</h5>")
+									  .toString()
+			);
+			sendMail.setFrom("bitcamp104@gmail.com", "뿌리깊은마크 관리자");
+			sendMail.setTo(authcode.getUid());
+			sendMail.send();
+			// save user's authcode
+			authcode.setAuthcode(key);
+			row = userDAO.insertAuthCode(authcode);
+		}catch (Exception e) {
+			e.getMessage();
+		}
+		
+		return row;
+	}
+	
+	// Check Authcode
+	public int checkAuthcode(EmailAuthDTO authcode) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		int row = 0;
+
+		try {
+			row = userDAO.checkAuthCode(authcode);
+		}catch (Exception e) {
+			System.out.println("Authcode error");
 		}
 		
 		return row;

@@ -15,28 +15,39 @@ package site.book.social.dto;
  */
 public class TopDTO {
 	private String url;
-	private String name;
+	private String urlname;
 	private int ucount;
 	
 	public TopDTO() {}
 
-	public TopDTO(String url, String name, int ucount) {
+	public TopDTO(String url, String urlname, int ucount) {
 		this.url = url;
-		this.name = name;
+		this.urlname = urlname;
 		this.ucount = ucount;
 	}
 	
-	//Getters and Setters
-	public String getUrl() {return url;}
-	public void setUrl(String url) {this.url = url;}
-	public String getName() {return name;}
-	public void setName(String name) {this.name = name;}
-	public int getUcount() {return ucount;}
-	public void setUcount(int ucount) {this.ucount = ucount;}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getUrlname() {
+		return urlname;
+	}
+	public void setUrlname(String urlname) {
+		this.urlname = urlname;
+	}
+	public int getUcount() {
+		return ucount;
+	}
+	public void setUcount(int ucount) {
+		this.ucount = ucount;
+	}
 
 	@Override
 	public String toString() {
-		return "TopDTO [url=" + url + ", name=" + name + ", ucount=" + ucount + "]";
+		return "TopDTO [url=" + url + ", urlname=" + urlname + ", ucount=" + ucount + "]";
 	}
 	
 }

@@ -125,6 +125,11 @@ h2 {
     color: #7bbfa8;
 }
 
+.reddiv {
+	background-color: #ff8700;
+	/* #285943 #ff4619*/
+}
+
 
 .bookmark-title {
    font-family: 'Lato', 'Spoqa Han Sans';
@@ -264,6 +269,10 @@ h2 {
     margin-top: -24px;
 }
 
+.ul-table {
+	min-height: 550px !important;
+}
+
 /*********************************
 ****** Floating BoX CSS START ******
 ***********************************/
@@ -277,7 +286,7 @@ h2 {
 
 #layout {
   float: left;
-  width: 60%;
+  width: 100%;
   height: 70%;
   background-color: #253d52;
   color: #f9c300;

@@ -102,7 +102,7 @@ public class U_BookService {
 		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int result = dao.insertRootFolder(ubid, uid);
 		
-		return 0;
+		return result;
 	}
 
 	public int getmaxid() {
@@ -165,6 +165,7 @@ public class U_BookService {
 		int result = dao.shareUrlEdit(dto);
 		return result;
 	}
+
 
 	// 함수 End
 }

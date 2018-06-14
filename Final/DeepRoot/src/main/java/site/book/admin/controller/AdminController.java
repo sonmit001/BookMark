@@ -8,8 +8,6 @@
 
 package site.book.admin.controller;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.View;
 
 import site.book.admin.dto.A_BookDTO;
 import site.book.admin.dto.A_CategoryDTO;
@@ -32,8 +29,6 @@ import site.book.user.dto.S_U_BookDTO;
 import site.book.user.dto.UserDTO;
 import site.book.user.service.U_BookService;
 import site.book.user.service.UserService;
-import site.book.utils.GmailQuickstart;
-import site.book.utils.MailService;
 
 /**
  * @Class : AdminController.java
@@ -105,13 +100,7 @@ public class AdminController {
 		
 		List<HashMap<String, String>> visitor_count = visitor_service.numOfVisitorByDate();
 		model.addAttribute("visitor_count", visitor_count);
-		
-		try {
-			GmailQuickstart.main();
-		} catch (IOException | GeneralSecurityException e) {
-			e.printStackTrace();
-		}
-		
+				
 		return "khj.admin";
 	}
 	

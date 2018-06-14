@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import site.book.team.dao.TeamDAO;
 import site.book.team.dto.S_TeamDTO;
+import site.book.team.dto.TeamDTO;
 
 /**
  * @Class : TeamService.java
@@ -55,5 +56,34 @@ public class TeamService {
 		}
 		
 		return row;
+	}
+
+	
+	// 명수
+	// 완료 그룹 리스트 가져오기
+	public List<TeamDTO> getCompletedTeamList(String uid) {
+		
+		TeamDAO teamDAO = sqlsession.getMapper(TeamDAO.class);
+		List<TeamDTO> dtolist = teamDAO.getCompletedTeamList(uid);
+
+		return dtolist;
+	}
+
+	// 내 그룹 리스트 가져오기
+	public List<TeamDTO> getTeamList(String uid) {
+
+		TeamDAO teamDAO = sqlsession.getMapper(TeamDAO.class);
+		List<TeamDTO> dtolist = teamDAO.getTeamList(uid);
+		return dtolist;
+	}
+	
+	// 완료 그룹 삭제하기
+	public int deleteCompletedTeam(String uid) {
+		
+		TeamDAO teamDAO = sqlsession.getMapper(TeamDAO.class);
+		int result = teamDAO.deleteCompletedTeam(uid);
+		
+		return result;
+		
 	}
 }

@@ -54,36 +54,13 @@
                                                 <!-- Login START -->
                                                 <%-- <form action='<c:url value="/security/login" />' method="POST"> --%>
                                                 <form id="login-form">
+                                                	<strong class="error-text"></strong>
                                                     <input id="uid" class="form-control" type="text" placeholder="Email" name="uid">
                                                     <input id="pwd" class="form-control" type="password" placeholder="Password" name="pwd">
                                                     <!-- <input id="loginAjax" class="btn btn-default btn-login" type="submit" value="Login"> -->
                                                     <input id="loginAjax" class="btn btn-default btn-login" type="button" value="Login">
                                                 </form>
                                                 <!-- Login END -->
-                                                <script type="text/javascript">
-                                                $(function() {
-                                                	$("#loginAjax").on("dblclick", function(){ });
-                                        		    $("#loginAjax").on("click", function(){
-                                        		    	$.ajax({ 
-                                        		    		url:"security/login",
-                                        		            type:"POST",
-                                        		            data:{uid: $("#uid").val(), pwd: $("#pwd").val()},
-                                        		            dataType:"json",
-                                        		            crossDomain: false,
-                                        		            success:function(data){
-                                        		            	if(data.msg == 'fail') { 
-                                        		            		$("#pwd").val('');
-                                        		            		$("#login-form").html("<strong>아이디 또는 비밀번호 오류입니다.</strong>");
-                                        		            	}
-                                        		            	else { location.reload(); }
-                                        		            },
-                                        		            error:function(e){  
-                                        		            	console.log("Error: " + e.responseText); 
-                                        		            }  
-                                        		        });
-                                        		    });
-                                                });
-                                                </script>
                                             </div>
                                         </div>
                                     </div>
@@ -91,13 +68,21 @@
                                         <div class="content registerBox" style="display:none;">
                                             <!-- Roll in START -->
                                             <div class="form">
-                                                <form action="/main.do" method="post" html="{:multipart=>true}" data-remote="true" accept-charset="UTF-8">
+                                                <form id="rollin-form">
+                                                	<strong class="error-text"></strong>
                                                     <input id="uid_join" class="form-control" type="text" placeholder="Email@example.com" name="uid">
-                                                    <input id="nname_join" class="form-control" type="text" placeholder="Nickname" name="nname">
                                                     <input id="pwd_join" class="form-control" type="password" placeholder="Password" name="pwd">
                                                     <input id="pwd_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="pwd_confirmation">
-                                                    <input id="profile_join" class="form-control" type="text" placeholder="Greetings" name="profile">
-                                                    <input class="btn btn-default btn-register" type="submit" value="Create account" name="commit">
+                                                    <input id="nname_join" class="form-control" type="text" placeholder="Nickname" name="nname">
+                                                    <div id="auth-div" class="form-group" style="display: none">
+                                                       <input id="authcode_join" class="form-control" type="text" placeholder="Auth Code" name="authcode">
+                                                       <input id="authcode_check" class="btn btn-default" type="button" value="인증키 재전송">
+                                                   	</div>
+                                                    <div>
+                                                    	<input id="agree-site-rule" class="form-check-input" type="checkbox"><span class="agree-site-rule-text">
+                                                    	뿌리깊은마크를 악의적인 용도로 사용하면 안됩니다.</span>
+                                                    </div>
+                                                    <input id="rollinAjax" class="btn btn-default btn-register" type="button" value="Create account" name="commit">
                                                 </form>
                                             </div>
                                             <!-- Roll in END -->
@@ -176,7 +161,7 @@
                           </span>
                         </div>
                         <div id="category-display" class="col-sm-12 category-items">
-                            <div id="showall" class="category">
+                            <div id="showall" class="category reddiv">
                                 <span>Show All</span></div>
                             <c:forEach items="${categoryList}" var="cList">
                             	<div data-category="${cList.acname}" class="category">
@@ -205,7 +190,7 @@
                                 		<c:when test="${cList.acid == bList.acid}">
                                			<li>
 	                                        <button class="url_hover_btn" type="button"><img class="zoom_img" src="icon/url_save.png" data-toggle="modal" onclick="openUrlModal()"></button>
-	                                        <button class="url_hover_btn" type="button"><img class="zoom_img" src="icon/open_preview.png"></button>
+	                                        <button class="url_hover_btn" type="button"><img class="zoom_img" src="icon/open_preview.png" onclick="preview(${bList.abid})"></button>
 	                                        <img class="favicon" src="https://www.google.com/s2/favicons?domain=${bList.url}" alt="">
 	                                        <p class="url" data-url="${bList.url}"
 	                                        			   data-regdate="${bList.regdate}"
@@ -234,7 +219,6 @@
                         </div>
                         <div id="preview_content">
                             <div id="layout">미리보기: Page Image</div>
-                            <div id="explain">상세정보: Today Visitors, Using Flow</div>
                             <div id="comment">설명 Details</div>
                         </div>
                         <div id="advertise_content">

@@ -21,20 +21,13 @@ import org.springframework.security.web.savedrequest.SavedRequest;
  */
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	
-	@Autowired
-    private SqlSession sqlsession;
-	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 		
-		System.out.println("sssssssssssssss");
-		request.setAttribute("userid", request.getParameter("uid"));
-
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		response.getWriter().print("{\"msg\": success}");
-		response.getWriter().flush();
+		// authentication.getName(): userid
+		request.setAttribute("userid", authentication.getName());
+		request.setAttribute("msg", "success");
+		request.getRequestDispatcher("/joinus/login.do").forward(request, response);
 	}
-	
-	
 }

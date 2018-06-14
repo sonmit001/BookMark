@@ -273,6 +273,8 @@ public class UserController {
 	public void dropNode(HttpServletResponse res , @RequestParam HashMap<String, String> param) {
 		
 		res.setCharacterEncoding("UTF-8");
+		System.out.println("아래에 param");
+		System.out.println(param);
 		int result = u_bookservice.dropNode(param);
 		
 		try {
@@ -318,7 +320,24 @@ public class UserController {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	//ROOT 카테고리 추가 
+	@RequestMapping("addRoot.do")
+	public void addRoot(String uid , HttpServletResponse res) {
 		
+		res.setCharacterEncoding("UTF-8");
+		
+		int ubid = u_bookservice.getmaxid();
+		int result = u_bookservice.insertRootFolder(ubid, uid);
+		
+		if(result == 1) {
+			try {
+				res.getWriter().println(ubid);
+			} catch (IOException e) {			
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	// 함수 End

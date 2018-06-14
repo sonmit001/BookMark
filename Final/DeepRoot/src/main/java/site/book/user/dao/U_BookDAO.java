@@ -52,4 +52,5 @@ public interface U_BookDAO {
 
 	public int shareUrlEdit(U_BookDTO dto);
 
+
 }

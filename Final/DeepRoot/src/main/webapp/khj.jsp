@@ -8,7 +8,7 @@
 </head>
 <body>
 	<script type="text/javascript">
-		location.href="admin/admin.do";
+		location.href="social/social.do";
 	</script>
 </body>
 </html>

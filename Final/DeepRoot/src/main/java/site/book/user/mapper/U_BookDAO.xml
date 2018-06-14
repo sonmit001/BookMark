@@ -10,6 +10,8 @@
 		SELECT DATE_FORMAT(regdate,'%Y-%m-%d') d, COUNT(*) as c FROM U_BOOK GROUP BY d
 	</select>
 	
+	
+	
 	<select id="socialBookmarkList" resultType="site.book.user.dto.S_U_BookDTO">
 		SELECT ub.UBID, ub.URL, ub.UID, u.NNAME, ub.SNAME, ub.VIEW, ub.HTAG, ub.SDATE FROM U_BOOK ub JOIN USER u ON ub.UID = u.UID WHERE HTAG IS NOT NULL
 	</select>
@@ -78,5 +80,5 @@
 			</otherwise>
 		</choose>
 	</update>
-
+	
 </mapper>

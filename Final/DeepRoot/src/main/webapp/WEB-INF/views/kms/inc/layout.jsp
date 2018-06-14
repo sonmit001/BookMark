@@ -46,8 +46,13 @@
 				success : function(data){	
 					console.log(data);
 			
-					$("#jstree_container").jstree({	
+					$("#jstree_container").on("click",'.jstree-anchor',function(e){
+						$('#jstree_container').jstree(true).toggle_node(e.target);	
+						
+					}).
+					jstree({	
 							"core": {
+								"dblclick_toggle" : false,
 							'data' : data,
 							'themes':{
 								'name' : 'proton',
@@ -56,12 +61,12 @@
 								
 							},
 							"check_callback" : function(op, node, par, pos, more){
+								console.log("아래에 무엇이 실행되는 것인지");
+								console.log(op);
 								if(op === "move_node"){ // dnd 이벤트 일때 
 									console.log(op);//move_node
 									console.log(node);//실제 select 한node
 									console.log(par);// select node 사위 헐 여기서 나옴 childe
-									console.log(par.a_attr.href);
-									console.log(par.children_d);
 	
 									console.log("선택 node 의 id 값");
 									console.log(node.id);
@@ -106,6 +111,7 @@
 						    	  var href = $node.a_attr.href;
 						    	  
 								  var tree = $("#jstree_container").jstree(true);
+								  var tree_child = $("#jstree_container_child").jstree(true);
 						    	  
 									if(href == null || href == "#"){  
 										// 링크 만들기, 폴더 만들기, 이름 바꾸기, 삭제
@@ -149,6 +155,11 @@
 									            			  success : function(data){//나중에 sequence 나 autoincrement 사용해서 하나 올린 값을 받아서 insert 해주고 data 보내주어 view단 node 생성해주기
 									            					
 									            				  $('#linkAdd').modal("toggle"); // 모달 창 닫아주기
+									            				  var node_id = $.trim(data);
+									            				  
+									            				  tree_child.create_node( null , {text : title , id : node_id , a_attr : {href : url} , icon : "https://www.google.com/s2/favicons?domain="+ url} ,"last",function(new_node){
+									          				 		console.log(new_node.id);
+									          				 	});
 									            					console.log(data);	//id 확인
 								              			  }
 								          			  })
@@ -177,7 +188,7 @@
 								            				  
 								            				 var node_id = $.trim(data);
 									            				 
-								            				 	tree.create_node(par_node , {text : "새 폴더" , id : node_id} ,"last",function(new_node){
+								            				 	tree.create_node(par_node , {text : "새 폴더" , id : node_id } ,"last",function(new_node){
 								            				 		console.log(new_node.id);
 								            				 		new_node.id = node_id;
 								            				 		tree.edit(new_node);
@@ -300,11 +311,48 @@
 				}
 			})
 			
+			
+			$('#addroot').on("click",function(){
+				
+				  var tree = $("#jstree_container").jstree(true);
+				  
+				  var form = {uid : "user1@naver.com"};
+				  
+				  $.ajax({
+						
+					  url : "addRoot.do",
+					  type : "POST",
+					  data : form,
+					  success : function(data){
+						  
+						  var ubid = $.trim(data);
+						  
+						  tree.create_node( null , {text : "새 카테고리" , id : ubid , icon : "fa fa-folder-o"} ,"last",function(new_node){
+							  new_node = ubid;
+							  tree.edit(new_node);
+	
+							  
+	      				 	});
+					  }
+				  })
+			})
+			
+			
+			
+			
+			
 			$("#testing").on("click",function(){
+				
+				var tree_child = $("#jstree_container_child").jstree(true);
 				
 				console.log(urlpid);
 				
-
+				if(urlpid == null){
+					alert("노드를 선택해 주세요");
+					return false;
+					
+				}
+				
           	  $('#form_btn')[0].reset();// modal input text 창 초기화
           	  
           	  
@@ -337,6 +385,10 @@
           					
           				  $('#linkAdd_btn').modal("toggle"); // 모달 창 닫아주기
           					console.log(data);	//id 확인
+          					var node_id = $.trim(data);
+          					tree_child.create_node( null , {text : title , id : node_id , a_attr : {href : url} , icon : "https://www.google.com/s2/favicons?domain="+ url} ,"last",function(new_node){
+        				 		console.log(new_node.id);
+        				 	});
         			  }
     			  })
     			}) 
@@ -587,16 +639,6 @@
 						            }
 						            
 				                 }
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
 							}
 						}
 					}
@@ -610,21 +652,22 @@
 					
 				}) 
 				.bind("delete_node.jstree",function(event,data){
+				console.log("자식에서 삭제되는 것인지");
 
     			var node_id = data.node.id;
     			var form = {node : node_id}
 	
-		$.ajax({
-		url:'deleteNode.do',
-		type:'POST',
-		dataType : "json",
-		data: form,
-		success:function(result){
-			console.log(result);
-		}
+					$.ajax({
+					url:'deleteNode.do',
+					type:'POST',
+					dataType : "json",
+					data: form,
+					success:function(result){
+						console.log(result);
+					}
 		
-	})  
-	
+			})  
+		
 })
 .bind('rename_node.jstree', function(event, data){
 	 var node_id = data.node.id;

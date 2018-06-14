@@ -229,3 +229,41 @@
     border-color: #00A4E4;
     color:  #00A4E4;
 }
+
+.agree-site-rule-text {
+	color: red;
+    font-size: 11px;
+    font-weight: 1000;
+}
+
+.login .box .form .form-group input[type="text"] {
+   border-radius: 3px;
+   border: none;
+   display: inline;
+   color: #333333;
+   font-size: 16px;
+   height: 46px;
+   width: 60%;
+}
+
+.login .box .form .form-group {
+margin-bottom: 0px;
+}
+
+.login .box .form .form-group input[type="button"] {
+   background-color: #7bbfa8;
+   border-color: #7bbfa8;
+   color: #FFFFFF;
+   display: inline;
+   height: 46px;
+   text-transform: uppercase;
+   width: 38.5%;
+}
+
+#authcode_check input[type="button"]:disabled {
+	background-color: #ccddcc;
+}
+
+#rollinAjax input[type="button"]:disabled {
+	background-color: #ccddcc;
+}

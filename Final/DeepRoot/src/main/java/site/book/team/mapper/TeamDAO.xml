@@ -14,4 +14,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteSocialGroup">
 		DELETE FROM TEAM WHERE GID = #{gid} AND HTAG IS NOT NULL
 	</delete>
+	
+	<select id="getCompletedTeamList" resultType="site.book.team.dto.S_TeamDTO">
+		SELECT * FROM TEAM t JOIN G_MEMBER gm ON t.gid = gm.gid WHERE UID = #{0} AND HTAG IS NOT NULL
+	</select>
+	
+	<select id="getTeamList" resultType="site.book.team.dto.S_TeamDTO">
+		SELECT * FROM TEAM T JOIN G_MEMBER GM ON T.GID = GM.GID WHERE UID = #{0} AND HTAG IS NULL;
+	</select>
+	
+	<delete id="deleteCompletedTeam">
+		DELETE FROM G_MEMBER WHERE UID = #{0}
+	</delete>
 </mapper>

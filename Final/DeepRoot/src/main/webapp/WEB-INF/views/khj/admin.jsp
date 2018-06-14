@@ -10,6 +10,8 @@
 <body>
 	<h2>관리자 페이지</h2>
 	
+	<img src="${pageContext.request.contextPath}/images/homepage/1.png">
+	
 	<h3>사이트 총 방문자수 : ${total_visitors}</h3>
 	
 	<h3>날짜별 방문자수</h3>

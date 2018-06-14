@@ -55,7 +55,7 @@
                        <a href="#">
                        <img class="dropdown header-ico" 
                        		src="https://s3.amazonaws.com/uifaces/faces/twitter/GavicoInd/128.jpg" 
-                       		alt="images/profile.png"> Nickname</a>
+                       		alt="images/profile.png"> ${sessionScope.info_userid}</a>
                        <ul role="menu" class="sub-menu">
                            <li><a href="#">회원정보수정</a></li>
                            <li><a href='security/logout'>Logout</a></li>

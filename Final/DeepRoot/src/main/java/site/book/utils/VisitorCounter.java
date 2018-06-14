@@ -34,7 +34,7 @@ public class VisitorCounter implements HttpSessionListener{
 	
 	@Override
 	public void sessionCreated(HttpSessionEvent se) {
-		System.out.println("visitor 들어옴");
+		//System.out.println("visitor 들어옴");
 		
 		HttpSession session = se.getSession();
 		
@@ -52,11 +52,11 @@ public class VisitorCounter implements HttpSessionListener{
 		
 		visitor.setVip(req.getRemoteAddr());
 		visitor.setVagent(req.getHeader("User-Agent"));
-		System.out.println("refer : " + req.getHeader("referer"));
+		//System.out.println("refer : " + req.getHeader("referer"));
 		
 		visitor_service.insertVisitor(visitor);
 		
-		System.out.println("visitor insert");
+		//System.out.println("visitor insert");
 	}
 
 	@Override
