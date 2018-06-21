@@ -1,6 +1,7 @@
 package site.book.user.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,13 +32,25 @@ public interface UserDAO {
 	// 인증코드 일치 확인
 	public int checkAuthCode(EmailAuthDTO authcode) throws ClassNotFoundException, SQLException;
 	
+	// 회원 한명 출력
+	public UserDTO getUser(String uid) throws ClassNotFoundException, SQLException;
+	
+	// 회원 한명 수정
+	public int editUser(UserDTO user) throws ClassNotFoundException, SQLException;
+	
+	// 회원 탈퇴
+	public int deleteUser(String uid) throws ClassNotFoundException, SQLException;
+	
+	// 비밀번호 변경(비밀번호 찾기)
+	public int updatePwd(UserDTO user) throws ClassNotFoundException, SQLException;
+	
 	// 희준
 	
 	//전체 회원수
 	public int allUser() throws ClassNotFoundException, SQLException;
 	
 	// 신규 가입자 수
-	public int newUser() throws ClassNotFoundException, SQLException;
+	public List<HashMap<String, String>> newUser() throws ClassNotFoundException, SQLException;
 	
 	// 블랙리스트 추가
 	public int blacklist(String uid) throws ClassNotFoundException, SQLException;

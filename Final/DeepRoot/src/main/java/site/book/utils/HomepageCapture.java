@@ -38,7 +38,7 @@ public class HomepageCapture {
 	@Autowired
 	private A_BookService a_book_service;
 	
-	@Scheduled(cron= "0 0 */4 * * *" )
+	@Scheduled(cron= "0 0 4 * * *" )
 	public void screenshot() {
 		System.out.println("스케줄러 시작");
 		
@@ -56,9 +56,10 @@ public class HomepageCapture {
 		System.setProperty("webdriver.chrome.driver", exePath);
 
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--headless");
-		options.addArguments("window-size=1080x1080");
-		options.addArguments("disable-gpu");
+		options.addArguments("--headless"); // 창 없는 옵션
+		options.addArguments("--hide-scrollbars"); // 스크롤바 없애는 옵션
+		options.addArguments("window-size=1080x1080"); // 화면 크기 옵션
+		options.addArguments("disable-gpu"); // 성능
 		
 		File forder = new File(realpath + "\\images\\homepage");
 		if(!forder.exists()) {

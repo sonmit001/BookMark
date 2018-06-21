@@ -44,11 +44,12 @@ ul > li{
 }
 
 .component_title{
+	padding: 3px 0px 0px 5px;
     cursor: default;
-    height: 31px;
+    height: 35px;
     text-align: left;
     margin-bottom: 5px;
-    border-bottom: 3px solid;
+    border-bottom: 3px solid #333;
 }
 
 .component_title color4 {
@@ -56,10 +57,12 @@ ul > li{
 }
 
 .title{
+	padding-left: 5px;
     font-weight: 400;
 }
 
 .url{
+	font-size: 15px;
     font-weight: 400;
     margin-bottom: 5px;
     color: black;
@@ -76,13 +79,13 @@ ul > li{
     float: left;
     margin-top: 3px;
     margin-right: 5px;
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
 }
 
 .url_link_btn {
-    height: 10px;
-    width: 10px;
+    height: 14px;
+    width: 14px;
     margin: 7px 5px 0px 0px;
     display: none;
     float: right;

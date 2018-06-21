@@ -1,5 +1,9 @@
 package site.book.user.dto;
 
+import java.util.List;
+
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 public class UserDTO {
 	private String uid;
 	private String nname;

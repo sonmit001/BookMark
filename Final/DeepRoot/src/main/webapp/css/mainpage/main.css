@@ -94,7 +94,7 @@ h2 {
 }
 
 .hr-clear {
-  margin-top: 15px;
+  /* margin-top: 15px; */
   margin-bottom: 5px;
   border: 0px;
   height: 2px;
@@ -106,28 +106,33 @@ h2 {
 .category {
     font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
     height: 30px;
+    width: 106px;
     margin-bottom: 10px;
     margin-right: 15px;
     padding: 5px 10px 5px 10px;
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
-    background-color: #7bbfa8;
-    border : 1px solid #7bbfa8;
-    color: #fff;
+    /* background-color: #7bbfa8; */
+    border : 1px solid #0000005c;
+    color: #ffffff;
     float: left;
 }
-
+.category-title {
+	font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+	font-weight: 900;
+}
 .category:hover {
-    margin-right: 13px;
-    background-color: #fff;
-    border : 2px solid #7bbfa8;
-    color: #7bbfa8;
+    border : 2px solid #000;
+    color: #000;
+    box-shadow: 0px 0px 20px 1px;
 }
 
 .reddiv {
+	border : 2px solid #000;
 	background-color: #ff8700;
-	/* #285943 #ff4619*/
+	color: #000;
+	box-shadow: 0px 0px 20px 1px;
 }
 
 
@@ -287,9 +292,10 @@ h2 {
 #layout {
   float: left;
   width: 100%;
-  height: 70%;
-  background-color: #253d52;
-  color: #f9c300;
+  height: 100%;
+  border-bottom: 2px solid #575b5f;
+  border-radius: 10px 10px 0px 0px;
+  text-align: center;
 }
 
 #explain {
@@ -304,8 +310,9 @@ h2 {
   float: left;
   width: 100%;
   height: 30%;
-  background-color: #7171FF;
-  color: #E6E84B;
+  background-color: #F8FAFF; 
+  color: #353866;
+  border-radius: 0px 0px 10px 10px;
 }
 
 .preview_img {
@@ -327,6 +334,9 @@ h2 {
 
 #preview_content {
     height: 60%;
+    border: 2px solid #575b5f;
+    box-shadow : 0px 0px 20px 5px #E0E3DA;
+    border-radius: 5px;
 }
 
 /*********************************

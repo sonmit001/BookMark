@@ -8,6 +8,10 @@
 
 package site.book.main.controller;
 
+import java.io.File; 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,12 +32,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.View;
 
 import site.book.admin.dto.A_BookDTO;
 import site.book.admin.dto.A_CategoryDTO;
 import site.book.admin.service.A_BookService;
 import site.book.admin.service.A_CategoryService;
+import site.book.team.dto.G_MemberDTO;
+import site.book.team.service.TeamService;
 import site.book.user.dto.EmailAuthDTO;
 import site.book.user.dto.UserDTO;
 import site.book.user.service.UserService;
@@ -65,7 +74,8 @@ public class MainController {
 	@Autowired
 	private View jsonview;
 	
-	
+	@Autowired
+	private TeamService teamservice;
 	// 명수
 	
 	// 변수 End
@@ -91,18 +101,28 @@ public class MainController {
 	/* Log in */
 	@RequestMapping(value="/joinus/login.do")
 	public View login(HttpServletRequest request, HttpServletResponse response, 
-			HttpSession session, Model model) {
+			HttpSession session, Model model, UserDTO user) {
 		
 		// process message from Handler and JSON data response
 		if(request.getAttribute("msg").equals("fail")) {
 			model.addAttribute("login", "fail");
 		}else {
 			String userid = (String)request.getAttribute("userid");
+			user.setUid(userid);
+			user = user_service.getMember(user.getUid());
 			model.addAttribute("login", "success");
-			System.out.println(userid);
-
+			
+			String role = (String)request.getAttribute("ROLE");
+			if(role.equals("ADMIN")) {
+				model.addAttribute("path", "admin/main.do");
+			}else {
+				model.addAttribute("path", "index.do");
+			}
+			
 			// set info session userid
-			session.setAttribute("info_userid", userid);
+			session.setAttribute("info_userid", user.getUid());
+			session.setAttribute("info_usernname", user.getNname());
+			session.setAttribute("info_userprofile", user.getProfile());
 		}
 		
 		return jsonview;
@@ -118,7 +138,7 @@ public class MainController {
 		
 		int result = user_service.rollinUser(user);
 		if(result > 0) {
-			model.addAttribute("rollin", "success");
+			model.addAttribute("rollin", "pass");
 		}else {
 			model.addAttribute("rollin", "fail");
 		}
@@ -134,7 +154,7 @@ public class MainController {
 		System.out.println(auth);
 		int result = user_service.confirmEmail(auth);
 		if(result > 0) {
-			model.addAttribute("email", "success");
+			model.addAttribute("email", "pass");
 		}else {
 			model.addAttribute("email", "fail");
 		}
@@ -149,7 +169,7 @@ public class MainController {
 		System.out.println(auth);
 		int result = user_service.checkAuthcode(auth);
 		if(result > 0) {
-			model.addAttribute("auth", "success");
+			model.addAttribute("auth", "pass");
 		}else {
 			model.addAttribute("auth", "fail");
 		}
@@ -171,6 +191,7 @@ public class MainController {
 		
 		return jsonview;
 	}
+	
 	/* Check Nickname */
 	@RequestMapping(value="/joinus/checknname.do", method=RequestMethod.POST)
 	public View checkNname(HttpServletRequest request, HttpServletResponse response, 
@@ -187,6 +208,103 @@ public class MainController {
 		return jsonview;
 	}
 	
+	/* 회원정보 수정 페이지 GET */
+	@RequestMapping(value="/myInfo.do", method=RequestMethod.GET)
+	public String initMemberInfo(Model model) {
+		
+		return "member.myinfo";
+	}
+	
+	/* 회원정보 수정 페이지 POST */
+	@RequestMapping(value="/myInfo.do", method=RequestMethod.POST)
+	public String editMemberInfo(HttpServletRequest request, HttpSession session,
+			UserDTO user, @RequestParam("uploadFile") MultipartFile file, 
+			Model model) {
+		
+		//비밀번호 재암호화
+		user.setPwd(this.bCryptPasswordEncoder.encode(user.getPwd()));
+		//result = UID.확장자
+		String result = user_service.editMember(request, user, file);
+		//System.out.println("회원수정: " + result);
+		
+		// .확장자명이 있다면 session update
+		if(result.split("\\.").length > 1)
+			session.setAttribute("info_userprofile", result);
+		return "redirect:index.do";
+	}
+	
+	/* 회원정보 수정 페이지 비밀번호 재확인 */
+	@RequestMapping(value="/reconfirm.do", method=RequestMethod.POST)
+	public View confirmMemberPWD(Model model, UserDTO input_data) {
+		
+		//getMember 통해  해당 회원정보 가져옴
+		UserDTO member = user_service.getMember(input_data.getUid());
+		//DB에서 가져온 암호화된 문자열
+		String encodedPassword = member.getPwd();
+		
+		boolean result = bCryptPasswordEncoder.matches(input_data.getPwd(), encodedPassword);
+		if(result) {
+			model.addAttribute("result", "pass");
+		}else {
+			model.addAttribute("result", "fail");
+		}
+		return jsonview;
+	}
+	
+	/* 회원 탈퇴 */
+	@RequestMapping(value="/rollout.do", method=RequestMethod.GET)
+	public String rolloutMember(HttpServletRequest request, Model model) {
+		
+		String uid = (String)request.getParameter("uid");
+		System.out.println(uid);
+		int result = user_service.deleteMember(uid);
+
+		if(result > 0) {
+			model.addAttribute("result", "pass");
+		}else {
+			model.addAttribute("result", "fail");
+		}
+		return "member.logout";
+	}
+	
+	/* 비밀번호 찾기 */
+	// 비밀번호 찾기 시, 회원인지 확인
+	@RequestMapping(value="/confirmuser.do", method=RequestMethod.POST)
+	public View confirmUser(HttpServletRequest request, Model model, EmailAuthDTO user) {
+
+		System.out.println(user);
+		int result = user_service.confirmUser(user);
+
+		if(result > 0) {
+			model.addAttribute("result", "member");
+		}else {
+			model.addAttribute("result", "who");
+		}
+		return jsonview;
+	}
+	
+	// 회원 여부 확인 후, 임시 비밀번호 전송
+	@RequestMapping(value="/findpwd.do", method=RequestMethod.POST)
+	public View findUserPwd(HttpServletRequest request, Model model,
+			EmailAuthDTO authcode, UserDTO user) {
+
+		//System.out.println(authcode);
+		//System.out.println(user);
+		int resultAuth = user_service.checkAuthcode(authcode);
+		
+		// 인증코드가 정확하다면,
+		if(resultAuth > 0) {
+			// 회원에게 임시 비밀번호 발급
+			user_service.findUserPwd(user);
+			model.addAttribute("result", "success");
+			model.addAttribute("path", "index.do");
+		}else {
+			model.addAttribute("result", "fail");
+		}
+		return jsonview;
+	}
+	/* 비밀번호 찾기 END */
+
 	// 희준
 	@RequestMapping("preview.do")
 	public View WebCrawling(String abid, Model model) {

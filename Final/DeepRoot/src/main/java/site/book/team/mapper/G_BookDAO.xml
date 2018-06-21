@@ -11,4 +11,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteGroupBook">
 		DELETE FROM G_BOOK WHERE uid = #{uid} AND URL IS NOT NULL
 	</delete>
+	
+
+	<select id="selectGroupViews" resultType="Integer">
+		select COALESCE(SUM(VIEW),0) from TEAM t join G_BOOK gb on t.gid = gb.gid where t.gid = #{gid}
+	</select>
+
+	<select id="getCompletedTeamBookmark" resultType="site.book.team.dto.G_BookDTO">
+		SELECT * FROM G_BOOK WHERE GID=#{gid}
+	</select>
 </mapper>

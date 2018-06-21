@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +23,12 @@ import org.springframework.web.servlet.View;
 
 import com.gargoylesoftware.htmlunit.javascript.host.Console;
 
+import site.book.team.dto.G_BookDTO;
+import site.book.team.dto.G_MemberDTO;
+import site.book.team.dto.TeamDTO;
+import site.book.team.service.G_BookService;
+import site.book.team.service.G_MemberService;
+import site.book.team.service.TeamService;
 import site.book.user.dto.U_BookDTO;
 import site.book.user.service.U_BookService;
 import site.book.user.service.UserService;
@@ -40,6 +47,11 @@ public class UserController {
 	private UserService userservice;
 	// 희준
 	
+	@Autowired
+	private TeamService teamservice;
+	
+	@Autowired
+	private G_MemberService g_memberservice;
 	
 	// 명수
 	@Autowired
@@ -48,6 +60,8 @@ public class UserController {
 	@Autowired
 	private MailSender mailSender;
 	
+	@Autowired
+	G_BookService g_bookservice;
 	// 변수 End
 	
 	// 함수 Start
@@ -80,19 +94,71 @@ public class UserController {
 	}
 	// 희준
 	
+	@RequestMapping("leaveGroup.do")
+	public View leaveGroup(HttpServletRequest req, G_MemberDTO member, Model model) {
+		HttpSession session = req.getSession();
+		String uid = (String)session.getAttribute("info_userid");
+		member.setUid(uid);
+		
+		int row = g_memberservice.leaveGroup(member);
+		
+		String data = (row == 1) ? "성공" : "실패";
+		model.addAttribute("data", data);
+		
+		return jsonview;
+	}
+	
+	@RequestMapping("addGroup.do")
+	public String addGroup(HttpServletRequest req, String gname) {
+		System.out.println("그룹 추가");
+		HttpSession session = req.getSession();
+		String uid = (String)session.getAttribute("info_userid");
+		
+		G_MemberDTO member = new G_MemberDTO();
+		member.setUid(uid);
+		member.setGrid(1);
+		
+		teamservice.addGroup(gname, member);
+		
+		return "redirect:mybookmark.do";
+	}
+	
+	@RequestMapping("completedGroup.do")
+	public String completedGroup(TeamDTO team) {
+		
+		teamservice.completedGroup(team);
+		
+		return "redirect:mybookmark.do";
+	}
+	
 	
 	// 명수
 	@RequestMapping("mybookmark.do")
-	public String mybookmark() {
+	public String mybookmark(HttpServletRequest req, Model model) {
+		HttpSession session = req.getSession();
+		String uid = (String)session.getAttribute("info_userid");
+		System.out.println("uid : " + uid);
 		
-		return "kms.myCategory";
+		List<TeamDTO> teamList = teamservice.getTeamList(uid);
+		model.addAttribute("teamList", teamList);
+		
+		List<TeamDTO> completedTeamList = teamservice.getCompletedTeamList(uid);
+		model.addAttribute("completedTeamList", completedTeamList);
+		
+		return "mypage.myCategory";
 	}
 	
 	//해당 유저의 카테고리를 보내준다.
 	@RequestMapping("getCategoryList.do")	
-	public void getCategoryList(String uid , HttpServletResponse res) {
+	public void getCategoryList(HttpServletRequest req , HttpServletResponse res) {
 		
 		res.setCharacterEncoding("UTF-8");
+		
+		HttpSession session = req.getSession();
+        String uid = (String)session.getAttribute("info_userid");
+        
+        System.out.println("uid : " + uid);
+		
 		
 		JSONArray jsonArray = new JSONArray();	
 		List<U_BookDTO> list = u_bookservice.getCategoryList(uid);
@@ -112,7 +178,7 @@ public class UserController {
 				jsonobject.put("id", ubid);
 				jsonobject.put("parent", "#");
 				jsonobject.put("text", "첫 카테고리");
-				jsonobject.put("icon", "fa fa-folder-o");
+				jsonobject.put("icon", "fa fa-folder");
 				jsonobject.put("uid", uid);
 				
 				jsonArray.put(jsonobject);
@@ -132,7 +198,7 @@ public class UserController {
 					jsonobject.put("parent", parentid);
 				
 				if(list.get(i).getUrl() == null)
-					jsonobject.put("icon", "fa fa-folder-o");	//favicon 추가
+					jsonobject.put("icon", "fa fa-folder");	//favicon 추가
 				else {
 					jsonobject.put("icon", "https://www.google.com/s2/favicons?domain="+list.get(i).getUrl());	//favicon 추가
 				}
@@ -221,11 +287,15 @@ public class UserController {
 	
 	//폴더 & url & 공유일 경우 공유로 추가
 	@RequestMapping("addFolderOrUrl.do")
-	public void addFolder(U_BookDTO dto , HttpServletResponse res) {
+	public void addFolder(U_BookDTO dto ,HttpServletRequest req, HttpServletResponse res) {
 		
 		int ubid = u_bookservice.getmaxid();	// max(ubid) +1 한 값이다.
-		dto.setUbid(ubid);
-			
+		HttpSession session = req.getSession();
+        String uid = (String)session.getAttribute("info_userid");
+        
+        dto.setUbid(ubid);
+        dto.setUid(uid);
+        
 		System.out.println(dto.toString());
 		int result = u_bookservice.addFolderOrUrl(dto);
 		
@@ -240,7 +310,6 @@ public class UserController {
 	@RequestMapping("deleteNode.do")	
 	public void deleNode(HttpServletRequest req , HttpServletResponse res) {
 		res.setCharacterEncoding("UTF-8");
-		//mysql에 cascade 햇기 때문에 url이든 폴더를 지우려고 하든 상위의 ubid를 보내부면 알아서 참조하는 모든 데이터가 삭제된다,.
 		System.out.println("ddd");
 		String nodeid = req.getParameter("node");
 		u_bookservice.deleteFolderOrUrl(nodeid);
@@ -324,10 +393,14 @@ public class UserController {
 	
 	//ROOT 카테고리 추가 
 	@RequestMapping("addRoot.do")
-	public void addRoot(String uid , HttpServletResponse res) {
+	public void addRoot(HttpServletRequest req , HttpServletResponse res) {
 		
 		res.setCharacterEncoding("UTF-8");
 		
+		HttpSession session = req.getSession();
+        String uid = (String)session.getAttribute("info_userid");
+        System.out.println("uid : " + uid);
+        
 		int ubid = u_bookservice.getmaxid();
 		int result = u_bookservice.insertRootFolder(ubid, uid);
 		
@@ -340,5 +413,46 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping("getCompletedTeamBookmark.do")
+	public void getCompletedTeamBookmark(HttpServletResponse res, int gid) {
+		
+		res.setCharacterEncoding("UTF-8");
+		System.out.println("너 들어오니");
+		System.out.println(gid);
+		
+		JSONArray jsonArray = new JSONArray();	
+		List<G_BookDTO> list = g_bookservice.getCompletedTeamBookmark(gid);
+		
+		System.out.println(list);
+		
+		for(int i =0; i<list.size(); i++) {
+			
+			JSONObject jsonobject = new JSONObject();
+			
+			String parentid = String.valueOf(list.get(i).getPid());
+			
+			if(parentid.equals("0") || parentid.equals(""))
+				jsonobject.put("parent", "#");
+			else
+				jsonobject.put("parent", parentid);
+			
+			if(list.get(i).getUrl() == null)
+				jsonobject.put("icon", "fa fa-folder");
+			else
+				jsonobject.put("icon", "https://www.google.com/s2/favicons?domain="+list.get(i).getUrl());
+			
+			jsonobject.put("id", list.get(i).getGbid());
+			jsonobject.put("text", list.get(i).getUrlname());
+			
+			jsonArray.put(jsonobject);
+		}
+		
+		try {
+			res.getWriter().println(jsonArray);
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}
+		
+	}
 	// 함수 End
 }

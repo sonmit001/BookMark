@@ -33,13 +33,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT Count(*) FROM U_AUTHCODE WHERE UID=#{uid} and AUTHCODE=#{authcode}
 	</select>
 	
+	<select id="getUser" resultType="site.book.user.dto.UserDTO">
+        SELECT UID, NNAME, PWD, ENABLED, REGDATE, PROFILE FROM `USER` WHERE UID=#{uid}
+    </select>
+    
+    <update id="editUser">
+    	<choose>
+    		<when test="profile == null">
+    			UPDATE USER SET PWD=#{pwd} WHERE UID=#{uid};
+    		</when>
+    		<otherwise>
+    			UPDATE USER SET PWD=#{pwd}, PROFILE=#{profile} WHERE UID=#{uid};
+    		</otherwise>
+    	</choose>
+    </update>
+    
+    <delete id="deleteUser">
+        DELETE FROM USER WHERE UID=#{uid}
+    </delete>
+    
+    <update id="updatePwd">
+        UPDATE USER SET PWD=#{pwd} WHERE UID=#{uid};
+    </update>
+	
 	<!-- 희준 -->
 	<select id="allUser" resultType="Integer">
 		SELECT Count(*) FROM USER
 	</select>
 	
-	<select id="newUser" resultType="Integer">
-		SELECT COUNT(*) FROM USER WHERE REGDATE >= DATE_FORMAT(CURDATE( ), '%Y-%m-%d')
+	<select id="newUser" resultType="java.util.HashMap">
+		SELECT DATE_FORMAT(regdate,'%Y-%m-%d') d, COUNT(*) as c FROM `USER` GROUP BY d
 	</select>
 	
 	<update id="blacklist">
@@ -47,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<select id="getUserList" resultType="site.book.user.dto.UserDTO">
-		SELECT UID, NNAME, PWD, ENABLED, REGDATE, PROFILE FROM `USER` WHERE Enabled <![CDATA[<>]]> 2
+		SELECT UID, NNAME, PWD, ENABLED, REGDATE, PROFILE FROM `USER` WHERE Enabled = 1 and NNAME != '관리자'
 	</select>
 	
 	<delete id="deleteUserBook">

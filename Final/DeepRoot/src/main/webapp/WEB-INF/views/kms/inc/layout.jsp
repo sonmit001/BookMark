@@ -10,16 +10,13 @@
 	href="${pageContext.request.contextPath}/resources/assets/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/assets/dist/themes/proton/style.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/assets/docs.css" />
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<!-- <link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /> -->
 
 <link rel="icon"
 	href="${pageContext.request.contextPath}/resources/assets/favicon.ico"
 	type="image/x-icon" />
-<link rel="apple-touch-icon-precomposed"
-	href="${pageContext.request.contextPath}/resources/assets/apple-touch-icon-precomposed.png" />
 <script
 	src="${pageContext.request.contextPath}/resources/assets/jquery-1.10.2.min.js"></script>
 <script
@@ -42,7 +39,7 @@
 				url : "getCategoryList.do",
 				type:"POST",
 				dataType:"json",
-				data : {uid : "user1@naver.com"},
+				data : {uid : "procedure2@naver.com"},
 				success : function(data){	
 					console.log(data);
 			
@@ -117,6 +114,7 @@
 										// 링크 만들기, 폴더 만들기, 이름 바꾸기, 삭제
 										return {
 								            "link_create": {
+								            	"icon" : "fa fa-plus",
 								                "separator_before": false,
 								                "separator_after": false,
 								                "label": "URL 추가",
@@ -143,9 +141,9 @@
 									            		  console.log(url,title,par,htag,sname); //확인
 									            		  
 									            		  if($.trim(htag) == ""){
-									            			  var form = {url : url , urlname : title , pid : par , uid : "user1@naver.com" }
+									            			  var form = {url : url , urlname : title , pid : par , uid : "procedure2@naver.com" }
 									            		  }else{
-									            			  var form = {url : url , urlname : title , pid : par, uid:  "user1@naver.com" , htag : htag , sname : sname}
+									            			  var form = {url : url , urlname : title , pid : par, uid:  "procedure2@naver.com" , htag : htag , sname : sname}
 									            		  }
 									            		  
 									            		  $.ajax({
@@ -167,6 +165,7 @@
 								                }
 								            },
 								            "folder_create": {
+								            	"icon" : "fa fa-plus-circle",
 								                "separator_before": false,
 								                "separator_after": false,
 								                "_disabled"			: false, 
@@ -178,7 +177,7 @@
 								                	var par_node = inst.get_node(obj.reference);
 								                	
 								                	var par = inst.get_node(obj.reference).id;
-	 												var form = {urlname : "새 폴더", pid : par , uid : "user1@naver.com"}	// 해당 유저의 아이디 가져오기
+	 												var form = {urlname : "새 폴더", pid : par , uid : "procedure2@naver.com"}	// 해당 유저의 아이디 가져오기
 	 												
 								               		  $.ajax({
 								            			  url: "addFolderOrUrl.do",
@@ -188,7 +187,7 @@
 								            				  
 								            				 var node_id = $.trim(data);
 									            				 
-								            				 	tree.create_node(par_node , {text : "새 폴더" , id : node_id } ,"last",function(new_node){
+								            				 	tree.create_node(par_node , {text : "새 폴더" , id : node_id  ,icon : "fas fa-folder"} ,"last",function(new_node){
 								            				 		console.log(new_node.id);
 								            				 		new_node.id = node_id;
 								            				 		tree.edit(new_node);
@@ -198,6 +197,7 @@
 								                }
 								            },
 								            "rename": {
+								            	"icon" : "fa fa-edit",
 								                "separator_before": false,
 								                "separator_after": false,
 								                "label": "이름 수정",
@@ -208,6 +208,7 @@
 								                }
 								            },                         
 								            "remove": {
+								            	"icon" : "fa fa-trash",
 								                "separator_before": false,
 								                "separator_after": false,
 								                "label": "삭제",
@@ -223,8 +224,13 @@
                         }			    
 					})	
 					.bind("loaded.jstree", function (event, data) {
+						$('#jstree_container').jstree("open_all");
 							console.log("loaded jstree");
+							console.log(data);
+							//console.log(data.node.id);
+							//$('#'+data.node.id).find('i.jstree-icon.jstree-themeicon').first().addClass('colorfold');
 							console.log(data.instance._model.data);
+							console.log(data.instance._model.data.id);
 							var test = data.instance._model.data
 							console.log(Object.keys(test).length);
 	
@@ -316,7 +322,7 @@
 				
 				  var tree = $("#jstree_container").jstree(true);
 				  
-				  var form = {uid : "user1@naver.com"};
+				  var form = {uid : "procedure2@naver.com"};
 				  
 				  $.ajax({
 						
@@ -327,7 +333,7 @@
 						  
 						  var ubid = $.trim(data);
 						  
-						  tree.create_node( null , {text : "새 카테고리" , id : ubid , icon : "fa fa-folder-o"} ,"last",function(new_node){
+						  tree.create_node( null , {text : "새 카테고리" , id : ubid , icon : "fas fa-folder"} ,"last",function(new_node){
 							  new_node = ubid;
 							  tree.edit(new_node);
 	
@@ -362,7 +368,6 @@
           	  
            	  $('#linkAddSubmit_btn').on("click",function(){ // modal에서 보내기 선택한 것임
           		  
-          		  var sharing = 0; //일단 default 0은 비공유
           		  var url = $('#url_btn').val(); //추가 url 값
           		  var title = $('#title_btn').val(); // 추가 url 명값
           		  var htag = $('#htag_btn').val();
@@ -373,9 +378,9 @@
           		  var result = $("#share").prop("checked"); //공유 체크여부 확인
           		  
           		  if($.trim($('#htag_btn').val())==""){
-          		  var form = {url : url , urlname : title , pid : urlpid , uid:  "user1@naver.com"};
+          		  var form = {url : url , urlname : title , pid : urlpid , uid:  "procedure2@naver.com"};
           		  }else{
-          			var form = {url : url , urlname : title , pid : urlpid , uid:  "user1@naver.com",htag : htag , sname : sname};
+          			var form = {url : url , urlname : title , pid : urlpid , uid:  "procedure2@naver.com",htag : htag , sname : sname};
           		  }
           		  $.ajax({
           			  url: "addFolderOrUrl.do",
@@ -429,7 +434,7 @@
 							return true;	
 						}
 					},
-					"plugins" : [ "dnd","contextmenu" ],
+					"plugins" : [ "dnd","contextmenu" , "wholerow"],
 					
 					"contextmenu" : {
 						
@@ -444,53 +449,70 @@
 							if(htag == '#'){
 							
 							return{
-								
-						            "rename": {
-						                "separator_before": false,
-						                "separator_after": false,
-						                "label": "이름 수정",
-						                "action": function (obj) { 
-						                	console.log("d이름수정");
-						                	tree_child.edit($node);
-						                }
-						            }, 
-						            "reurl": {
-						                "separator_before": false,
-						                "separator_after": false,
-						                "label": "url 수정",
-						                "action": function (obj) { 
-						                	
-						                	$('#form3')[0].reset();	// url 모달창 reset
-						                	$('#editurl').modal();	//url 수정 모달창 띄우기
-						                	 
-						                	var inst = $.jstree.reference(obj.reference);
-							                var url = inst.get_node(obj.reference).a_attr.href;
-							                var id = inst.get_node(obj.reference).id;
-							                
-						                	 console.log(url);
-						                	 $('#editurlval').val(url);
-						                	 
-						                	 $('#editurlsubmit').on("click",function(){
-						                		 
-						                		 var newurl = $('#editurlval').val();
-						                		 var form = {ubid : id, url : newurl }
-						                		 
-						                		 $.ajax({
-							                		 
-							                		 url: "editUrl.do",
-							                		 type: "POST",
-							                		 data: form ,
-							                		 success: function(data){
-							                			 console.log(data);
-//							                			node 도 url 수정해야 한다. 
-							                			 $('#editurl').modal("toggle");
-							                			 
-							                		 }
-							                	 }) 
-						                	 })
-						                }
-						            },
+////////////////////////////////////공유하기 버튼 만들기								
+								"edit" : {
+									"icon" : "fa fa-edit",
+									 "separator_before": false,
+						              "separator_after": false,
+						              "label" : "수정",
+						              "action" : false,
+						              "submenu" :{
+						            	  "rename" : {
+						            		  "separator_before"	: false,
+												"separator_after"	: false,
+												"label" : "이름 수정",
+												"action" : function(obj){
+													console.log("d이름수정");
+								                	tree_child.edit($node);
+													
+													
+													
+												}
+						            		  
+						            	  },
+						            	  
+						            	  "editurl" : {
+						            		  "separator_before"	: false,
+												"separator_after"	: false,
+						                		"label" : "URL 수정",
+						                		"action" : function(obj){
+						                			
+						                			
+								                	$('#form3')[0].reset();	// url 모달창 reset
+								                	$('#editurl').modal();	//url 수정 모달창 띄우기
+								                	 
+								                	var inst = $.jstree.reference(obj.reference);
+									                var url = inst.get_node(obj.reference).a_attr.href;
+									                var id = inst.get_node(obj.reference).id;
+									                
+								                	 console.log(url);
+								                	 $('#editurlval').val(url);
+								                	 
+								                	 $('#editurlsubmit').on("click",function(){
+								                		 
+								                		 var newurl = $('#editurlval').val();
+								                		 var form = {ubid : id, url : newurl }
+								                		 
+								                		 $.ajax({
+									                		 
+									                		 url: "editUrl.do",
+									                		 type: "POST",
+									                		 data: form ,
+									                		 success: function(data){
+									                			 console.log(data);
+									                			 $('#editurl').modal("toggle");
+									                			 
+									                			 
+									                		 }
+									                	 }) 
+								                	 })
+						                		}
+						            		  
+						            	  }
+						              }
+								},
 						            "remove": {
+						            	"icon" : "fa fa-trash",
 						                "separator_before": false,
 						                "separator_after": false,
 						                "label": "삭제",
@@ -530,52 +552,71 @@
 								
 								return{
 									
-						            "rename": {
-						                "separator_before": false,
-						                "separator_after": false,
-						                "label": "이름 수정",
-						                "action": function (obj) { 
-						                	console.log("d이름수정");
-						                	tree_child.edit($node);
-						                }
-						            }, 
-						            "reurl": {
-						                "separator_before": false,
-						                "separator_after": false,
-						                "label": "url 수정",
-						                "action": function (obj) { 
-						                	
-						                	$('#form3')[0].reset();	// url 모달창 reset
-						                	$('#editurl').modal();	//url 수정 모달창 띄우기
-						                	 
-						                	var inst = $.jstree.reference(obj.reference);
-							                var url = inst.get_node(obj.reference).a_attr.href;
-							                var id = inst.get_node(obj.reference).id;
-							                
-						                	 console.log(url);
-						                	 $('#editurlval').val(url);
-						                	 
-						                	 $('#editurlsubmit').on("click",function(){
-						                		 
-						                		 var newurl = $('#editurlval').val();
-						                		 var form = {ubid : id, url : newurl }
-						                		 
-						                		 $.ajax({
-							                		 
-							                		 url: "editUrl.do",
-							                		 type: "POST",
-							                		 data: form ,
-							                		 success: function(data){
-							                			 console.log(data);
-							                			 $('#editurl').modal("toggle");
-							                			 
-							                			 
-							                		 }
-							                	 }) 
-						                	 })
-						                }
-						            },
+									"edit" : {
+										"icon" : "fa fa-edit",
+										 "separator_before": false,
+							              "separator_after": false,
+							              "label" : "수정",
+							              "action" : false,
+							              "submenu" :{
+							            	  "rename" : {
+							            		  "separator_before"	: false,
+													"separator_after"	: false,
+													"label" : "이름 수정",
+													"action" : function(obj){
+														console.log("d이름수정");
+									                	tree_child.edit($node);
+														
+														
+														
+													}
+							            		  
+							            	  },
+							            	  
+							            	  "editurl" : {
+							            		  "separator_before"	: false,
+													"separator_after"	: false,
+							                		"label" : "URL 수정",
+							                		"action" : function(obj){
+							                			
+							                			
+									                	$('#form3')[0].reset();	// url 모달창 reset
+									                	$('#editurl').modal();	//url 수정 모달창 띄우기
+									                	 
+									                	var inst = $.jstree.reference(obj.reference);
+										                var url = inst.get_node(obj.reference).a_attr.href;
+										                var id = inst.get_node(obj.reference).id;
+										                
+									                	 console.log(url);
+									                	 $('#editurlval').val(url);
+									                	 
+									                	 $('#editurlsubmit').on("click",function(){
+									                		 
+									                		 var newurl = $('#editurlval').val();
+									                		 var form = {ubid : id, url : newurl }
+									                		 
+									                		 $.ajax({
+										                		 
+										                		 url: "editUrl.do",
+										                		 type: "POST",
+										                		 data: form ,
+										                		 success: function(data){
+										                			 console.log(data);
+										                			 $('#editurl').modal("toggle");
+										                			 
+										                			 
+										                		 }
+										                	 }) 
+									                	 })
+							                		}
+							            		  
+							            	  }
+							              }
+									},
+									
+						            
 						            "remove": {
+						            	"icon" : "fa fa-trash",
 						                "separator_before": false,
 						                "separator_after": false,
 						                "label": "삭제",
@@ -611,8 +652,9 @@
 						                }
 						            },
 						            "share":{
-						            	 "separator_before": true,
-							              "separator_after": false,
+						            	   "icon" : "fa fa-share",
+						            	   "separator_before": true,
+							               "separator_after": false,
 							                "label": "공유",
 							                "action"			: false,
 							                "submenu" :{
@@ -628,14 +670,28 @@
 							                		"separator_before"	: false,
 													"separator_after"	: false,
 							                		"label" : "취소하기",
-							                		"action" : function(data){
+							                		"action" : function(obj){
+							                			var inst = $.jstree.reference(obj.reference);
+							                			var id = inst.get_node(obj.reference).id;
+///////////////////////////////////////////공유 취소하기/////////////		
+//////////////////redraw 해야 한다. refresh 이든/////////////////
+																$.ajax({
+																	url: 'shareUrlEdit.do',
+																	type: 'POST',
+																	data: {ubid: id },
+																	success:function(data){
+																		console.log(data);
+																		
+																	}
+																	
+																	
+																})
+																
 							                			
 							                		}
 							                	}
 							                	
 							                }
-						            	
-						            	
 						            }
 						            
 				                 }
@@ -686,6 +742,22 @@
 				alert('수정 실패');
 		}
 	});   
+})
+
+$("#jstree_container").on('select_node.jstree',function(e,data){
+	console.log("clicked 호ㅓㅏㄱ읺");
+	console.log(e);
+	console.log(data);
+})
+$("#jstree_container").on('open_node.jstree', function(e,data){
+	//data.instance.set_type(data.node,'f-open');
+	$.jstree.reference('#jstree_container').set_icon(data.node, "fa fa-folder-open")
+	//colorfold
+	/* $('#'+data.node.id).find('i.jstree-icon.jstree-themeicon').first().addClass('colorfold'); */
+})
+$("#jstree_container").on('close_node.jstree', function(e,data){
+	$.jstree.reference('#jstree_container').set_icon(data.node, "fas fa-folder")
+	$('#'+data.node.id).find('i.jstree-icon.jstree-themeicon').first().removeClass('colorfold');
 })
 
 

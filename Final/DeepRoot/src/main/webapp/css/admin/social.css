@@ -1,0 +1,22 @@
+table thead tr th.table-tag,
+table tbody tr td.table-tag {
+	display: none;
+}
+
+/* Category Insert button CSS END */
+
+.url-action{
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color:#8aa4af;
+}
+
+.url-action:hover,
+.url-action:focus,
+.url-action:active{
+    cursor: pointer;
+    color:#fff;
+}
+/* category CSS END */

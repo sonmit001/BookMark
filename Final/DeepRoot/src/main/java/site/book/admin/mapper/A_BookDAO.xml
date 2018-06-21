@@ -18,12 +18,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<update id="updateBook">
-		UPDATE A_BOOK SET url=#{url}, urlname=#{urlname}, regdate=SYSDATE(), acid=1 WHERE ABID=#{abid}
+		UPDATE A_BOOK SET url=#{url}, urlname=#{urlname}, regdate=SYSDATE(), acid=#{acid} WHERE ABID=#{abid}
 	</update>
 	
 	<delete id="deleteBook">
 		DELETE FROM A_BOOK WHERE ABID = #{abid}
 	</delete>
+	
+	<select id="selectCategoryURL" resultType="site.book.admin.dto.A_BookDTO">
+		SELECT ABID, URL, URLNAME, VIEW, REGDATE, ACID FROM A_BOOK WHERE ACID = #{acid}
+	</select>
 	
 	<!-- 2018-06-11(MON): 김태웅 추가 -->
 	<select id="selectAllBookMain" resultType="site.book.admin.dto.A_BookDTO">

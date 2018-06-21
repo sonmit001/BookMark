@@ -7,4 +7,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="leaveAllGroup">
 		DELETE FROM G_MEMBER WHERE UID=#{uid}
 	</delete>
+	
+	<delete id="leaveGroup">
+		DELETE FROM G_MEMBER WHERE UID=#{uid} and GID = #{gid}
+	</delete>
+	
+	<insert id="insertGMember">
+		INSERT INTO G_MEMBER(UID, GID, GRID) VALUES(#{uid}, #{gid}, #{grid})
+	</insert>
+	
 </mapper>

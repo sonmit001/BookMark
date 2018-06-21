@@ -18,7 +18,8 @@
    						 authentication-success-handler-ref="loginSuccessHandler"
    						 authentication-failure-handler-ref="loginFailureHandler" /><!-- default-target-url="/index.do" -->
    						 
-	<security:logout logout-url="/security/logout" 
+	<security:logout logout-url="/security/logout"
+					 invalidate-session="true"
 					 logout-success-url="/index.do" />
 	
 	<security:intercept-url pattern="/member/**" access="hasRole('ROLE_USER')" />

@@ -20,18 +20,21 @@ public class S_TeamDTO {
 	private String htag;
 	private String regdate;
 	private String duedate;
+	private int view;
 	
 	public S_TeamDTO() {}
 	
-	public S_TeamDTO(int gid, String gname, String nname, String htag, String regdate, String duedate) {
-		super();
+	public S_TeamDTO(int gid, String gname, String nname, String htag, String regdate, String duedate, int view) {
 		this.gid = gid;
 		this.gname = gname;
 		this.nname = nname;
 		this.htag = htag;
 		this.regdate = regdate;
 		this.duedate = duedate;
+		this.view = view;
 	}
+
+
 	//Getters and Setters
 	public int getGid() {return gid;}
 	public void setGid(int gid) {this.gid = gid;}
@@ -45,11 +48,16 @@ public class S_TeamDTO {
 	public void setRegdate(String regdate) {this.regdate = regdate;}
 	public String getDuedate() {return duedate;}
 	public void setDuedate(String duedate) {this.duedate = duedate;}
+	public int getView() {return view;}
+	public void setView(int view) {this.view = view;}
 
 	@Override
 	public String toString() {
 		return "S_TeamDTO [gid=" + gid + ", gname=" + gname + ", nname=" + nname + ", htag=" + htag + ", regdate="
-				+ regdate + ", duedate=" + duedate + "]";
+				+ regdate + ", duedate=" + duedate + ", view=" + view + ", getGid()=" + getGid() + ", getGname()="
+				+ getGname() + ", getNname()=" + getNname() + ", getHtag()=" + getHtag() + ", getRegdate()="
+				+ getRegdate() + ", getDuedate()=" + getDuedate() + ", getView()=" + getView() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
 	
 }

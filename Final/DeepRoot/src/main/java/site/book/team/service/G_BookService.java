@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.book.team.dao.G_BookDAO;
+import site.book.team.dto.G_BookDTO;
 
 /**
  * @Class : G_BookService.java
@@ -42,5 +43,14 @@ public class G_BookService {
 		}
 		
 		return map;
+	}
+	
+	// 완료된 그룹 북마크 가져오기
+	public List<G_BookDTO> getCompletedTeamBookmark(int gid) {
+		
+		G_BookDAO bookDAO = sqlsession.getMapper(G_BookDAO.class);
+		List<G_BookDTO> list = bookDAO.getCompletedTeamBookmark(gid);
+		
+		return list;
 	}
 }

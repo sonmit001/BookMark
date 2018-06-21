@@ -92,9 +92,13 @@
                                         <div class="content findBox" style="display:none;">
                                             <!-- password find START -->
                                             <div class="form">
-                                                <form method="post" action="/find" accept-charset="UTF-8">
-                                                    <input id="uid_find" class="form-control" type="text" placeholder="Email" name="uid">
-                                                    <input class="btn btn-default btn-find" type="submit" value="Find account" name="commit">
+                                                <form>
+                                                    <input id="uid_find" class="form-control" type="text" placeholder="Email">
+                                                    <input id="check_email_find" class="btn btn-default btn-find" type="button" value="Are you a member?">
+                                                    
+                                                    <p class="confrim_code_find" style="display: none;"><b>회원님</b>의 이메일로 인증 코드가 발송되었습니다.</p>
+                                                    <input id="authcode_find" class="form-control confrim_code_find" type="text" placeholder="Authcode" style="display: none;">
+                                                    <input id="find-password" class="btn btn-default btn-find confrim_code_find" type="button" value="Find Password" style="display: none;">
                                                 </form>
                                             </div>
                                             <!-- password find END -->
@@ -139,14 +143,12 @@
                 <div class="col-sm-12">
                     <!-- Admin Bookmark & Search Area START -->
                     <span class="bookmark-title">
-                        <img src="icon/bookmark2.jpg" style="margin-right:5px; width:30px">
+                        <i class="fa fa-book" aria-hidden="true" style="color: #270119"></i>
                         Admin Bookmark
                     </span>
                     <div id="custom-search-input">
                         <div class="input-group">
-                            <input class="search-input" type="text" name="search" placeholder="Search..." />
-                            <span class="input-group-btn">
-                          </span>
+                            <span class="input-group-btn"></span>
                         </div>
                     </div>
                     <hr class="hr-clear">
@@ -156,16 +158,16 @@
                     <div class="col-sm-12">
                         <div class="category-div">
                             <span class="bookmark-category">
-                            <img src="icon/category.png" style="margin-right:5px; width:25px">
+                            <i class="fa fa-tags" aria-hidden="true" style="color: #294400"></i>
                             Category
                           </span>
                         </div>
                         <div id="category-display" class="col-sm-12 category-items">
-                            <div id="showall" class="category reddiv">
-                                <span>Show All</span></div>
+                            <div id="showall" class="category reddiv" style="background-color: #7bbfa8">
+                                <span class="category-title">Show All</span></div>
                             <c:forEach items="${categoryList}" var="cList">
-                            	<div data-category="${cList.acname}" class="category">
-                                <span>${cList.acname}</span></div>
+                            	<div id="${cList.acid}" data-category="${cList.acname}" class="category" style="background-color: ${cList.color}">
+                                <span class="category-title">${cList.acname}</span></div>
                             </c:forEach>
                         </div>
                     </div>
@@ -180,8 +182,8 @@
                     	<c:forEach items="${categoryList}" var="cList">
                     	<li id="${cList.acname}">
                             <div class="component">
-                                <h2 class="component_title color4">
-                                    <img class="show_close_img" src="icon/all_show.png">
+                                <h2 class="component_title color4" style="border-bottom: 3px solid ${cList.color}">
+                                    <i class="fa fa-folder-open show_close_img" aria-hidden="true" style="color: ${cList.color}"></i>
                                     <span class="title">${cList.acname}</span>
                                 </h2>
                                 <ul>
@@ -213,13 +215,13 @@
                     <div id="floatMenu">
                         <div id="preview_title">
                             <h2>
-                                <img class="preview_img" src="icon/open_previewB.png">
+                                <i class="fa fa-rss" aria-hidden="true" style="color: #287bfb"></i>
                                 <span class="title">Preview</span>
                             </h2>
                         </div>
-                        <div id="preview_content">
+                        <div id="preview_content" >
                             <div id="layout">미리보기: Page Image</div>
-                            <div id="comment">설명 Details</div>
+                            <div id="comment" >설명 Details</div>
                         </div>
                         <div id="advertise_content">
 

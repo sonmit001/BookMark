@@ -6,11 +6,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="site.book.admin.dao.A_CategoryDAO">
 
 	<select id="selectAllCategory" resultType="site.book.admin.dto.A_CategoryDTO">
-		SELECT ACID, ACNAME FROM A_CATEGORY
+		SELECT ACID, ACNAME, COLOR FROM A_CATEGORY
 	</select>
 
 	<insert id="insertCategory">
-		INSERT INTO A_CATEGORY(ACNAME) VALUES(#{acname})
+		INSERT INTO A_CATEGORY(ACNAME, COLOR) VALUES(#{acname}, '#000')
 	</insert>
 	
 	<update id="updateCategory">
@@ -20,4 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteCategory">
 		DELETE FROM A_CATEGORY WHERE ACID = #{acid}
 	</delete>
+	
+	<update id="updateCategoryColor">
+		UPDATE A_CATEGORY SET COLOR = #{color} WHERE acid = #{acid}
+	</update>
 </mapper>

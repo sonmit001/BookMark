@@ -1,14 +1,20 @@
 package site.book.user.service;
 
+import java.io.FileOutputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,6 +35,9 @@ public class UserService {
 	// 태웅
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	// 희준
 	@Autowired
@@ -131,6 +140,149 @@ public class UserService {
 		return row;
 	}
 	
+	// 한명의 회원정보 가져오기
+	public UserDTO getMember(String uid) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		UserDTO editedUser = null;
+
+		try {
+			editedUser = userDAO.getUser(uid);
+		}catch (Exception e) {
+			System.out.println("Get User Info Error");
+		}
+		
+		return editedUser;
+	}
+	
+	// 한명의 회원정보 수정하기
+	public String editMember(HttpServletRequest request, UserDTO user, MultipartFile file) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		int result = 0;
+		String changed_file_name = "";
+		System.out.println(user);
+		//업로드한 파일이 있다면,
+		if (file != null) {
+			String filename = file.getOriginalFilename();
+			String path = request.getServletContext().getRealPath("/");
+			String[] temp = filename.split("\\.");
+			if(temp.length > 1) {
+				changed_file_name = user.getNname() + "." + temp[temp.length-1];
+				user.setProfile(changed_file_name);
+			
+				String fpath = path + "images\\profile\\" + changed_file_name;
+	
+				// 서버에 파일 업로드 (write)
+				FileOutputStream fs = null;
+				try {
+					fs = new FileOutputStream(fpath);
+					fs.write(file.getBytes());
+				} catch (Exception e) {
+					System.out.println("이미지 쓰기 실패");
+				} finally {
+					try {
+						fs.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		// 파일 쓰기 완료 후, 유저 프로필 수정
+		try {
+			System.out.println(user);
+			result = userDAO.editUser(user);
+		}catch (Exception e) {
+			System.out.println("Edit User Info Error");
+		}
+				
+		return changed_file_name;
+	}
+	
+	// 회원 탈퇴 서비스
+	public int deleteMember(String uid) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		int result = 0;
+
+		try {
+			result = userDAO.deleteUser(uid);
+		}catch (Exception e) {
+			System.out.println("Get User Info Error");
+		}
+		
+		return result;
+	}
+	
+	// 비밀번호 찾기 서비스
+	public int findUserPwd(UserDTO user) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		int result = 0;
+		String pwd = new RollinTempKey().getKey(15, false).toLowerCase();
+		try {
+			// 회원이라면,
+			if(userDAO.getUser(user.getUid()) != null) {
+				// Send email with new temp password
+				user.setPwd(this.bCryptPasswordEncoder.encode(pwd));
+				result = userDAO.updatePwd(user);
+				
+				RollinMailHandler sendMail = new RollinMailHandler(mailSender);
+				sendMail.setSubject("[뿌리깊은마크 이메일 인증]");
+				sendMail.setText(
+						new StringBuffer().append("<h1>임시 비밀번호 발급</h1>")
+										  .append("<p>사용자님의 인증키입니다.</p>")
+										  .append("<p>[Temp Password]: <b>" + pwd + "</b></p>")
+										  .append("<h5 style='color:red'>※주의: 로그인 후, 비밀번호를 변경해주세요.</h5>")
+										  .toString()
+				);
+				sendMail.setFrom("bitcamp104@gmail.com", "뿌리깊은마크 관리자");
+				sendMail.setTo(user.getUid());
+				sendMail.send();
+			}
+		}catch (Exception e) {
+			
+		}
+		
+		return result;
+	}
+	
+	// 회원(이메일) 확인 서비스
+	public int confirmUser(EmailAuthDTO user) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		String key = new RollinTempKey().getKey(10, false);
+		int result = 0;
+		
+		try {
+			// 회원이라면,
+			String uid = user.getUid();
+			UserDTO member =  userDAO.getUser(uid);
+			System.out.println(member);
+			if(member != null) {
+				// Send email Authcode
+				
+				RollinMailHandler sendMail = new RollinMailHandler(mailSender);
+				sendMail.setSubject("[뿌리깊은마크 이메일 인증]");
+				sendMail.setText(
+						new StringBuffer().append("<h1>회원 인증 서비스</h1>")
+										  .append("<p>사용자님의 인증키입니다.</p>")
+										  .append("<p>[Authcode]: <b>" + key + "</b></p>")
+										  .append("<h5 style='color:red'>※주의: 5분 안에 인증이 안될 시 비밀번호 찾기 서비스가 취소됩니다.</h5>")
+										  .toString()
+				);
+				sendMail.setFrom("bitcamp104@gmail.com", "뿌리깊은마크 관리자");
+				sendMail.setTo(user.getUid());
+				sendMail.send();
+				
+				// save user's authcode
+				user.setAuthcode(key);
+				result = userDAO.insertAuthCode(user);
+				System.out.println("전송 & insert 완료");
+			}
+		}catch (Exception e) {
+			
+		}
+		
+		return result;
+	}
+	
 	// 희준
 	
 	// 전체 회원수 가져오기
@@ -148,17 +300,17 @@ public class UserService {
 	}
 	
 	// 신규 가입자수 가져오기
-	public int getNewUser() {
+	public List<HashMap<String, String>> getNewUser() {
 		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
-		int row = 0;
+		List<HashMap<String, String>> list = null;
 		
 		try {
-			row = userDAO.newUser();
+			list = userDAO.newUser();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return row;
+		return list;
 	}
 	
 	// 블랙리스트 추가하기
