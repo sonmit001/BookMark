@@ -2,9 +2,11 @@
 @import url('https://fonts.googleapis.com/css?family=Black+Han+Sans');
 @import url('https://fonts.googleapis.com/css?family=Poor+Story');
 @import url('https://fonts.googleapis.com/css?family=Jua');
+/* 영어 폰트 */
 @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+/* 한글 폰트 */
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 .material-icons.md-18 { float: left; font-size: 18px; }
 .material-icons.md-24 { float: left; font-size: 24px; }
@@ -13,27 +15,27 @@
 .material-icons.md-48 { float: left;font-size: 48px; }
 
 
-/* a:hover {
-    outline: none;
-    text-decoration: none;
-    color: #7bbfa8;
+.modal { z-index: -10; }
+.modal-open .modal { z-index: 1050; }
+#linkAdd_btn {
+	perspective-origin: center center;
+    display: table;
+    width: 100%;
+    height: 100%;
 }
-
-a:focus {
-    outline: none;
-    outline-offset: 0;
+#completedGroupModal {
+	perspective-origin: center center;
+    display: table;
+    width: 100%;
+    height: 100%;
 }
+#form-to-mybookmark-left { padding-top: 10px; }
+.main-modal-controller { display: table-row; width: 100%; }
+.main-modal-center { display: table-cell; vertical-align: middle; padding-bottom: 50px; }
 
-a {
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
-    color: #000;
-    -webkit-transition: 300ms;
-    -moz-transition: 300ms;
-    -o-transition: 300ms;
-    transition: 300ms;
-} */
-
-
+#jstree-to-right {
+	clear: both;
+}
 .bg-img {
   position: fixed;
 
@@ -56,6 +58,13 @@ a {
 .pull-left {
   position: relative;
   right: 20px;
+}
+.loading_text{
+	font-size: 15px;
+	position: relative;
+	left: 10px;
+	right: 20px;
+	font-family: 'Jua', 'Jua';
 }
 .spring {
   position: relative;

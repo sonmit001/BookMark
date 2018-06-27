@@ -1,10 +1,10 @@
-
+/* 영어 폰트 */
 @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
 /* 헤더 로고 폰트 */
 @import url('https://fonts.googleapis.com/css?family=Gugi');
 /* 한글 폰트*/
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 /*************************
 *******Home Page******
 **************************/
@@ -33,7 +33,7 @@ a:focus {
 }
 
 a {
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     color: #000;
     -webkit-transition: 300ms;
     -moz-transition: 300ms;
@@ -50,7 +50,7 @@ table {
 }
 
 h1,h2,h3,h4,h5,h6 {
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     font-weight: 300;
 }
 
@@ -64,13 +64,18 @@ h2 {
     color: #3c3c3c;
     font-size: 25px;
 }
+
+/* 웹크롤링 미리보기 이미지 */
+#layout img{
+	border-radius: 7px 7px 0px 0px;
+}
 .category-div{
     margin-bottom: 10px;
 
 }
 
 .bookmark-category {
-    font-family: 'Lato', 'Spoqa Han Sans';
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
     font-size: 25px;
     font-weight: 500;
 }
@@ -84,17 +89,16 @@ h2 {
     margin-left: 10px;
     margin-right:  15px;
     font-size: 15px;
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
 }
 
 .main-admin-category {
     margin-top: 25px;
-    font-family: 'Lato','Spoqa Han Sans', sans-serif;
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     overflow: hidden;
 }
 
 .hr-clear {
-  /* margin-top: 15px; */
   margin-bottom: 5px;
   border: 0px;
   height: 2px;
@@ -104,7 +108,7 @@ h2 {
 
 /* 카테고리 영역 */
 .category {
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     height: 30px;
     width: 106px;
     margin-bottom: 10px;
@@ -113,31 +117,36 @@ h2 {
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
-    /* background-color: #7bbfa8; */
-    border : 1px solid #0000005c;
     color: #ffffff;
     float: left;
+    opacity: 0.8;
+    border : 2px solid #415661;
+    box-shadow: 2px 2px 5px 1px #8f8f8f;
+    
 }
 .category-title {
-	font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
 	font-weight: 900;
 }
-.category:hover {
-    border : 2px solid #000;
-    color: #000;
-    box-shadow: 0px 0px 20px 1px;
+
+.reddiv:hover,
+.category:hover{
+	box-shadow: 3px 3px 5px 1px #8f8f8f;
 }
 
+.category:active{
+	box-shadow: 4px 4px 6px 2px #8f8f8f;
+	
+}
 .reddiv {
-	border : 2px solid #000;
-	background-color: #ff8700;
-	color: #000;
-	box-shadow: 0px 0px 20px 1px;
+	border : 2px solid #0000005c;
+	opacity: 1;
+	box-shadow: inset 3px 3px 20px 1px #222d32;
 }
 
 
 .bookmark-title {
-   font-family: 'Lato', 'Spoqa Han Sans';
+   font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
    margin-right: 30px;
    padding-top: 5px;
    padding-bottom: 5px;
@@ -151,7 +160,7 @@ h2 {
 }
 
 .search-input {
-   font-family: 'Lato', 'Spoqa Han Sans';
+   font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
    width: 200px;
    box-sizing: border-box;
    border: 1px solid #ccc;
@@ -172,6 +181,10 @@ h2 {
    width: 100%;
 }
 
+.zoom_img{
+	width:18px;
+	height: 18px;
+}
 .overflow {
     overflow: hidden;
 }
@@ -184,7 +197,7 @@ h2 {
     font-size: 14px;
     color: #0099ae;
     border: 2px solid #0099ae;
-    font-family: 'Lato','Spoqa Han Sans', sans-serif;
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
     font-weight: 300;
     padding: 10px 25px;
 }
@@ -227,7 +240,7 @@ h2 {
     left: 0;
     width: 500px;
     text-align: right;
-    font-family: 'Lato', 'Spoqa Han Sans';
+    font-family: 'Lato', 'Spoqa Han Sans', 'Noto Sans KR';
     font-size: 25px;
     font-weight: 500;
     margin-top: 100px;
@@ -236,7 +249,7 @@ h2 {
 }
 
 #home-slider .slide-text .introduce-text{
-    font-family: 'Lato', 'Spoqa Han Sans';
+    font-family: 'Lato', 'Spoqa Han Sans', 'Noto Sans KR';
     text-align: left;
     padding-left: 20px;
 }
@@ -275,6 +288,7 @@ h2 {
 }
 
 .ul-table {
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
 	min-height: 550px !important;
 }
 
@@ -292,10 +306,11 @@ h2 {
 #layout {
   float: left;
   width: 100%;
-  height: 100%;
-  border-bottom: 2px solid #575b5f;
+  height: 60%;
+  border: 2px solid #575b5f;
   border-radius: 10px 10px 0px 0px;
   text-align: center;
+  box-shadow: 7px 9px 10px 4px #bbb;
 }
 
 #explain {
@@ -307,14 +322,83 @@ h2 {
 }
 
 #comment {
+  font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
+  padding: 10px;
   float: left;
   width: 100%;
-  height: 30%;
+  height: 40%;
   background-color: #F8FAFF; 
   color: #353866;
   border-radius: 0px 0px 10px 10px;
+  border : 2px solid #575b5f;
+  border-top:none;
+  box-shadow: 7px 4px 10px 5px #bbb;
+  overflow-y: auto; 
 }
 
+#comment > img {
+	margin: auto;
+	text-align: center;
+}
+#comment-detail {
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
+	width: 100%;
+	margin-bottom: 10px;
+	padding-left: 10px;
+}
+
+#comment-detail b{
+	color: #4682B4;
+	font-size: 16px;
+}
+
+#comment-detail a{
+	color: #4169e1;
+	text-decoration: underline;
+}
+
+#comment-detail p{
+	color:#000;
+}
+#ajax-loading-div {
+	width: 100%;
+	margin: auto;
+	text-align: center;
+}
+#world-ranking-visitor {
+	padding: 10px;
+	width: 30%;
+	float: left;
+}
+#world-ranking-visitor i {
+	font-size: 20px;
+}
+.detail-text {
+	margin-bottom: 0px;
+	padding-left: 5px;
+	float: right;
+	font-size: 17px;
+}
+#world-ranking, #world-visitor {
+	padding-left: 25px;
+	color: #000;
+	font-size: 17px;
+	float: right;
+}
+#url-sub-domain {
+	padding: 5px;
+	width: 70%;
+	float: left;
+}
+.progress {
+  	margin-bottom: 0px;
+  	height: 12px;
+  	box-shadow: inset 0px 20px 20px 8px rgba(0,0,0,.1);
+}
+.progress-bar {
+	line-height: 12px;
+	font-size: 12px;
+}
 .preview_img {
   width: 40px;
   margin-top: -10px;
@@ -333,8 +417,8 @@ h2 {
 }
 
 #preview_content {
-    height: 60%;
-    border: 2px solid #575b5f;
+    height: 80%;
+    /* border: 2px solid #575b5f; */
     box-shadow : 0px 0px 20px 5px #E0E3DA;
     border-radius: 5px;
 }

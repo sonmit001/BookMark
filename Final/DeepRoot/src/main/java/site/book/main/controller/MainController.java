@@ -8,10 +8,6 @@
 
 package site.book.main.controller;
 
-import java.io.File; 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,14 +30,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.View;
 
 import site.book.admin.dto.A_BookDTO;
 import site.book.admin.dto.A_CategoryDTO;
+import site.book.admin.dto.NoticeDTO;
 import site.book.admin.service.A_BookService;
 import site.book.admin.service.A_CategoryService;
+import site.book.admin.service.NoticeService;
 import site.book.team.dto.G_MemberDTO;
+import site.book.team.dto.TeamDTO;
 import site.book.team.service.TeamService;
 import site.book.user.dto.EmailAuthDTO;
 import site.book.user.dto.UserDTO;
@@ -76,6 +74,10 @@ public class MainController {
 	
 	@Autowired
 	private TeamService teamservice;
+	
+	@Autowired
+	private NoticeService notice_service;
+	
 	// 명수
 	
 	// 변수 End
@@ -86,7 +88,7 @@ public class MainController {
 	
 	/*메인 화면 데이터 출력*/
 	@RequestMapping(value="/index.do", method=RequestMethod.GET)
-	public String initMain(Model model) {
+	public String initMain(HttpServletRequest req, Model model) {
 		//System.out.println("홈: 메인 페이지");
 		
 		List<A_CategoryDTO> categoryList = a_category_service.getCategorys();
@@ -95,7 +97,34 @@ public class MainController {
 		List<A_BookDTO> bookList = a_book_service.getMainBooks();
 		model.addAttribute("bookList", bookList);
 		
+		HttpSession session = req.getSession();
+		String uid = (String)session.getAttribute("info_userid");
+		
+		if(uid != null) {
+			List<TeamDTO> headerTeamList = teamservice.getTeamList(uid);
+			model.addAttribute("headerTeamList", headerTeamList);
+		}
+		
+		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
+		model.addAttribute("headerNoticeList", headerNoticeList);
+		
 		return "home.index";
+	}
+	
+	/* URL Click Function */
+	@RequestMapping(value="/clickurl.do")
+	public View clickURL(HttpServletRequest req, Model model, String abid) {
+		
+		System.out.println(abid);
+		int result = a_book_service.clickURL(abid);
+		
+		if(result > 0) {
+			model.addAttribute("click", "1");
+		}else {
+			model.addAttribute("click", "0");
+		}
+		
+		return jsonview;
 	}
 	
 	/* Log in */
@@ -256,7 +285,7 @@ public class MainController {
 	public String rolloutMember(HttpServletRequest request, Model model) {
 		
 		String uid = (String)request.getParameter("uid");
-		System.out.println(uid);
+		//System.out.println(uid);
 		int result = user_service.deleteMember(uid);
 
 		if(result > 0) {
@@ -304,6 +333,57 @@ public class MainController {
 		return jsonview;
 	}
 	/* 비밀번호 찾기 END */
+	
+	// 미리보기 기능 추가 상세정보 웹크롤링(World Ranking, Sub-URL)
+	@RequestMapping("previewdetail.do")
+	public View WebCrawling2(String abid, Model model) {
+		A_BookDTO book = a_book_service.getBook(Integer.parseInt(abid));
+		String url = book.getUrl();
+	
+		try {
+			/* <Woong> Web Crawling - SubURL & Daily Visitor & World Rank */
+			String fixed_suburl = "https://www.alexa.com/siteinfo/"; // subURL Top5
+			String fixed_visitor = "http://website.informer.com/";	// Daily Visitor & World Rank
+			
+			// subURL Top5 START
+			Document document = Jsoup.connect(fixed_suburl+url).get();
+			Element content = document.getElementById("subdomain_table");
+			Elements subURL = content.getElementsByClass("word-wrap");
+			Elements percent = content.getElementsByClass("text-right");
+			
+			List<List<String>> url_percent = new ArrayList<>();
+			
+			try {
+				for(int i = 0; i < 5; i++) {
+					List<String> temp = new ArrayList<>();
+					String sub = subURL.get(i).select("span").text();
+					String rate = percent.get(i+1).select("span").text();
+					temp.add(sub);
+					temp.add(rate);
+					url_percent.add(temp);
+				}
+			}catch (Exception e) {
+				
+			}
+			model.addAttribute("suburl", url_percent);
+			
+			// Daily Visitor & World Rank Top5 START
+			document = Jsoup.connect(fixed_visitor+url).get();
+			content = document.getElementById("whois");
+			Element visitor_content = content.getElementById("visitors");
+			Element rank_content = content.getElementById("alexa_rank");
+			
+			String visitor = visitor_content.select("b").text().trim().replace(" ", ",");
+			String rank = rank_content.select("b").text().trim();
+
+			model.addAttribute("visitor", visitor);
+			model.addAttribute("rank", rank);
+			
+		} catch (Exception e) {
+			/*e.printStackTrace();*/
+		}
+		return jsonview;
+	}
 
 	// 희준
 	@RequestMapping("preview.do")
@@ -346,16 +426,33 @@ public class MainController {
 				}
 			}
 			for (String s : result.keySet()) {model.addAttribute(s.substring(3), result.get(s));}
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			/*e.printStackTrace();*/
 		}
 		return jsonview;
 	}
 	
-	@RequestMapping("/categoryList.do")
-	public View getCategoryList(Model model) {
-		List<A_CategoryDTO> categoryList = a_category_service.getCategorys();
-		model.addAttribute("categoryList", categoryList);
+	@RequestMapping("/getNotices.do")
+	public View getNotices(Model model) {
+		
+		List<NoticeDTO> noticeList = notice_service.getNotices();
+		model.addAttribute("noticeList", noticeList);
+		
+		return jsonview;
+	}
+	
+	@RequestMapping("/addGroup.do")
+	public View addGroup(HttpServletRequest req, String gname, Model model) {
+		HttpSession session = req.getSession();
+		String uid = (String)session.getAttribute("info_userid");
+		
+		G_MemberDTO member = new G_MemberDTO();
+		member.setUid(uid);
+		member.setGrid(1);
+		
+		TeamDTO newTeam = teamservice.addGroup(gname, member);
+		model.addAttribute("newTeam", newTeam);
 		
 		return jsonview;
 	}

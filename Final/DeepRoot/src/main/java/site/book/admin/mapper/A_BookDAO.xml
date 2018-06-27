@@ -29,11 +29,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT ABID, URL, URLNAME, VIEW, REGDATE, ACID FROM A_BOOK WHERE ACID = #{acid}
 	</select>
 	
+	<select id="getMaxABID" resultType="Integer">
+		select MAX(ABID) from A_BOOK
+	</select>
+	
 	<!-- 2018-06-11(MON): 김태웅 추가 -->
 	<select id="selectAllBookMain" resultType="site.book.admin.dto.A_BookDTO">
-		SELECT ABID, URL, URLNAME, VIEW, REGDATE, AC.ACID, AC.ACNAME
+		SELECT ABID, URL, URLNAME, VIEW, DATE_FORMAT(REGDATE,'%Y-%m-%d') as REGDATE, AC.ACID, AC.ACNAME
 		FROM A_BOOK AB
 		JOIN A_CATEGORY AC ON AB.ACID = AC.ACID
-		ORDER BY AC.ACID AND AC.ACNAME;
+		ORDER BY AC.ACID, AB.VIEW DESC;
 	</select>
+	
+	<update id="clickURL">
+		UPDATE A_BOOK SET VIEW=VIEW+1 where ABID= #{abid}
+	</update>
 </mapper>

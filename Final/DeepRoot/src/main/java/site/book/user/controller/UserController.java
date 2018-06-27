@@ -1,8 +1,15 @@
 package site.book.user.controller;
 
+/**
+ * @Class : SocialController.java
+ * @Date : 2018. 6. 6.
+ * @Author : 김명수, 김희준, 김태웅
+ */
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,13 +23,14 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Console;
-
+import site.book.admin.dto.NoticeDTO;
+import site.book.admin.service.NoticeService;
 import site.book.team.dto.G_BookDTO;
 import site.book.team.dto.G_MemberDTO;
 import site.book.team.dto.TeamDTO;
@@ -45,13 +53,16 @@ public class UserController {
 	
 	@Autowired
 	private UserService userservice;
-	// 희준
 	
+	// 희준
 	@Autowired
 	private TeamService teamservice;
 	
 	@Autowired
 	private G_MemberService g_memberservice;
+	
+	@Autowired
+	private NoticeService notice_service;
 	
 	// 명수
 	@Autowired
@@ -92,8 +103,27 @@ public class UserController {
 		
 		return jsonview;
 	}
+	
+	// 공유 체크 하지 않은 URL 추가하기
+	@RequestMapping("addtomybookmark.do")
+	public View addUrlNotShare(U_BookDTO book ,HttpServletRequest req, Model model) {
+		HttpSession session = req.getSession();
+        String uid = (String)session.getAttribute("info_userid");
+        book.setUid(uid);
+        System.out.println(book);
+        int result = u_bookservice.addToMyBookmark(book);
+		if(result > 0) {
+			model.addAttribute("result", "success");
+		}else {
+			model.addAttribute("result", "fail");
+		}
+		
+		return jsonview;
+	}
+	
 	// 희준
 	
+	// 그룹 나가기
 	@RequestMapping("leaveGroup.do")
 	public View leaveGroup(HttpServletRequest req, G_MemberDTO member, Model model) {
 		HttpSession session = req.getSession();
@@ -108,6 +138,7 @@ public class UserController {
 		return jsonview;
 	}
 	
+	// 그룹 추가
 	@RequestMapping("addGroup.do")
 	public String addGroup(HttpServletRequest req, String gname) {
 		System.out.println("그룹 추가");
@@ -123,12 +154,33 @@ public class UserController {
 		return "redirect:mybookmark.do";
 	}
 	
+	// 그룹 완료
 	@RequestMapping("completedGroup.do")
-	public String completedGroup(TeamDTO team) {
+	public View completedGroup(TeamDTO team, Model model) {
 		
-		teamservice.completedGroup(team);
+		TeamDTO completedGroup = teamservice.completedGroup(team);
 		
-		return "redirect:mybookmark.do";
+		model.addAttribute("completedGroup", completedGroup);
+		
+		return jsonview;
+	}
+	
+	
+	// 공유 체크 하지 않은 URL 추가하기
+	@RequestMapping("addUrlNotShare.do")
+	public void addUrlNotShare(U_BookDTO dto ,HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession();
+        String uid = (String)session.getAttribute("info_userid");
+        
+        dto.setUid(uid);
+        
+		int result = u_bookservice.addFolderOrUrl(dto);
+		
+		try {
+			res.getWriter().println(result);
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -137,13 +189,20 @@ public class UserController {
 	public String mybookmark(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
 		String uid = (String)session.getAttribute("info_userid");
-		System.out.println("uid : " + uid);
 		
 		List<TeamDTO> teamList = teamservice.getTeamList(uid);
 		model.addAttribute("teamList", teamList);
 		
 		List<TeamDTO> completedTeamList = teamservice.getCompletedTeamList(uid);
 		model.addAttribute("completedTeamList", completedTeamList);
+		
+		if(uid != null) {
+			List<TeamDTO> headerTeamList = teamservice.getTeamList(uid);
+			model.addAttribute("headerTeamList", headerTeamList);
+		}
+		
+		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
+		model.addAttribute("headerNoticeList", headerNoticeList);
 		
 		return "mypage.myCategory";
 	}
@@ -157,33 +216,25 @@ public class UserController {
 		HttpSession session = req.getSession();
         String uid = (String)session.getAttribute("info_userid");
         
-        System.out.println("uid : " + uid);
-		
-		
 		JSONArray jsonArray = new JSONArray();	
 		List<U_BookDTO> list = u_bookservice.getCategoryList(uid);
-		
-		System.out.println(list);
 		
 		if(list.size() ==0) {
 			
 			JSONObject jsonobject = new JSONObject();
 			
-			int ubid = u_bookservice.getmaxid();	// max(ubid) +1 한 값이다.
-			int result = u_bookservice.insertRootFolder(ubid, uid);
+			// 처음 가입자는 첫 카테고리를  생성해 준다.
+			int ubid = u_bookservice.insertRootFolder(uid);
 			
 			//처음 가입한 유저일 경우 root폴더 생성해 준다.
-			if(result ==1 ) {	
 				
-				jsonobject.put("id", ubid);
-				jsonobject.put("parent", "#");
-				jsonobject.put("text", "첫 카테고리");
-				jsonobject.put("icon", "fa fa-folder");
-				jsonobject.put("uid", uid);
+			jsonobject.put("id", ubid);
+			jsonobject.put("parent", "#");
+			jsonobject.put("text", "첫 카테고리");
+			jsonobject.put("icon", "fa fa-folder");
+			jsonobject.put("uid", uid);
+			jsonArray.put(jsonobject);
 				
-				jsonArray.put(jsonobject);
-				
-			}
 		}else {
 			
 			for(int i =0;i<list.size();i++) {
@@ -226,7 +277,7 @@ public class UserController {
 		res.setCharacterEncoding("UTF-8");
 		
 		List<U_BookDTO> list = u_bookservice.getUrl(ubid);
-		System.out.println(list);
+		//System.out.println(list);
 		JSONArray jsonArray = new JSONArray();	
 		HashMap<String, String> href = new HashMap();
 		
@@ -243,15 +294,12 @@ public class UserController {
 			jsonobject.put("icon", "https://www.google.com/s2/favicons?domain="+list.get(i).getUrl());	//favicon 추가
 			
 			String htag = String.valueOf(list.get(i).getHtag());
-			System.out.println("아래에");
-			System.out.println(htag);
 			
+			// 공유 된 url 인지 아닌지 구분함
 			if(htag.equals("") || htag.equals("null")) {
-				System.out.println("없는서");
 				jsonobject.put("sname", "#");
 				jsonobject.put("htag", "#");
 			}else {
-				System.out.println("잇는거");
 				jsonobject.put("sname", list.get(i).getSname());
 				jsonobject.put("htag", list.get(i).getHtag());
 			}
@@ -262,7 +310,6 @@ public class UserController {
 			jsonArray.put(jsonobject);
 			
 		}
-		
 		try {
 			res.getWriter().println(jsonArray);
 		} catch (IOException e) {			
@@ -273,91 +320,63 @@ public class UserController {
 	
 	//urlname 수정
 	@RequestMapping("updateNodeText.do")	
-	public void updateNodeText(@RequestParam HashMap<String, String> param, HttpServletResponse res) {
+	public View updateNodeText(@RequestParam HashMap<String, String> param , Model model ) {
 		
 		int result = u_bookservice.updateNodeText(param);
-		System.out.println(param);
+		model.addAttribute("result",result);
 		
-		try {
-			res.getWriter().println(result);
-		} catch (IOException e) {			
-			e.printStackTrace();
-		}
+		return jsonview;
 	}
 	
 	//폴더 & url & 공유일 경우 공유로 추가
 	@RequestMapping("addFolderOrUrl.do")
-	public void addFolder(U_BookDTO dto ,HttpServletRequest req, HttpServletResponse res) {
+	public View addFolder(U_BookDTO dto ,HttpServletRequest req, Model model ) {
 		
-		int ubid = u_bookservice.getmaxid();	// max(ubid) +1 한 값이다.
 		HttpSession session = req.getSession();
         String uid = (String)session.getAttribute("info_userid");
         
-        dto.setUbid(ubid);
         dto.setUid(uid);
-        
-		System.out.println(dto.toString());
 		int result = u_bookservice.addFolderOrUrl(dto);
+		model.addAttribute("ubid", result);
 		
-		try {
-			res.getWriter().println(ubid);
-		} catch (IOException e) {			
-			e.printStackTrace();
-		}
+		return jsonview;
 	}
 	
 	//url 혹은 폴더 삭제
 	@RequestMapping("deleteNode.do")	
-	public void deleNode(HttpServletRequest req , HttpServletResponse res) {
-		res.setCharacterEncoding("UTF-8");
-		System.out.println("ddd");
+	public View deleNode(HttpServletRequest req , Model model ) {
+
 		String nodeid = req.getParameter("node");
-		u_bookservice.deleteFolderOrUrl(nodeid);
+		int result = u_bookservice.deleteFolderOrUrl(nodeid);
+		model.addAttribute("result",result);
 		
-		try {
-			res.getWriter().println("success");
-		} catch (IOException e) {			
-			e.printStackTrace();
-		}
+		return jsonview;
 	}
 	
 	//url update
 	@RequestMapping("editUrl.do")	
-	public void editUrl(U_BookDTO dto , HttpServletResponse res) {
-		
-		res.setCharacterEncoding("UTF-8");
+	public View editUrl(U_BookDTO dto , Model model) {
 		
 		int result = u_bookservice.editUrl(dto);
+		model.addAttribute("result",result);
 		
-		try {
-			res.getWriter().println(result);
-		} catch (IOException e) {			
-			e.printStackTrace();
-		}
-		
+		return jsonview;
 	}
 	
 	//드래그 드랍 했을 경우 부모 id 바꾸기
 	@RequestMapping("dropNode.do")	
-	public void dropNode(HttpServletResponse res , @RequestParam HashMap<String, String> param) {
+	public View dropNode( @RequestParam HashMap<String, String> param , Model model) {
 		
-		res.setCharacterEncoding("UTF-8");
-		System.out.println("아래에 param");
-		System.out.println(param);
 		int result = u_bookservice.dropNode(param);
+		model.addAttribute("result",result);
 		
-		try {
-			res.getWriter().println(result);
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
-		
+		return jsonview;
 		
 	}
 	
 	// email 보내기 받는 사람 주소 변경하기
 	@RequestMapping("recommend.do")
-	public void recommend(HttpServletResponse res, String url , String text) {	
+	public View recommend( String url , String text , Model model) {	
 			// 내용 알 맞게 변경하기
 		
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -366,64 +385,45 @@ public class UserController {
 		message.setText(url +" "+ text);
 		message.setTo("sonmit002@naver.com");
 		
-		try {
-			 mailSender.send(message);
-			 res.getWriter().println("메일보내기 성공");
-			
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		model.addAttribute("result","메일 전송");
+		
+		return jsonview;
 		
 	}
 	
-	//url 공유하기 위에 눌렀을 경우 & url 공유 취소 했을 경우 & url 공유 수정 했을 경우
+	//url 공유하기 눌렀을 경우 & url 공유 취소 했을 경우 & url 공유 수정 했을 경우
 	@RequestMapping("shareUrlEdit.do")
-	public void shareUrlEdit(U_BookDTO dto , HttpServletResponse res) {	
+	public View shareUrlEdit(U_BookDTO dto , Model model) {	
 		
-		res.setCharacterEncoding("UTF-8");
 		int result = u_bookservice.shareUrlEdit(dto);
+		model.addAttribute("result",result);
 		
-		try {
-			res.getWriter().println(result);
-		} catch (IOException e) {			
-			e.printStackTrace();
-		}
+		return jsonview;
 		
 	}
 	
 	//ROOT 카테고리 추가 
 	@RequestMapping("addRoot.do")
-	public void addRoot(HttpServletRequest req , HttpServletResponse res) {
-		
-		res.setCharacterEncoding("UTF-8");
+	public View addRoot(HttpServletRequest req , Model model) {
 		
 		HttpSession session = req.getSession();
         String uid = (String)session.getAttribute("info_userid");
-        System.out.println("uid : " + uid);
-        
-		int ubid = u_bookservice.getmaxid();
-		int result = u_bookservice.insertRootFolder(ubid, uid);
+		int ubid = u_bookservice.insertRootFolder(uid);
 		
-		if(result == 1) {
-			try {
-				res.getWriter().println(ubid);
-			} catch (IOException e) {			
-				e.printStackTrace();
-			}
-		}
+		model.addAttribute("ubid",ubid);
+		
+		return jsonview;
 	}
 	
+	//완료된 그룹의 북마크 가져오기
 	@RequestMapping("getCompletedTeamBookmark.do")
-	public void getCompletedTeamBookmark(HttpServletResponse res, int gid) {
+	public void getCompletedTeamBookmark(HttpServletResponse res, String gid) {
 		
 		res.setCharacterEncoding("UTF-8");
-		System.out.println("너 들어오니");
-		System.out.println(gid);
 		
 		JSONArray jsonArray = new JSONArray();	
-		List<G_BookDTO> list = g_bookservice.getCompletedTeamBookmark(gid);
-		
-		System.out.println(list);
+		HashMap<String, String> href = new HashMap();
+		List<G_BookDTO> list = g_bookservice.getCompletedTeamBookmark(Integer.parseInt(gid));
 		
 		for(int i =0; i<list.size(); i++) {
 			
@@ -441,6 +441,8 @@ public class UserController {
 			else
 				jsonobject.put("icon", "https://www.google.com/s2/favicons?domain="+list.get(i).getUrl());
 			
+			href.put("href", list.get(i).getUrl());
+			jsonobject.put("a_attr", href);
 			jsonobject.put("id", list.get(i).getGbid());
 			jsonobject.put("text", list.get(i).getUrlname());
 			
@@ -453,6 +455,41 @@ public class UserController {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	//완료된 그룹 url 내 것으로 보내기
+	@RequestMapping("insertGroupUrl.do")
+	public View insertGroupUrl( HttpServletRequest req , Model model) {
+		
+		HttpSession session = req.getSession();
+        String uid = (String)session.getAttribute("info_userid");
+
+        JSONArray jarr = new JSONArray();
+		jarr = new JSONArray(req.getParameter("obj"));
+		//System.out.println(jarr);
+		//System.out.println(jarr.length());
+		List<U_BookDTO> list = new ArrayList<U_BookDTO>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		
+		int length = jarr.length();
+		for(int i = 0 ; i< length ; i++) {
+			U_BookDTO dto = new U_BookDTO();
+			
+			dto.setUrl((String)jarr.getJSONObject(i).get("url"));
+			dto.setUrlname((String)jarr.getJSONObject(i).get("urlname"));
+			dto.setPid(Integer.valueOf((String)jarr.getJSONObject(i).get("pid")));
+			dto.setUid(uid);
+			
+			list.add(dto);
+		}
+		//System.out.println(list.toString());
+		map.put("list", list);
+		u_bookservice.insertUrlFromCompletedGroup(map);
+		
+		model.addAttribute("result", "success");
+			
+		return jsonview;
 	}
 	// 함수 End
 }

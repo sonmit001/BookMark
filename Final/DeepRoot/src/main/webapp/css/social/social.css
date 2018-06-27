@@ -3,16 +3,12 @@
 @import url('https://fonts.googleapis.com/css?family=Gugi');
 /* 한글 폰트*/
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-/*
-.container{
-    margin-left: 150px;
-    margin-right: 50px;
-}*/
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 /* Social Page CSS START */
 .ranking-div{
     padding-top: 150px;
     text-align: left;
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
     padding-left:30px;
     padding-right:30px;
 }
@@ -45,7 +41,7 @@
 /* RANK, Share Img END */
 
 .bookmark-share-div{
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
     padding-top: 30px;
     padding-left:30px;
     padding-right:30px;
@@ -55,6 +51,15 @@
 .slideimg{
     background: url(../../images/social/1196.png) 0 85% repeat-x;
     height: 85px;
+}
+
+.slideimg::after {
+  display: block;
+  position: relative;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #fff 100%);
+  height: 85px;
+  width: 100%;
+  content: '';
 }
 
 .bg-bottom{
@@ -193,7 +198,7 @@ a:focus {
 }
 
 a {
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
     color: #000;
     -webkit-transition: 300ms;
     -moz-transition: 300ms;
@@ -206,7 +211,7 @@ table {
 }
 
 h1,h2,h3,h4,h5,h6 {
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
     font-weight: 300;
 }
 

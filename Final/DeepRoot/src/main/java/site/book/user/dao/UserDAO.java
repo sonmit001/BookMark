@@ -12,7 +12,7 @@ import site.book.user.dto.UserDTO;
 /**
  * @Class : UserDAO.java
  * @Date : 2018. 6. 5.
- * @Author : 김희준
+ * @Author : 김희준, 김태웅
  */
 public interface UserDAO {
 	

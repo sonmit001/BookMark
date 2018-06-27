@@ -2,6 +2,11 @@ package site.book.main.handler;
 
 import java.util.Random;
 
+/**
+ * @Class : RollinMailHandler.java
+ * @Date : 2018. 6. 13.
+ * @Author : 김태웅
+ */
 public class RollinTempKey {
 
     private boolean lowerCheck;

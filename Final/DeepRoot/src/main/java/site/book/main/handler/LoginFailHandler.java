@@ -10,7 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 /**
- * @Class : AdminController.java
+ * @Class : LoginFailHandler.java
  * @Date : 2018. 6. 12.
  * @Author : 김태웅
  */

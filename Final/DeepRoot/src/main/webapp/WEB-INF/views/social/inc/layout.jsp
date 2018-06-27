@@ -13,9 +13,11 @@
     <title>뿌리깊은마크</title>
 	
 	<!-- Latest compiled Bootstrap Common CSS -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Bootstrap Common CSS END -->
     
     <!-- jQuery Confirm START -->
@@ -29,6 +31,8 @@
     <!-- Script Common JavaScript & CSS END -->
 
 	<!-- Social Page CSS -->
+	<!-- jstree.css 추가 -->
+	<link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/social/social.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/social/modal.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/mainpage/header.css" rel="stylesheet">
@@ -40,10 +44,18 @@
     <!-- Social Page CSS END -->
 
     <!--Script Start -->
+    <!-- jstree.js 추가 -->
+    <script src="${pageContext.request.contextPath}/js/jstree.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/social/jquery.dataTables.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/social/dataTables.bootstrap.min.js"></script>
     <!-- Script END -->
+    
+    <!-- jQuery Ajax Form START -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+	<!-- jQuery Ajax Form START -->
 
+	<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
+    <script  src="${pageContext.request.contextPath}/js/jstree.min.js"></script> --%>
     <script>
         /*****************  Table Start **********************/
         $(function() {

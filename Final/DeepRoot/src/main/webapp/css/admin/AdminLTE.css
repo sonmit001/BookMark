@@ -4,6 +4,7 @@
 @import url('https://fonts.googleapis.com/css?family=Gugi');
 /* 한글 폰트*/
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 section > h1{
     text-align: left;
@@ -23,7 +24,7 @@ body {
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
     font-weight: 400;
     overflow-x: hidden;
     overflow-y: auto
@@ -70,7 +71,7 @@ body {
 */
 }
 .main-footer {
-    font-family: 'Lato', 'Spoqa Han Sans';
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
     -webkit-transition: -webkit-transform .3s ease-in-out, margin .3s ease-in-out;
     -moz-transition: -moz-transform .3s ease-in-out, margin .3s ease-in-out;
     -o-transition: -o-transform .3s ease-in-out, margin .3s ease-in-out;
@@ -204,7 +205,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-    font-family: 'Lato', 'Spoqa Han Sans', sans-serif
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
 }
 
 a {
@@ -359,7 +360,7 @@ a:focus {
     line-height: 50px;
     text-align: center;
     width: 230px;
-    font-family: "Lato", 'Spoqa Han Sans', sans-serif;
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
     padding: 0 15px;
     font-weight: 300;
     overflow: hidden
@@ -1067,7 +1068,7 @@ a:focus {
 }
 
 .dropdown-menu > li > a {
-    color: #777
+    color: #000;
 }
 
 .dropdown-menu > li > a > .glyphicon,

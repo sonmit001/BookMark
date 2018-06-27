@@ -24,4 +24,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateCategoryColor">
 		UPDATE A_CATEGORY SET COLOR = #{color} WHERE acid = #{acid}
 	</update>
+	
+	<select id="selectMaxACID" resultType="Integer">
+		select MAX(ACID) from A_CATEGORY
+	</select>
 </mapper>

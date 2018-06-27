@@ -3,7 +3,12 @@
 
 <mapper namespace="site.book.user.dao.U_BookDAO">
 	<!-- 태웅 -->
-	
+	<!-- From Admin Bookmark to My Bookmark -->
+	<insert id="insertToMyBookmark">
+		<if test="abid != 0 or pid != 0">
+		INSERT INTO U_BOOK(URL, URLNAME, REGDATE, UID, PID, ABID) VALUES(#{url}, #{urlname}, SYSDATE(), #{uid}, #{pid}, #{abid})
+		</if>
+	</insert>
 	
 	<!-- 희준 -->
 	<select id="numOfBookByDate" resultType="java.util.HashMap">
@@ -18,6 +23,10 @@
 		DELETE FROM U_BOOK WHERE UBID = #{ubid} AND HTAG IS NOT NULL
 	</delete>
 	
+	<insert id="addUrlNotShare">
+		INSERT INTO U_BOOK(URL, URLNAME, REGDATE, UID, PID) VALUES(#{url}, #{urlname}, SYSDATE(), #{uid}, #{pid})
+	</insert>
+	
 	<!-- 명수 -->
 	<select id="getCategoryList" resultType="site.book.user.dto.U_BookDTO">
 		SELECT * FROM U_BOOK WHERE UID=#{uid}  AND URL IS NULL  
@@ -28,12 +37,12 @@
 	</select>
 	
 	<insert id="insertRootFolder">
-		INSERT INTO U_BOOK (UBID, URLNAME,REGDATE,VIEW,UID)
-			VALUES (#{0},'카테고리 시작',SYSDATE(), 0, #{1})
+		INSERT INTO U_BOOK (URLNAME,REGDATE,VIEW,UID)
+			VALUES ('카테고리 시작',SYSDATE(), 0, #{uid})
 	</insert>
 	
 	<select id="getMaxId" resultType="int">
-		select max(UBID) +1 from U_BOOK
+		select max(UBID) from U_BOOK
 	</select>
 	
 	<update id="updateNodeText" parameterType="hashMap">
@@ -43,16 +52,16 @@
 	<insert id="addFolderOrUrl" parameterType="site.book.user.dto.U_BookDTO">
 	
 		<if test="abid == 0 and htag !=null">
-			INSERT INTO U_BOOK(UBID,URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE)
-			VALUES(#{ubid},#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},SYSDATE())
+			INSERT INTO U_BOOK(URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE)
+			VALUES(#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},SYSDATE())
 		</if>
 		<if test="abid == 0 and htag == null">
-		INSERT INTO U_BOOK(UBID,URL,URLNAME,REGDATE,VIEW,UID,PID)
-			VALUES(#{ubid},#{url},#{urlname},SYSDATE(),0,#{uid},#{pid})
+		INSERT INTO U_BOOK(URL,URLNAME,REGDATE,VIEW,UID,PID)
+			VALUES(#{url},#{urlname},SYSDATE(),0,#{uid},#{pid})
 		</if>
 		<if test="abid != 0">
-		INSERT INTO U_BOOK(UBID,URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE,ABID)
-			VALUES(#{ubid},#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},#{sdate},#{abid})
+		INSERT INTO U_BOOK(URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE,ABID)
+			VALUES(#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},#{sdate},#{abid})
 		</if>
 	</insert>
 	
@@ -78,5 +87,13 @@
 			</otherwise>
 		</choose>
 	</update>
+	
+	<insert id="insertUrlFromCompletedGroup" parameterType="java.util.Map">
+		INSERT INTO U_BOOK(URL,URLNAME,REGDATE,VIEW,UID,PID)
+			VALUES
+			<foreach separator="," item="item" collection="list">
+			(#{item.url},#{item.urlname},SYSDATE(),0,#{item.uid},#{item.pid})
+			</foreach>
+	</insert>
 	
 </mapper>

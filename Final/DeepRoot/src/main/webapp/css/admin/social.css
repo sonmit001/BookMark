@@ -19,4 +19,16 @@ table tbody tr td.table-tag {
     cursor: pointer;
     color:#fff;
 }
+
+.panel .panel-heading .fa.fa-arrow-right.social-content-head{
+	margin-right: 5px;
+}
+
+.panel .panel-heading .panel-body .table.table-hover .table-date{
+	width:100px;
+}
+
+div.dataTables_info {
+    display: none;
+}
 /* category CSS END */

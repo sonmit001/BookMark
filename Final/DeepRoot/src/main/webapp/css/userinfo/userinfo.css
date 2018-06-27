@@ -2,10 +2,10 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
 /* 한글 폰트*/
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 .userinfo{
-    font-family: 'Lato', 'Spoqa Han Sans';
+    font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
     height: 100%;
     font-size : 15px;
     padding-top: 100px;
@@ -24,11 +24,11 @@
     color: #FFFFFF;
 }
 .userinfo .form-control:hover{
-    background-color: rgba(0,0,0,.16);
+    background-color: rgba(0,0,0,.14);
 }
 .userinfo .form-control:focus{
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.04) inset;
-    background-color: rgba(0,0,0,0.23);
+    background-color: rgba(0,0,0,0.18);
     color: #666666;
 }
 
@@ -56,7 +56,7 @@
 
 /* Set a style for the submit button */
 .userinfo .confirm{
-    font-family: 'Lato', 'Spoqa Han Sans';
+    font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
     font-size:18px;
     background-color: #7bbfa8;
     color: white;
@@ -75,7 +75,7 @@
 }
 
 .userinfo .cancel{
-    font-family: 'Lato', 'Spoqa Han Sans';
+    font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
     font-size:18px;
     background-color: #ff5757;
     color: white;

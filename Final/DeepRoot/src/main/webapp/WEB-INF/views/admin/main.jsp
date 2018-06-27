@@ -32,8 +32,9 @@
 				$('.loader-circle').addClass('exit');
 				window.setTimeout(function() {
 					window.location = href
-					}, time)
-				});
+				}, time)
+			}
+		);
 	});
 </script>
 <!-- 페이지 전환 Script END -->
@@ -41,7 +42,7 @@
 <!-- Page Transition START -->
 <div class="loader">
 	<svg height="100%" width="100%" class="svg-wrap">
-    <circle class="circle" r="100%" cx="50%" cy="50%" fill="#2f3d44" />
+    <circle class="circle" r="100%" cx="50%" cy="50%" fill="#456" />
   </svg>
 </div>
 <!-- Page Transition END -->

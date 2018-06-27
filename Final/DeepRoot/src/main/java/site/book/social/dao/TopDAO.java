@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import site.book.social.dto.TopDTO;
+import site.book.user.dto.U_BookDTO;
 
 /**
  * @Class : TopDAO.java
@@ -38,4 +39,8 @@ public interface TopDAO {
 	// 전체 Top5 Urlname 가져오기
 	public String selectATop5Urlname(String url) throws ClassNotFoundException, SQLException;	
 	
+	// 작성자 파도타기 카테고리 및 URL 가져오기
+	public List<U_BookDTO> getCategoryList(String nname);
+	
+
 }

@@ -21,10 +21,16 @@
     <!-- Common Script START -->
     <!-- Latest compiled JavaScript & CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Script Common JavaScript & CSS END -->
+    
+    <!-- Google Icon CDN -->
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<!-- Google Icon CDN END -->
 
     <!-- Main Page CSS -->
     <link href="css/mainpage/main.css?ver=2" rel="stylesheet">
+    <link href="css/mainpage/modal.css?ver=2" rel="stylesheet">
     <link href="css/mainpage/header.css" rel="stylesheet">
     <link href="css/mainpage/footer.css" rel="stylesheet">
     <link href="css/mainpage/list_table.css?ver=1" rel="stylesheet">
@@ -41,6 +47,10 @@
     <!-- Login / roll-in Modal Script Start -->
     <script src="js/script.js"></script>
     <!-- Login / roll-in Modal Script Start END -->
+    
+    <!-- URL Bookmark Modal Script Start -->
+    <script src="js/modal.js"></script>
+    <!--  URL Bookmark Modal Script END -->
 
     <!-- Category Input Script START -->
     <script src="js/category_insert.js"></script>
@@ -57,196 +67,99 @@
     <script type="text/javascript" src="js/login.js?ver=2"></script>
     <!-- Custom Script END -->
     
+    <!-- jstree css & javascript -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
+    <script src="${pageContext.request.contextPath}/js/jstree.min.js"></script>
+    
+    <!-- jQuery Ajax Form START -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+	<!-- jQuery Ajax Form END -->
+    
     <script>
-        /**************************  Table Start  **********************************/
-        $(function() {
-        	$(document).on("dblclick", ".url", function() {
-        		window.open(this.dataset.url, '_blank'); 
-        	});
-            $(document).on("click", ".url", function() { });
-            $('.url').on({
-                mouseover: function() {
-                    $(this).children('.url_link_btn').css('display', 'block')
-                },
-                mouseleave: function() {
-                    $(this).children('.url_link_btn').css('display', 'none')
-                }
-            });
-            $('li').on({
-                mouseover: function() {
-                    $(this).children('button').css('display', 'block')
-                },
-                mouseleave: function() {
-                    $(this).children('button').css('display', 'none')
-                }
-            });
-            /* $(document).on("click", ".fa-folder-open", function() {
-                if ($(this).attr('src') == 'icon/all_show.png') {
-                    $(this).attr('src', 'icon/all_close.png');
-                    $(this).parent().parent().children('ul').hide(500);
-                } else {
-                    $(this).attr('src', 'icon/all_show.png');
-                    $(this).parent().parent().children('ul').show(500);
-                }
-            }); */
-            $(document).on("click", ".fa-folder-open", function() {
-                $(this).parent().parent().children('ul').hide(500);
-                $(this).removeClass("fa-folder-open");
-                $(this).addClass("fa-folder");
-            });
-            $(document).on("click", ".fa-folder", function() {
-                $(this).parent().parent().children('ul').show(500);
-                $(this).removeClass("fa-folder");
-                $(this).addClass("fa-folder-open");
-            });
-        });
-        /**************************  Table END  **********************************/
-
-        /* ******************** Scroll Shadow Start *************************** */
-        $(function() {
-            var header = $('#header');
-            $(window).scroll(function(e) {
-                if (header.offset().top !== 0) {
-                    if (!header.hasClass('shadow')) {
-                        header.addClass('shadow');
-                    }
-                } else {
-                    header.removeClass('shadow');
-                }
-            })
-        });
-        /* ******************** Scroll Shadow END *************************** */
-        
-        /**************************  Preview Start  **********************************/
-    	function preview(abid){
-        	$.ajax({
-        		url: "preview.do",
-				type: "post",
-				data : {
-					abid : abid // 북마크 ID
-				},
-				beforeSend: function() {
-	                $('#layout').html('<img src="${pageContext.request.contextPath}/images/loading/preview.gif" style="margin-top: 17%;"/>');
-	            },
-	            complete: function() {
-	            	$('#layout').html('');
-	            },
-				success : function(data){
-					
-					$('#preview_content').fadeOut(10, function(){
-						
-						// console.log(data);
-						var layout = '<img src="${pageContext.request.contextPath}/images/homepage/' + abid + '.png" style="width:100%; height:100%">';
-			        	$("#layout").html(layout);
-			        	var comment = "";
-			        	if(data.title != "" && data.title != null){
-			        		comment = "<b>" + data.title + "</b>";
-			        	}
-			        	if(data.url != "" && data.url != null){
-			        		comment += "   -   <a href='" + data.url + "' target='_blank'><font style='color : #1bc9c4; text-decoration : underline'>" + data.url + "</font></a>";
-			        	}
-			        	if(data.description != "" && data.description != null){
-			        		comment += "<br> <p>" + data.description + "</p>";
-			        	}
-						$("#comment").html(comment);
-                        $('#preview_content').fadeIn(1000);
-                        
-                    });
-				}
-        	});
-        };
-        
-        /**************************  Preview End  **********************************/
-        
-        /**************************  Category Click Evnet Start  *******************/
-        $(function(){
-        	var categoryList = new Array(); // 전체 카테고리 리스트 비동기로 받아오기
-        	
-    		<c:forEach items="${categoryList}" var="category">
-    			categoryList.push("${category.acname}");
-    		</c:forEach>
-    		
-			var selectedCategory = [];
-			
-        	$(document).on("click", ".category", function() {
-				var id = $(this).text().trim();
-				/* 
-					category class를 클릭한 text가 Show All일 경우, 전체 카테고리 리스트를 slideDown!! 
-					선택된 카테고리 리스트는 배경색 기존색으로 변경(removeClass)
-					Show All 카테고리는 custom색으로 변경		
-				*/
-				if (id == "Show All") {
-					$.each(categoryList, function(index, element) {
-						$('li[id="' + element + '"]').slideDown("slow");
-					});
-					$.each(selectedCategory, function(index, element) {
-						$(".category").removeClass("reddiv");
-					});
-
-					$("#showall").addClass("reddiv");
-					selectedCategory = []; 
-
-				} else {
-					/* Show All이 아닌 카테고리 선택시 Show All style 배경색 기존색으로 변경(removeclass)*/
-					$("#showall").removeClass("reddiv");
-					
-					/* 선택된 카테고리를 다시 클릭시 해당 카테고리만 SelectCategory에서 지우기 */
-					if($(this).hasClass("reddiv") == true) {
-						$(this).removeClass("reddiv");
-						
-						const idx = selectedCategory.indexOf(id);
-						selectedCategory.splice(idx, 1);
-						
-						// 이미 선택된 카테고리가 1개 이상인 경우
-						if(selectedCategory.length > 0){
-							$.each(categoryList, function(index, element) {
-								$('li[id="' + element + '"]').slideUp("slow");
-							});
-							$.each(selectedCategory, function(index, element) {
-								$('li[id="' + element + '"]').slideDown("slow");
-							});
-						}else { // 선택된 카테고리가 하나도 없을 경우 Show All로 변경
-							$.each(categoryList, function(index, element) {
-								$('li[id="' + element + '"]').slideDown("slow");
-							});
-							$.each(selectedCategory, function(index, element) {
-								$(".category").removeClass("reddiv");
-							});
-
-							$("#showall").addClass("reddiv");
-						}
-						
-					}else { 
-						/* 
-							카테고리를 선택한 경우 
-							전체 카테고리 리스트 SlideUp, 선택된 카테고리 리스트는 SlideDown
-						*/
-						selectedCategory.push(id);
-						$(this).addClass("reddiv");
-						
-						$.each(categoryList, function(index, element) {
-							$('li[id="' + element + '"]').slideUp("slow");
-						});
-						
-						$.each(selectedCategory, function(index, element) {
-							if(index == 0) {
-								$('li[id="' + element + '"]').slideDown("slow");
-							}else {
-								// 선택된 카테고리 보여줄 시 이전 카테고리 위로 insert해서 보여줌
-								$('li[id="' + element + '"]').insertBefore($('li[id="' + selectedCategory[index-1] + '"]'));
-								$('li[id="' + element + '"]').slideDown("slow");
-							}
-							
-						});
-					}
-					
-				}
-				
-			});
-        });
-        
-        /**************************  Category Click Evnet End  *******************/
-        
+    	/**************************  Category Click Evnet Start  *******************/
+	    $(function(){
+	    	var categoryList = new Array(); // 전체 카테고리 리스트 비동기로 받아오기
+	    	
+	    	<c:forEach items="${categoryList}" var="category">
+	    		categoryList.push("${category.acname}");
+	    	</c:forEach>
+	    	
+	    	var selectedCategory = [];
+	    	
+	    	$(document).on("click", ".category", function() {
+	    		var id = $(this).text().trim();
+	    		/* 
+	    			category class를 클릭한 text가 Show All일 경우, 전체 카테고리 리스트를 slideDown!! 
+	    			선택된 카테고리 리스트는 배경색 기존색으로 변경(removeClass)
+	    			Show All 카테고리는 custom색으로 변경		
+	    		*/
+	    		if (id == "Show All") {
+	    			$.each(categoryList, function(index, element) {
+	    				$('li[id="' + element + '"]').slideDown("slow");
+	    			});
+	    			$.each(selectedCategory, function(index, element) {
+	    				$(".category").removeClass("reddiv");
+	    			});
+	
+	    			$("#showall").addClass("reddiv");
+	    			selectedCategory = []; 
+	
+	    		} else {
+	    			/* Show All이 아닌 카테고리 선택시 Show All style 배경색 기존색으로 변경(removeclass)*/
+	    			$("#showall").removeClass("reddiv");
+	    			
+	    			/* 선택된 카테고리를 다시 클릭시 해당 카테고리만 SelectCategory에서 지우기 */
+	    			if($(this).hasClass("reddiv") == true) {
+	    				$(this).removeClass("reddiv");
+	    				
+	    				const idx = selectedCategory.indexOf(id);
+	    				selectedCategory.splice(idx, 1);
+	    				
+	    				// 이미 선택된 카테고리가 1개 이상인 경우
+	    				if(selectedCategory.length > 0){
+	    					$.each(categoryList, function(index, element) {
+	    						$('li[id="' + element + '"]').slideUp("slow");
+	    					});
+	    					$.each(selectedCategory, function(index, element) {
+	    						$('li[id="' + element + '"]').slideDown("slow");
+	    					});
+	    				}else { // 선택된 카테고리가 하나도 없을 경우 Show All로 변경
+	    					$.each(categoryList, function(index, element) {
+	    						$('li[id="' + element + '"]').slideDown("slow");
+	    					});
+	    					$.each(selectedCategory, function(index, element) {
+	    						$(".category").removeClass("reddiv");
+	    					});
+	
+	    					$("#showall").addClass("reddiv");
+	    				}
+	    				
+	    			}else { 
+	    				/* 
+	    					카테고리를 선택한 경우 
+	    					전체 카테고리 리스트 SlideUp, 선택된 카테고리 리스트는 SlideDown
+	    				*/
+	    				selectedCategory.push(id);
+	    				$(this).addClass("reddiv");
+	    				
+	    				$.each(categoryList, function(index, element) {
+	    					$('li[id="' + element + '"]').slideUp("slow");
+	    				});
+	    				
+	    				$.each(selectedCategory, function(index, element) {
+	    					if(index == 0) {
+	    						$('li[id="' + element + '"]').slideDown("slow");
+	    					}else {
+	    						// 선택된 카테고리 보여줄 시 이전 카테고리 위로 insert해서 보여줌
+	    						$('li[id="' + element + '"]').insertBefore($('li[id="' + selectedCategory[index-1] + '"]'));
+	    						$('li[id="' + element + '"]').slideDown("slow");
+	    					}
+	    				});
+	    			}
+	    		}
+	    	});
+	    });
+    	/**************************  Category Click Evnet End  *******************/
     </script>
 </head>
 <body>

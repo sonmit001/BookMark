@@ -9,7 +9,11 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-
+/**
+ * @Class : RollinMailHandler.java
+ * @Date : 2018. 6. 13.
+ * @Author : 김태웅
+ */
 public class RollinMailHandler {
 	
 	private JavaMailSender mailSender;

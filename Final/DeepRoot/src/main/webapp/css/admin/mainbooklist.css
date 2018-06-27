@@ -101,15 +101,18 @@ table.table-hover tbody tr:hover {
 }
 
 /*modal css*/
+
 .addCategory .btn-next, .addCategory .btn-prev, .addCategory .btn-comp{
-    background-color: #7bbfa8; 
+    background-color: #7bbfa8; /* #7bbfa8 */
     border-color: #7bbfa8;
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
-    padding: 15px 10px;
+    /* padding: 15px 10px; */
     text-transform: uppercase;
-    width: 10%;
+    /* width: 10%; */
+    font-weight: bold;
+    text-shadow: none;
 }
 
 .addCategory .btn-next:hover, .addCategory .btn-prev:hover, .addCategory .btn-comp:hover{
@@ -183,9 +186,11 @@ table.table-hover tbody tr:hover {
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
-    padding: 15px 10px;
+    /* padding: 15px 10px; */
     text-transform: uppercase;
-    width: 10%;
+    /* width: 10%; */
+    font-weight: bold;
+    text-shadow: none;
 }
 .editCategory .btn-next:hover, .editCategory .btn-prev:hover, .editCategory .btn-comp:hover{
     background-color: #7bab94; 
@@ -257,9 +262,11 @@ table.table-hover tbody tr:hover {
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
-    padding: 15px 10px;
+    /* padding: 15px 10px; */
     text-transform: uppercase;
-    width: 10%;
+    /* width: 10%; */
+    font-weight: bold;
+    text-shadow: none;
 }
 .deleteCategory .btn-next:hover, .deleteCategory .btn-prev:hover, .deleteCategory .btn-comp:hover{
     background-color: #7bab94; 
@@ -331,9 +338,11 @@ table.table-hover tbody tr:hover {
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
-    padding: 15px 10px;
+    /* padding: 15px 10px; */
     text-transform: uppercase;
-    width: 10%;
+    /* width: 10%; */
+    font-weight: bold;
+    text-shadow: none;
 }
 .addUrl .btn-next:hover, .addUrl .btn-prev:hover, .addUrl .btn-comp:hover{
     background-color: #7bab94; 
@@ -399,15 +408,17 @@ table.table-hover tbody tr:hover {
 }
 
 /*modal css*/
-.editUrl .btn-next, .editUrl .btn-prev, .editUrl .btn-comp{
+.editUrl .btn-next, .editUrl .btn-prev, .editUrl .btn-comp {
     background-color: #7bbfa8; 
     border-color: #7bbfa8;
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
-    padding: 15px 10px;
+    /* padding: 15px 10px; */
     text-transform: uppercase;
-    width: 10%;
+    /* width: 10%; */
+    font-weight: bold;
+    text-shadow: none;
 }
 .editUrl .btn-next:hover, .editUrl .btn-prev:hover, .editUrl .btn-comp:hover{
     background-color: #7bab94; 
@@ -480,7 +491,7 @@ table.table-hover tbody tr:hover {
     padding-left: 50px;    
 }
 
-.dropdown-menu {
+.dropdown-menu.category {
     transform: translate3d(325px, -35px, 0px);
 }
 

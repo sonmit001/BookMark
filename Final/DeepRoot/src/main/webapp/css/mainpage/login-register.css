@@ -127,12 +127,13 @@
     display: inline-block;
     margin: 0 17px;
     padding: 15px;
+    width: 50px;
 }
 .login .social .circle .fa{
     font-size: 16px;
 }
 .login .social .facebook{
-    background-color: #455CA8;
+    background-color: #00cc39;
     color: #FFFFFF;
 }
 .login .social .google{
@@ -142,8 +143,9 @@
     background-color: #403A3A;
 }
 .login .facebook:hover{
-    background-color: #6E83CD;
+    background-color: #159238;
 }
+.naver { font-weight: 999; }
 .login .google:hover{
     background-color: #FF7566;
 }

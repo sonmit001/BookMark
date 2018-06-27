@@ -36,13 +36,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update TEAM set HTAG = #{htag}, DUEDATE = sysdate() where gid = #{gid}
 	</update>
 	
+	<select id="selectGroup" resultType="site.book.team.dto.TeamDTO">
+		SELECT GID, GNAME, HTAG, REGDATE, DUEDATE FROM TEAM WHERE gid = #{gid}
+	</select>
+	
 	<!-- 명수 -->
 	<select id="getCompletedTeamList" resultType="site.book.team.dto.TeamDTO">
 		SELECT * FROM TEAM t JOIN G_MEMBER gm ON t.gid = gm.gid WHERE UID = #{0} AND HTAG IS NOT NULL
 	</select>
 	
 	<select id="getTeamList" resultType="site.book.team.dto.TeamDTO">
-		SELECT * FROM TEAM T JOIN G_MEMBER GM ON T.GID = GM.GID WHERE UID = #{0} AND HTAG IS NULL;
+		SELECT T.GID, T.GNAME, T.HTAG, T.REGDATE, T.DUEDATE, GM.UID, GM.CCOUNT, GM.GRID FROM TEAM T JOIN G_MEMBER GM ON T.GID = GM.GID WHERE UID = #{uid} AND HTAG IS NULL
 	</select>
 	
 	<delete id="deleteCompletedTeam">

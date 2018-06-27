@@ -8,4 +8,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="noticeReg">
 		INSERT INTO NOTICE(NCONTENT, REGDATE) VALUES(#{ncontent}, SYSDATE())
 	</insert>
+	
+	<select id="selectAllNotices" resultType="site.book.admin.dto.NoticeDTO">
+		select NID, NCONTENT from NOTICE order by regdate desc limit 3
+	</select>
+	
+	<select id="getMaxNID" resultType="Integer">
+		SELECT MAX(NID) from NOTICE
+	</select>
+	
+	<select id="selectNotice" resultType="site.book.admin.dto.NoticeDTO">
+		select NID, NCONTENT, REGDATE from NOTICE where nid = #{nid}
+	</select>
 </mapper>

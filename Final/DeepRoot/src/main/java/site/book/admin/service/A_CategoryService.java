@@ -17,6 +17,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import site.book.admin.dao.A_BookDAO;
 import site.book.admin.dao.A_CategoryDAO;
@@ -46,30 +47,31 @@ public class A_CategoryService {
 	}
 	
 	// 카테고리 추가
-	public int addCategory(A_CategoryDTO category) {
+	@Transactional
+	public A_CategoryDTO addCategory(A_CategoryDTO category) {
 		
 		A_CategoryDAO categoryDAO = sqlsession.getMapper(A_CategoryDAO.class);
-		int row = 0;
 		try {
-			row = categoryDAO.insertCategory(category);
+			categoryDAO.insertCategory(category);
+			category.setAcid(categoryDAO.selectMaxACID());
+			category.setColor("#000");
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		return row;
+		return category;
 	}
 	
 	// 카테고리 수정
-	public int updateCategory(A_CategoryDTO category) {
+	public A_CategoryDTO updateCategory(A_CategoryDTO category) {
 		A_CategoryDAO categoryDAO = sqlsession.getMapper(A_CategoryDAO.class);
-		int row = 0;
 		
 		try {
-			row = categoryDAO.updateCategory(category);
+			categoryDAO.updateCategory(category);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return row;
+		return category;
 	}
 	
 	// 카테고리 삭제

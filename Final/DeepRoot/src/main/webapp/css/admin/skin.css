@@ -3,9 +3,9 @@
 @import url('https://fonts.googleapis.com/css?family=Gugi');
 /* 한글 폰트*/
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 .skin-blue > * {
-    font-family: 'Lato', 'Spoqa Han Sans';
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
 }
 
 .skin-blue .main-header .navbar {

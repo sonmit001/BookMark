@@ -1,5 +1,16 @@
+/*
+ * @Project : DeepRoot
+ * @FileName : EmailAuthDTOjava
+ * @Date : 2018. 6. 10.
+ * @Author : 김태웅
+*/
 package site.book.user.dto;
 
+/**
+ * @Class : EmailAuthDTO.java
+ * @Date : 2018. 6. 10.
+ * @Author : 김태웅
+ */
 public class EmailAuthDTO {
 	private String uid;
 	private String authcode;

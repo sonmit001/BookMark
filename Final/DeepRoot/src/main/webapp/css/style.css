@@ -208,8 +208,8 @@ font-family: 'Gamja Flower', cursive;
 
 .vakata-context li > a:hover { /* 호버 contextmenu  */
   position: relative;
-  color: #ffffff;
-  background-color: #ffbbd6;
+  color: #000;
+  background-color: #fbffb9;
   -moz-box-shadow: 0 0 2px #fab1ce;
   -webkit-box-shadow: 0 0 2px #fab1ce;
   box-shadow: 0 0 2px #fab1ce;
@@ -224,7 +224,8 @@ font-family: 'Gamja Flower', cursive;
 }
 .vakata-context .vakata-context-hover > a {
   position: relative;
-  background-color: #ffbbd6;
+  color: #000;
+  background-color: #fbffb9;
   -moz-box-shadow: 0 0 2px #fab1ce;
   -webkit-box-shadow: 0 0 2px #fab1ce;
   box-shadow: 0 0 2px #fab1ce;
@@ -359,6 +360,15 @@ font-family: 'Gamja Flower', cursive;
  .jstree-proton-responsive .jstree-wholerow-clicked { /* 전체 클릭*/
     background: #FFFF7E;
   }
+ .shared{ /*공유 된거*/
+ color : #353866;
+ float : right; 
+ font-size : 13px;
+ margin-right: 15px;
+ margin-top: 3px;
+ text-align:center;
+ 
+ }
 .jstree-proton .jstree-clicked { /* 그냥 클릭 됨 */
   background: #FFFF7E;
   color: #353866;

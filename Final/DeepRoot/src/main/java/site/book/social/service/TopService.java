@@ -16,11 +16,13 @@ import org.springframework.stereotype.Service;
 
 import site.book.social.dao.TopDAO;
 import site.book.social.dto.TopDTO;
+import site.book.user.dao.U_BookDAO;
+import site.book.user.dto.U_BookDTO;
 
 /**
  * @Class : TopService.java
  * @Date : 2018. 6. 14.
- * @Author : 김희준
+ * @Author : 김희준, 정민재 , 정진수
  */
 @Service
 public class TopService {
@@ -93,7 +95,8 @@ public class TopService {
 				e.printStackTrace();
 			}
 		}
-
+		
 		return list;
 	}
+	
 }

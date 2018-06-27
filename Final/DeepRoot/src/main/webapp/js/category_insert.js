@@ -1,81 +1,81 @@
-        /*URL 추가 1단계 모달*/
-function showUrlForm() {
 
-  $('.shareBox').fadeOut('fast', function() {
-    $('.categoryBox').fadeOut('fast', function() {
-      $('.urlBox').fadeIn('fast');
-      $('.category_unshared-footer').fadeOut('fast', function() {
-        $('.category_share-footer').fadeOut('fast', function() {
-          $('.share-footer').fadeOut('fast', function() {
-            $('.url-footer').fadeIn('fast')
-          })
-        })
-      });
-    });
-    $('.modal-title').html('1단계');
-  });
+/*URL 추가 1단계 모달*/
+function showUrlForm() {
+	$('.shareBox').fadeOut('fast', function() {
+		$('.categoryBox').fadeOut('fast', function() {
+			$('.urlBox').fadeIn('fast');
+			$('.category_unshared-footer').fadeOut('fast', function() {
+				$('.category_share-footer').fadeOut('fast', function() {
+					$('.share-footer').fadeOut('fast', function() {
+						$('.url-footer').fadeIn('fast')
+					})
+				})
+			});
+		});
+		$('.modal-title').html('1단계');
+	});
 }
-/*URL 추가 2단계 모달*/
+/* URL 추가 2단계 모달 */
 function showCategoryForm() {
-            $('.shareBox').fadeOut('fast', function() {
-                $('.urlBox').fadeOut('fast', function() {
-                    $('.categoryBox').fadeIn('fast');
-                    $('.url-footer').fadeOut('fast', function() {
-                        $('.share-footer').fadeOut('fast', function() {
-                            if (!$('#share').is(':checked')) {
-                                $('.category_unshared-footer').fadeIn('fast')
-                            } else {
-                                $('.category_share-footer').fadeIn('fast')
-                            }
-                            
-                            /*클릭, 더블클릭 구분을 위한 코드*/
-                            var timer = 0;
-                            var delay = 1000;
-                            var prevent = false;
-                            
-                            $('#share').on("click", function() {
-                                timer = setTimeout(function() {
-                                  if (!prevent) {
-                                        if ($('#share').is(':checked')) {
-                                            $('.category_unshared-footer').fadeOut('fast', function() {
-                                                $('.category_share-footer').fadeIn('fast')
-                                            })
-                                        } else {
-                                            $('.category_share-footer').fadeOut('fast', function() {
-                                                $('.category_unshared-footer').fadeIn('fast')
-                                            })
-                                        }
-                                  }
-                                  prevent = false;
-                                }, delay);
-                              })
-                              .on("dblclick", function() {
-                                clearTimeout(timer);
-                                prevent = true;
-                            });                            
-                        });
-                    });
+    $('.shareBox').fadeOut('fast', function() {
+        $('.urlBox').fadeOut('fast', function() {
+            $('.categoryBox').fadeIn('fast');
+            $('.url-footer').fadeOut('fast', function() {
+                $('.share-footer').fadeOut('fast', function() {
+                    if (!$('#share').is(':checked')) {
+                        $('.category_unshared-footer').fadeIn('fast')
+                    } else {
+                        $('.category_share-footer').fadeIn('fast')
+                    }
+                    
+                    /*클릭, 더블클릭 구분을 위한 코드*/
+                    var timer = 0;
+                    var delay = 1000;
+                    var prevent = false;
+                    
+                    $('#share').on("click", function() {
+                        timer = setTimeout(function() {
+                          if (!prevent) {
+                                if ($('#share').is(':checked')) {
+                                    $('.category_unshared-footer').fadeOut('fast', function() {
+                                        $('.category_share-footer').fadeIn('fast')
+                                    })
+                                } else {
+                                    $('.category_share-footer').fadeOut('fast', function() {
+                                        $('.category_unshared-footer').fadeIn('fast')
+                                    })
+                                }
+                          }
+                          prevent = false;
+                        }, delay);
+                      })
+                      .on("dblclick", function() {
+                        clearTimeout(timer);
+                        prevent = true;
+                    });                            
                 });
-                $('.modal-title').html('2단계');
             });
-        }
+        });
+        $('.modal-title').html('2단계');
+    });
+}
 /*URL 추가 3단계 모달*/
 function showShareForm() {
-  $('.categoryBox').fadeOut('fast', function() {
-    $('.shareBox').fadeIn('fast');
-    $('.category_share-footer').fadeOut('fast', function() {
-      $('.share-footer').fadeIn('fast');
-    })
-    $('.modal-title').html('3단계')
-  })
+	$('.categoryBox').fadeOut('fast', function() {
+		$('.shareBox').fadeIn('fast');
+		$('.category_share-footer').fadeOut('fast', function() {
+			$('.share-footer').fadeIn('fast');
+		})
+		$('.modal-title').html('3단계')
+	})
 }
 
-/*URL 추가 1단계 모달 바로열기*/
+/* URL 추가 1단계 모달 바로열기 */
 function openUrlModal() {
-  showUrlForm();
-  setTimeout(function() {
-    $('#addBookmarkModal').modal('show');
-  }, 230);
+	showUrlForm();
+	setTimeout(function() {
+		$('#addBookmarkModal').modal('show');
+	}, 230);
 }
 
 /*URL 추가 2단계 모달 바로열기*/

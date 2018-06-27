@@ -1,0 +1,26 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+/* 헤더 로고 폰트 */
+@import url('https://fonts.googleapis.com/css?family=Gugi');
+/* 한글 폰트*/
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/* Team Page CSS START */
+.my .container-fluid .row{
+    margin-top: 100px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 20px;
+    height: 150px;
+    border : 1px solid #222d32;
+}
+
+.my .container-fluid,
+.container-fluid,
+bdoy .container-fluid{
+    padding-left: 110px;
+    padding-right: 110px;
+    
+}
+
+/* Team Page CSS END */

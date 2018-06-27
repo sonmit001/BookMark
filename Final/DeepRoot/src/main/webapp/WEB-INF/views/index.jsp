@@ -2,6 +2,63 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>	
 <%@ taglib prefix="se" uri="http://www.springframework.org/security/tags" %>
+
+	<!-- Main에서 개인 북마크로 가져가기 모달 START -->
+	<div id="mainIndiModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mainIndiModalLabel">
+		<div id="main-modal-controller">
+			<div id="main-modal-center">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="gridSystemModalLabel">북마크 가져가기</h4>
+						</div>
+						<div class="modal-body">
+							<div class="completed-modal-left">
+								<form id="form-to-mybookmark" action="user/addtomybookmark.do" method="post">
+					                <h4 class="completed-modal-from"><b>URL :</b>
+					                	<input type="text" class="indishare-url" value="" name="url" readonly></h4>
+									<input type="hidden" class="indishare-urlname" value="" name="urlname" readonly>
+									<input type="hidden" class="indishare-userpid" value="" name="pid" readonly>
+									<input type="hidden" class="indishare-abid" value="" name="abid" readonly>
+									<input type="hidden" class="indishare-gid" value="" name="gid" readonly>
+								</form>
+				            </div>
+				            <hr>
+				            <div class="completed-modal-left">
+				                <h4 class="completed-modal-to"><b>가져가기 : </b></h4>
+				
+				                <!-- Dropdown -->
+				                <div class="dropdown completed-modal-dropdown">
+				                    <button id="dropdownMenuButton" class="btn btn-secondary indishare dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				                    	Click <span class="caret"></span>
+				                    </button>
+				                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				                        <li id="dropdown-my-book" class="dropdown-i-tem">My Bookmark</li>
+				                        <hr class="divider-hr">
+				                        <li class="dropdown-item dropdown-submenu">
+				                            <a tabindex="-1">Group</a>
+				                        </li>
+				                    </div>
+				                </div>
+				
+				                <div id="jstree-to-bottom" style="clear: both;"></div>
+				            </div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default indishare" data-dismiss="modal">취소</button>
+							<button id="into-my-bookmark" type="button" class="btn btn-primary" style="display: block;">확인</button>
+							<button id="into-group-bookmark" type="button" class="btn btn-primary" style="display: none;">확인</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+		</div>
+	</div>
+	<!-- MAIN to MY BOOK 가져가기 div END -->
+
 	<!-- Home slider START-->
     <section id="home-slider">
         <div class="container">
@@ -34,14 +91,14 @@
                                     <div class="box">
                                         <div class="content">
                                             <div class="social">
-                                                <a class="circle github" href="/auth/github">
-                                                        <i class="fa fa-github fa-fw" ></i>
+                                                <a class="circle github" href="#">
+                                                        <i class="fab fa-github" ></i>
                                                     </a>
-                                                <a id="google_login" class="circle google" href="/auth/google_oauth2">
-                                                        <i class="fa fa-google-plus fa-fw"></i>
+                                                <a id="google_login" class="circle google" href="#">
+                                                        <i class="fab fa-google"></i>
                                                     </a>
-                                                <a id="facebook_login" class="circle facebook" href="/auth/facebook">
-                                                        <i class="fa fa-facebook fa-fw"></i>
+                                                <a id="facebook_login" class="circle facebook" href="#">
+                                                        <span class="naver">N</span>
                                                     </a>
                                             </div>
                                             <div class="division">
@@ -163,7 +220,7 @@
                           </span>
                         </div>
                         <div id="category-display" class="col-sm-12 category-items">
-                            <div id="showall" class="category reddiv" style="background-color: #7bbfa8">
+                            <div id="showall" class="category reddiv" style="background-color: #008B8B">
                                 <span class="category-title">Show All</span></div>
                             <c:forEach items="${categoryList}" var="cList">
                             	<div id="${cList.acid}" data-category="${cList.acname}" class="category" style="background-color: ${cList.color}">
@@ -187,16 +244,33 @@
                                     <span class="title">${cList.acname}</span>
                                 </h2>
                                 <ul>
-                                	<c:forEach items="${bookList}" var="bList">
+                                	<c:set var="index">1</c:set>
+                                	<c:forEach items="${bookList}" var="bList" varStatus="status">
                                 	<c:choose>
                                 		<c:when test="${cList.acid == bList.acid}">
                                			<li>
-	                                        <button class="url_hover_btn" type="button"><img class="zoom_img" src="icon/url_save.png" data-toggle="modal" onclick="openUrlModal()"></button>
-	                                        <button class="url_hover_btn" type="button"><img class="zoom_img" src="icon/open_preview.png" onclick="preview(${bList.abid})"></button>
+                               				<se:authorize access="isAuthenticated()">
+	                                        <button class="url_hover_btn" type="button" data-toggle="modal" data-target="#mainIndiModal">
+	                                        	<img class="zoom_img" src="icon/url_save.png"></button>
+	                                       	</se:authorize>
+	                                        <button class="url_hover_btn" type="button">
+	                                        	<img class="zoom_img" src="icon/open_preview.png" onclick="preview(${bList.abid})"></button>
 	                                        <img class="favicon" src="https://www.google.com/s2/favicons?domain=${bList.url}" alt="">
-	                                        <p class="url" data-url="${bList.url}"
-	                                        			   data-regdate="${bList.regdate}"
-	                                        			   data-views="${bList.view}">${bList.urlname}<img class="url_link_btn" src="icon/open_link.png"></p>
+	                                        <p class="url ${bList.abid}" data-abid="${bList.abid}"
+				                                        			     data-url="${bList.url}"
+				                                        			     data-regdate="${bList.regdate}"
+				                                        			     data-views="${bList.view}"
+				                                        			     data-urlname="${bList.urlname}">${bList.urlname}
+	                                        			   <img class="url_link_btn" src="icon/open_link.png">
+	                                        			   <c:if test="${index <= 2}">
+	                                        			   		<i class="fas fa-h-square" style="color: #ff5400;"></i>
+	                                        			   		<c:set var="index" value="${index + 1}"></c:set>
+	                                        			   		
+	                                        			   </c:if>
+	                                        			   <script type="text/javascript">
+	                                        			   		isNewURL("${bList.abid}", "${bList.regdate}");
+	                                        			   </script>
+	                                        </p>
 	                                    </li>
                                 		</c:when>
                                 	</c:choose>
@@ -221,7 +295,17 @@
                         </div>
                         <div id="preview_content" >
                             <div id="layout">미리보기: Page Image</div>
-                            <div id="comment" >설명 Details</div>
+                            <div id="comment" >
+                            	<div id="comment-detail" >
+                            		설명 Detail
+                            	</div>
+                            	<div id="ajax-loading-div">
+                            	</div>
+                            	<div id="world-ranking-visitor">
+                            	</div>
+                            	<div id="url-sub-domain">
+                            	</div>
+                            </div>
                         </div>
                         <div id="advertise_content">
 

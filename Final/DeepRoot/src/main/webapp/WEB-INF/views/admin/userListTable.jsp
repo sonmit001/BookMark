@@ -3,10 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script type="text/javascript">
+	var userListTable = null;
 	$(function(){
-		$("#userListTable").DataTable({
+		userListTable = $("#userListTable").DataTable({
 			responsive: true
 		});
+		
 	});
 	
 	/*회원삭제  스크립트 START*/
@@ -14,8 +16,8 @@
 		$.confirm({
 			title : '회원 삭제',
 			content : '삭제하시겠습니까?',
-			theme: 'dark',
-			type: 'orange',
+			theme: 'light',
+			type: 'green',
 			backgroundDismiss: true,
 			closeIcon: true,
 			buttons: {
@@ -23,7 +25,8 @@
 		        	btnClass : 'btn-danger',
 		        	keys: ['enter'],
 		        	action : function () {
-		        		$("#" + nname).remove(); // dataTable에서 지우기
+		        		userListTable.row($('tr[id=' + nname + ']')).remove().draw(); // dataTable에서 지우기
+		        		
 		    			$.ajax({
 		    				url: "blacklist.do",
 		    				type: "post",
@@ -33,6 +36,7 @@
 		    				success : function(data){
 		    					console.log(data);
 		    				}
+		    			
 		    			});
 		        	}
 		        },

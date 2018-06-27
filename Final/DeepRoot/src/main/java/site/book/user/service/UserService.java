@@ -1,5 +1,10 @@
 package site.book.user.service;
 
+/**
+ * @Class : SocialController.java
+ * @Date : 2018. 6. 10.
+ * @Author : 김희준, 김태웅
+ */
 import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -159,7 +164,7 @@ public class UserService {
 		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		int result = 0;
 		String changed_file_name = "";
-		System.out.println(user);
+		//System.out.println(user);
 		//업로드한 파일이 있다면,
 		if (file != null) {
 			String filename = file.getOriginalFilename();

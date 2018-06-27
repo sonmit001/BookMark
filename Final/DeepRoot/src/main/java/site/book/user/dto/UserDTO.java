@@ -1,8 +1,11 @@
+/*
+ * @Project : DeepRoot
+ * @FileName : U_BookDTO.java
+ * @Date : 2018. 6. 11.
+ * @Author : 김태웅
+*/
+
 package site.book.user.dto;
-
-import java.util.List;
-
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 public class UserDTO {
 	private String uid;

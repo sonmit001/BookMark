@@ -45,12 +45,12 @@ public class HomepageCapture {
 		String path = this.getClass().getResource("").getPath();
 		
 		int index = path.indexOf("WEB-INF");
-		System.out.println(path);
+		//System.out.println(path);
 		
 		String realpath = path.substring(0, index);
 		/*String path = request.getServletContext().getRealPath("/");*/
 		
-		System.out.println(realpath);
+		//System.out.println(realpath);
 		
 		String exePath = realpath + "\\resources\\chromedriver.exe";
 		System.setProperty("webdriver.chrome.driver", exePath);

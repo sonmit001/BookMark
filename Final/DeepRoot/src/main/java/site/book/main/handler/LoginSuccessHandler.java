@@ -21,7 +21,7 @@ import site.book.user.dto.UserDTO;
 import site.book.user.service.UserService;
 
 /**
- * @Class : AdminController.java
+ * @Class : LoginSuccessHandler.java
  * @Date : 2018. 6. 12.
  * @Author : 김태웅
  */
