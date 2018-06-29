@@ -38,8 +38,11 @@ import site.book.admin.dto.NoticeDTO;
 import site.book.admin.service.A_BookService;
 import site.book.admin.service.A_CategoryService;
 import site.book.admin.service.NoticeService;
+import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.G_MemberDTO;
+import site.book.team.dto.G_MyAlarmDTO;
 import site.book.team.dto.TeamDTO;
+import site.book.team.service.G_AlarmService;
 import site.book.team.service.TeamService;
 import site.book.user.dto.EmailAuthDTO;
 import site.book.user.dto.UserDTO;
@@ -67,6 +70,9 @@ public class MainController {
 	
 	@Autowired
 	private UserService user_service;
+	
+	@Autowired
+	G_AlarmService galarmservice;
 	
 	// 희준
 	@Autowired
@@ -105,6 +111,11 @@ public class MainController {
 			model.addAttribute("headerTeamList", headerTeamList);
 		}
 		
+		// 그룹 초대/강퇴/완료 알람  쪽지 리스트
+		List<G_MyAlarmDTO> headerAlarmList = galarmservice.getAlarmList(uid);
+		model.addAttribute("headerAlarmList", headerAlarmList);
+		
+		// 관리자 공지사항 쪽지 리스트
 		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
 		model.addAttribute("headerNoticeList", headerNoticeList);
 		

@@ -219,7 +219,7 @@ function preview(abid){
 		type: "post",
 		data : { abid : abid },// 북마크 ID
 		beforeSend: function() {
-			$('#layout').html('<img src="${pageContext.request.contextPath}/images/loading/preview.gif" style="margin-top: 0;"/>');
+			$('#layout').html('<img src="/bit/images/loading/preview.gif" style="margin-top: 0;"/>');
 		},
 		complete: function() {
 			$('#layout').html('');
@@ -227,7 +227,7 @@ function preview(abid){
 		success : function(data){
 			//console.log(data);
 			$('#comment').fadeOut(10, function(){
-				var layout = '<img src="${pageContext.request.contextPath}/images/homepage/' + abid + '.png" style="width:100%; height:100%">';
+				var layout = '<img src="/bit/images/homepage/' + abid + '.png" style="width:100%; height:100%">';
 				$("#layout").html(layout);
 				
 				var comment = "";
@@ -256,7 +256,7 @@ function previewDetail(abid) {
 		type: "post",
 		data : { abid : abid },// 북마크 ID
 		beforeSend: function() {
-			$('#ajax-loading-div').html('<img id="loading-img" src="${pageContext.request.contextPath}/images/loading/loading.gif" style="width:35%; ma"/>');
+			$('#ajax-loading-div').html('<img id="loading-img" src="/bit/images/loading/loading.gif" style="width:35%;"/>');
 		},
 		complete: function() {
 			$('#ajax-loading-div').html('');

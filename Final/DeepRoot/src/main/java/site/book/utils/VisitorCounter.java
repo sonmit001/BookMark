@@ -8,6 +8,7 @@
 
 package site.book.utils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
@@ -17,9 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.FrameworkServlet;
 
 import site.book.admin.dto.VisitorDTO;
 import site.book.admin.service.VisitorService;
@@ -38,12 +41,12 @@ public class VisitorCounter implements HttpSessionListener{
 		
 		HttpSession session = se.getSession();
 		
+		ServletContext conext = session.getServletContext();
 		
-		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(session.getServletContext()); 
-		VisitorService visitor_service = (VisitorService)context.getBean("visitorService");
-		
-		/*ApplicationContext context = new GenericXmlApplicationContext("classpath*:/WEB-INF/spring/root-context.xml");
-		VisitorService visitor_service = context.getBean("visitorService", VisitorService.class);*/
+		//Spring Context 가져오기
+		WebApplicationContext wContext = WebApplicationContextUtils.getWebApplicationContext(conext, FrameworkServlet.SERVLET_CONTEXT_PREFIX + "appServlet");
+
+		VisitorService visitor_service = (VisitorService)wContext.getBean("visitorService");
 		
 		//request를 파라미터에 넣지 않고도 사용할수 있도록 설정
 		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();

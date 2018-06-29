@@ -288,6 +288,20 @@ public class UserService {
 		return result;
 	}
 	
+	// 전 회원의 닉네임 가져오기 기능
+	public List<String> getAllUserNname(String nname) {
+		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
+		List<String> result = null;
+		
+		try {
+			result = userDAO.getAllUserNname(nname);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	// 희준
 	
 	// 전체 회원수 가져오기
@@ -298,7 +312,7 @@ public class UserService {
 		try {
 			row = userDAO.allUser();
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		return row;

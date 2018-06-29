@@ -1,31 +1,18 @@
-@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
-/* 헤더 로고 폰트 */
-@import url('https://fonts.googleapis.com/css?family=Gugi');
-/* 한글 폰트*/
-@import url('https://fonts.googleapis.com/css?family=Jua');
-@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
-body{
-	font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
-}
 .container-fluid.team-container{
     padding-bottom: 0px;
     margin-bottom: 0px;
     width: 1350px;
-    
 }
-
-.whole-body{
+.container-fluid.team-container > .row > .col-sm-12{
     margin-top:100px;
 }
-
 .container-fluid.team-container .row .col-sm-12{
     border : 5px double #000;
     margin-bottom: 0px;
     height: 100%;
     padding-bottom: 15px;
-    padding-top: 15px;
+    padding-top: 10px;
     background-color: #e3d1b9;
 }
 
@@ -53,36 +40,13 @@ body{
     background-color: #fff0;
 }
 
-.container-fluid{
+.container-fluid,
+bdoy .container-fluid{
     padding-left: 80px;
     padding-right: 55px;
 }
 
-/* Top Content CSS START */
-.teamname{
-	height: 50px;
-	font-family: 'Jua';
-	font-size: 35px;
-	color: #596359;
-}
-
-.teamname-ico{
-	font-size: 40px;
-	font-style: oblique;
-	padding-right: 15px;
-	color: #FF4057;
-	vertical-align: middle;
-}
-
-/* Top Content CSS END */
-
 /* group-member css START */
-.group-member{
-    padding: 5px;
-    height: 700px;
-    background-color: #fff0;
-}
-
 .group-member-content{ 
     height: 100%;
     width: 100%;
@@ -92,7 +56,6 @@ body{
     background-color: #fff;
 }
 .group-member-header {
-	font-family: 'Jua';
     min-height: 45px;
     max-height: 45px;
     padding: 10px;
@@ -103,7 +66,7 @@ body{
 }
 .group-member-header > p {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
 }
 .group-member-header > p > .fa-user-plus {
     margin-top: 3px;
@@ -181,13 +144,22 @@ body{
 }
 .col-sm-12 .col-sm-7{ height: 100%;}
 .col-sm-12 .col-sm-5.option{
+    height: 100%;
+    padding-left: 0px;
+    padding-right: 10px;
+    padding-top: 25px;
     text-align: right;
-    
+    vertical-align: middle;
 }
 .team-ico{
     font-size: 25px;
     margin-right: 10px;
     color: #fb7070;
+}
+.team-insert,
+.team-ban,
+.team-option{
+
 }
 
 .col-sm-5.option .option-ico a{
@@ -200,6 +172,12 @@ body{
     padding-left: 5px;
 }
 /******/
+/* 민재 div css*/
+.group-member{
+    padding: 5px;
+    height: 700px;
+    background-color: #fff0;
+}
 
 /* group-member css END */
 
@@ -228,7 +206,6 @@ body{
     background-color: #fff;
 }
 .chat-header {
-	font-family: 'Jua';
     padding: 5px;
     min-height: 45px;
     max-height: 45px;
@@ -237,7 +214,7 @@ body{
 }
 .chat-header .chatting-roomname {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
     padding: 5px 0px 0px 10px;
     float: left;
     color : #fff;
@@ -361,22 +338,11 @@ body{
     height: 1px;
     background: #fff0;
 }
-
 /* 채팅 한번 치면 일어나는 놈들 */
 /* group-chart CSS END  */
 
 
 /* group-category CSS START */
-a{
-	text-decoration: none;
-	color: #000;
-}
-a:hover,
-a:focus,
-a:active {
-	text-decoration: none;
-}
-
 .jstree-from::-webkit-scrollbar{width: 10px;}
 .jstree-from::-webkit-scrollbar-track {background-color:#fff0;}
 .jstree-from::-webkit-scrollbar-thumb {background-color:#7bbfa8; border-radius: 10px;}
@@ -388,7 +354,7 @@ a:active {
 }
 
 .group-category {
-    height: 700px;
+    height: 100%;
     width: 32%;
     padding: 5px;
     background-color: #fff0;
@@ -403,7 +369,6 @@ a:active {
 }
 
 .group-category-header {
-	font-family: 'Jua';
     padding: 10px;
     min-height: 45px;
     max-height: 45px;
@@ -414,7 +379,7 @@ a:active {
 
 .group-category-header > span{
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
     float: left;
     color: #fff;
 }
@@ -432,6 +397,10 @@ a:active {
     overflow-y: auto;
 }
 
+/*임시 jstree css, JSP로 넘어갈때 지우세요*/
+.jstree-from > ul, .jstree-from > ul > ul{
+    list-style : none;
+}
 
 /* group-category CSS END */
 

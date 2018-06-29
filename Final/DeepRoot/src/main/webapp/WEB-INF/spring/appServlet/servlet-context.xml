@@ -5,7 +5,9 @@
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
@@ -13,8 +15,9 @@
 
 	<context:component-scan base-package="site.book.*" />
 	<context:annotation-config />
-	<mvc:annotation-driven />	
-
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler/>
+	
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
@@ -50,4 +53,14 @@
 	<task:annotation-driven executor="executor" scheduler="scheduler"/>
 	<task:scheduler id="scheduler"/>
 	<task:executor id="executor" />
+	
+	<!-- WebSocket -->
+	<!-- <websocket:message-broker application-destination-prefix="/socket">
+		<websocket:stomp-endpoint path="/endpoint">
+			<websocket:sockjs />
+		</websocket:stomp-endpoint>
+		<websocket:simple-broker prefix="/subscribe"/>
+	</websocket:message-broker> -->
+	
+	<bean id="visitorService" class="site.book.admin.service.VisitorService" />
 </beans>

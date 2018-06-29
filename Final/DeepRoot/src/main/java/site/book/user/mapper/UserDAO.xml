@@ -55,6 +55,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updatePwd">
         UPDATE USER SET PWD=#{pwd} WHERE UID=#{uid};
     </update>
+    
+    <select id="getAllUserNname" resultType="java.util.List">
+    	SELECT NNAME FROM USER WHERE NNAME like concat('%', #{nname}, '%');
+    </select>
 	
 	<!-- 희준 -->
 	<select id="allUser" resultType="Integer">

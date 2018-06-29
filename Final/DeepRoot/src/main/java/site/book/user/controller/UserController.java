@@ -468,27 +468,13 @@ public class UserController {
 		jarr = new JSONArray(req.getParameter("obj"));
 		//System.out.println(jarr);
 		//System.out.println(jarr.length());
-		List<U_BookDTO> list = new ArrayList<U_BookDTO>();
-		Map<String, Object> map = new HashMap<String, Object>();
 		
-		
-		int length = jarr.length();
-		for(int i = 0 ; i< length ; i++) {
-			U_BookDTO dto = new U_BookDTO();
-			
-			dto.setUrl((String)jarr.getJSONObject(i).get("url"));
-			dto.setUrlname((String)jarr.getJSONObject(i).get("urlname"));
-			dto.setPid(Integer.valueOf((String)jarr.getJSONObject(i).get("pid")));
-			dto.setUid(uid);
-			
-			list.add(dto);
+		int result = u_bookservice.insertUrlFromCompletedGroup(jarr , uid);
+		if(result>0) {
+			model.addAttribute("result", "success");
+		}else {
+			model.addAttribute("result","fail");
 		}
-		//System.out.println(list.toString());
-		map.put("list", list);
-		u_bookservice.insertUrlFromCompletedGroup(map);
-		
-		model.addAttribute("result", "success");
-			
 		return jsonview;
 	}
 	// 함수 End

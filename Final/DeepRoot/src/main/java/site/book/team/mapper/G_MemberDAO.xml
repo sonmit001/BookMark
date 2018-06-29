@@ -15,5 +15,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertGMember">
 		INSERT INTO G_MEMBER(UID, GID, GRID) VALUES(#{uid}, #{gid}, #{grid})
 	</insert>
+	<!--준석  -->
+	<select id="selectGMemberlist" resultType="site.book.team.dto.G_MemberDTO">
+		select u.NNAME , gm.UID, gm.GID, gm.CCOUNT, gm.GRID
+		from G_MEMBER gm join USER u ON gm.UID = u.UID
+		where GID = #{gid}
+	</select>
 	
+	<!-- 태웅 -->
+	<select id="isGroupMember" resultType="Integer">
+		select count(*) from `G_MEMBER` where UID = #{uid} and GID = #{gid}
+	</select>
+	
+	<insert id="sendInviteMemo">
+		INSERT INTO `G_ALARM` () VALUES (#{toid}, #{fromid}, #{gid}, 1, sysdate())
+	</insert>
 </mapper>

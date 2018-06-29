@@ -11,4 +11,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES (#{url}, #{urlname}, SYSDATE(), #{gid}, #{pid}, #{uid})
 	</insert>
 	
+	<insert id="insertGroupBookmarkList" parameterType="java.util.List">
+		INSERT INTO G_BOOK (URL, URLNAME, REGDATE, GID, PID, UID) 
+		VALUES 
+		<foreach collection="list" item="gblist" separator=",">
+		( #{gblist.url}, #{gblist.urlname}, SYSDATE(), #{gblist.gid}, #{gblist.pid}, #{gblist.uid} )
+		</foreach>
+	</insert>
+	
 </mapper>

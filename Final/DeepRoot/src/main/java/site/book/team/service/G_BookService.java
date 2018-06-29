@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,6 +115,64 @@ public class G_BookService {
 		}
 		
 		return result;
+	}
+
+	//명수
+	//그룹페이지 jstree 가져오기
+	public JSONArray getTeamJstree(String gid, String uid) {
+		G_BookDAO dao = sqlsession.getMapper(G_BookDAO.class);
+		JSONArray jsonArray = new JSONArray();
+	
+		List<G_BookDTO> list;
+		
+		try {
+			list = dao.getTeamJstree(gid);
+			if(list.size() ==0) {
+				
+				JSONObject jsonobject = new JSONObject();
+				//그룹에 아무 카테고리가 없을 경우 root 생성
+				dao.insertRootFolder(gid, uid);
+				int gbid = dao.getCurrentGBID();
+				
+				jsonobject.put("id", gbid);
+				jsonobject.put("parent", "#");
+				jsonobject.put("text", "ROOT");
+				jsonobject.put("icon", "fa fa-folder");
+				jsonobject.put("uid", uid);
+				
+				jsonArray.put(jsonobject);
+					
+			}else {
+				
+				for(int i =0;i<list.size();i++) {
+					
+					JSONObject jsonobject = new JSONObject();
+					
+					String parentid = String.valueOf(list.get(i).getPid());
+					
+					if(parentid.equals("0") || parentid.equals(""))
+						jsonobject.put("parent", "#");
+					else
+						jsonobject.put("parent", parentid);
+					
+					if(list.get(i).getUrl() == null)
+						jsonobject.put("icon", "fa fa-folder");	//favicon 추가
+					else {
+						jsonobject.put("icon", "https://www.google.com/s2/favicons?domain="+list.get(i).getUrl());	//favicon 추가
+					}
+					jsonobject.put("id", list.get(i).getGbid());
+					jsonobject.put("text", list.get(i).getUrlname());
+					jsonobject.put("uid",uid);
+					
+					jsonArray.put(jsonobject);
+					
+				}
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return jsonArray;
 	}
 	
 }

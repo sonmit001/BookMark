@@ -22,7 +22,16 @@ public class S_U_BookDTO {
 	private String sname;
 	private String htag;
 	private String sdate;
+	private String fullurlname;
 	
+	public String getFullurlname() {
+		return fullurlname;
+	}
+
+	public void setFullurlname(String fullurlname) {
+		this.fullurlname = fullurlname;
+	}
+
 	public S_U_BookDTO() {}
 	
 	public S_U_BookDTO(int ubid, String url, int view, String uid, String nname, String sname, String htag,
@@ -58,7 +67,8 @@ public class S_U_BookDTO {
 	@Override
 	public String toString() {
 		return "S_U_BookDTO [ubid=" + ubid + ", url=" + url + ", view=" + view + ", uid=" + uid + ", nname=" + nname
-				+ ", sname=" + sname + ", htag=" + htag + ", sdate=" + sdate + "]";
+				+ ", sname=" + sname + ", htag=" + htag + ", sdate=" + sdate + ", fullurlname=" + fullurlname + "]";
 	}
+
 	
 }

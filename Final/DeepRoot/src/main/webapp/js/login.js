@@ -393,6 +393,35 @@ $(function() {
     
     
     /* 로그인 Ajax() START */
+    
+    // 이메일 형식 확인 함수
+    $('#uid').keyup(function() {
+        var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/; 
+        
+        // 이메일 길이 확인
+        if(($('#uid').val().trim() == "") || !($('#uid').val().length >= 5 )){
+                 $('.error').addClass('alert alert-danger').html("이메일은 5자 이상 입력해야 합니다.");
+        } 
+        // 이메일 형식 확인
+        else if( !(regex.test($('#uid').val())) ) {
+                 $('.error').addClass('alert alert-danger').html("형식에 맞지 않은 이메일 입니다.");
+        }
+        else{
+            $('.error').removeClass('alert alert-danger').html('');
+        }
+    })
+    
+    //비밀번호 길이 확인 함수
+    $('#pwd').blur(function() {
+        if (($('#pwd').val().trim() == "") || !($('#pwd').val().length >= 5 && $('#pwd').val().length <= 15)) {
+            $('.error').addClass('alert alert-danger').html("비밀번호는 5~15자로 입력해주세요");
+            //$('#pwd_join').focus();
+        } else {
+            $('.error').removeClass('alert alert-danger').html('');
+            $('#pwd').removeClass('clear_join').addClass('clear_join');
+        }
+    });
+    
 	$("#loginAjax").on("dblclick", function(){ });
     $("#loginAjax").on("click", function(){
     	$.ajax({ 

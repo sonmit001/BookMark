@@ -14,8 +14,8 @@
 	<title>뿌리깊은마크</title>
 
 	<!-- Latest compiled Bootstrap Common CSS -->
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
-	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+	<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script> --%>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -32,22 +32,30 @@
     
     <!-- Group Page CSS START -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/team/team.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/team/team.css?ver=2" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/mainpage/header.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/mainpage/footer.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/mainpage/responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jstreeTeam.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/team/header_icon_zoom.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/team/jquery.contextMenu.css" />
     <!-- Group Page CSS START -->
     
     <!--Script Start -->
     <script src="${pageContext.request.contextPath}/js/jstree.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/team/stomp.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/team/jquery.contextMenu.js"></script>
     <!-- Script END -->
     
     <!-- jQuery Ajax Form START -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
 	<!-- jQuery Ajax Form START -->
+	
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
 <body>
-
+	<!-- Script -->
+	<script type="text/javascript"  src="${pageContext.request.contextPath}/js/team/Teamcategory.js"></script>
 	<div id="main-header">
 		<tiles:insertAttribute name="header" />
 	</div>
@@ -61,8 +69,10 @@
 	</div>
 
 	<!-- Custom Script START -->
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/team/team.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/team/team.js?ver=1"></script>
+    <script src="${pageContext.request.contextPath}/js/team/chat_contents.js?ver=2"></script>
+    <script src="${pageContext.request.contextPath}/js/team/header_icon_zoom.js?ver=2"></script>
     <!-- Custom Script END -->
-
+    
 </body>
 </html>

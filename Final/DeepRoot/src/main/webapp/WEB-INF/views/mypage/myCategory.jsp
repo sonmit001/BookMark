@@ -59,7 +59,7 @@
 					<ul id="participatingGroupList" class="group-list-list">
 						<c:forEach items="${teamList}" var="team">
 							<li id="${team.gid}" class="list-group-item">
-								<label class="my-group-list"> ${team.gname} </label>
+								<label class="my-group-list" onclick="location.href='<%= request.getContextPath()%>/team/main.do?gid=${team.gid}'"> ${team.gname} </label>
 								<div class="pull-right action-buttons">
 									<c:choose>
 										<c:when test="${team.grid == '1'}">

@@ -20,7 +20,7 @@
 							<form id="form-to-getmybookmark" action="getmybookmark.do" method="post">
 				                <h4 class="completed-modal-from"><b>URL :</b>
 				                	<input type="text" class="indishare-url" name="url" readonly></h4>
-									<input type="hidden" class="indishare-urlname" value="" name="urlname" readonly>
+									<input type="hidden" class="indishare-urlname"  name="urlname" readonly>
 									<input type="hidden" class="indishare-userpid" value="" name="pid" readonly>
 									<input type="hidden" class="indishare-abid" value="" name="abid" readonly>
 									<input type="hidden" class="indishare-gid" value="" name="gid" readonly>
@@ -329,7 +329,7 @@
 									<td class="table-write"><a onclick="surfing_modal(this)" id="${u_booklist.nname}">${u_booklist.nname}</a></td>
 									<td class="table-date">${u_booklist.sdate}</td>
 									<td class="table-click">${u_booklist.view}</td>
-									<td class="table-icon indi-share getbookmark" data-toggle="modal" data-target="#socialIndiModal" data-title="${u_booklist.url}">
+									<td class="table-icon indi-share getbookmark" data-toggle="modal" data-target="#socialIndiModal" data-title="${u_booklist.url}" data-urlname = "${u_booklist.fullurlname}">
 										<i class="fa fa-share "></i>
 									</td>
 								</tr>

@@ -1,6 +1,8 @@
 package site.book.social.dao;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 import site.book.team.dto.G_BookDTO;
 
@@ -16,7 +18,6 @@ public interface S_BookmarkDAO {
 	// 그룹 북마크로 URL 하나 insert
 	public int insertGroupBookmark(G_BookDTO gbook) throws ClassNotFoundException, SQLException;
 	
-	
-	
 	//진수
+	public int insertGroupBookmarkList(List<Map<String, Object>> gbookList) throws ClassNotFoundException, SQLException;
 }

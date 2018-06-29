@@ -44,6 +44,9 @@ public interface UserDAO {
 	// 비밀번호 변경(비밀번호 찾기)
 	public int updatePwd(UserDTO user) throws ClassNotFoundException, SQLException;
 	
+	// 전체 회원 닉네임 GET
+	public List<String> getAllUserNname(String nname) throws ClassNotFoundException, SQLException;
+	
 	// 희준
 	
 	//전체 회원수

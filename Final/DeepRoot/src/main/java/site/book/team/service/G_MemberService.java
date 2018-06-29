@@ -9,12 +9,14 @@
 package site.book.team.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.book.team.dao.G_MemberDAO;
+import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.G_MemberDTO;
 
 @Service
@@ -36,5 +38,36 @@ public class G_MemberService {
 		
 		return row;
 	}
+	//준석
+	//그룹원 리스트 가져오기
+	public List<G_MemberDTO> selectGMemberlist(String gid){
+		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
+		List<G_MemberDTO> selectgmemberlist = null;
+		
+		try {
+			selectgmemberlist = g_MemberDAO.selectGMemberlist(gid);
+		} catch (ClassNotFoundException | SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return selectgmemberlist;
+	}
+	
+	//태웅
+	//그룹원 초대하기: 초대 쪽지 보내기
+	public int inviteUser(G_AlarmDTO alarm){
+		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
+		int result = 0;
+		
+		try {
+			result = g_MemberDAO.sendInviteMemo(alarm);
+		} catch (Exception e) {
+			/*e.printStackTrace();*/
+		}
+		
+		return result;
+	}
+	
 	
 }

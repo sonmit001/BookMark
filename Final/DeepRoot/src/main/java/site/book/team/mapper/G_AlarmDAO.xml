@@ -7,4 +7,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteAllGroupAlarm">
 		DELETE FROM G_ALARM WHERE TOID = #{uid} OR FROMID = #{uid}
 	</delete>
+	
+	<!-- 태웅 -->
+	<select id="alreadySend" resultType="Integer">
+		select count(*) from `G_ALARM` where TOID=#{toid} and FROMID=#{fromid} and GID=#{gid} and GAID=1
+	</select>
+	
+	<select id="getAlarmList" resultType="site.book.team.dto.G_MyAlarmDTO">
+		SELECT TOID, you.NNAME as FROMID, team.GID, team.GNAME, kind.GANAME, SENDDATE 
+		FROM `G_ALARM` msg 
+		JOIN `TEAM` team ON msg.GID= team.GID
+		JOIN `G_ALARM_KIND` kind ON msg.GAID= kind.GAID
+		JOIN `USER` you ON msg.FROMID= you.UID
+		where TOID = #{uid}
+		order by SENDDATE
+	</select>
 </mapper>

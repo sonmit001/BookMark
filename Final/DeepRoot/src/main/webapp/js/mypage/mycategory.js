@@ -556,13 +556,15 @@ $(document).ready(function(){
 					}
 				}
 			}
-		}).bind("select_node.jstree",function(e,data){
+		})
+		.bind("select_node.jstree",function(e,data){
 			var href = data.node.a_attr.href;
 			
 			window.open(href); 
 			$('#jstree_container_child').jstree().deselect_all(true);			
 			
-		}).bind("delete_node.jstree",function(event,data){
+		})
+		.bind("delete_node.jstree",function(event,data){
 			
 			var node_id = data.node.id;
 			var form = {node : node_id}
@@ -579,7 +581,8 @@ $(document).ready(function(){
 					$('#loading').html("");
 				}
 			})  
-		}).bind('rename_node.jstree', function(event, data){
+		})
+		.bind('rename_node.jstree', function(event, data){
 			var node_id = data.node.id;
 			var node_text = data.text;
 			
@@ -596,7 +599,8 @@ $(document).ready(function(){
 						alert('수정 실패');
 				}
 			});   
-		}).bind("load_node.jstree",function(event,data){
+		})
+		.bind("load_node.jstree",function(event,data){
 			var node_ids = [];
 			var create_icon = document.createElement("i");
 			create_icon.setAttribute("class","fas fa-share-alt");
@@ -609,6 +613,7 @@ $(document).ready(function(){
 				}
 			}
 		})
+		
 		
 	//완료 그룹 모달 왼쪽 jstree
 	$("#jstree-from-left").jstree({

@@ -1,10 +1,17 @@
 package site.book.social.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import site.book.social.dao.S_BookmarkDAO;
 import site.book.social.dao.TopDAO;
@@ -31,6 +38,39 @@ public class SurfingService {
 		
 		return list;
 	}
+	// 여러 URL을 자신의 그룹 북마크에 추가 
+	public int insertGroupBookmarkList(JSONArray obj, String uid ) {
+		S_BookmarkDAO dao = sqlsession.getMapper(S_BookmarkDAO.class);
+		int result = 0;
+		
+		List<Map<String, Object>> url_data_list = new ArrayList<>();
+		
+		for (int i = 0 ; i< obj.length() ; i++) { 
+			String url = (String)obj.getJSONObject(i).get("url");
+			if( url != null ) {
+				Map<String, Object> dataList = new HashMap<>();
+				
+				dataList.put("gid", Integer.valueOf((String)obj.getJSONObject(i).get("gid")));
+				dataList.put("pid", Integer.valueOf((String)obj.getJSONObject(i).get("pid")));
+				dataList.put("uid", uid);
+				dataList.put("url", url);
+				dataList.put("urlname", (String)obj.getJSONObject(i).get("urlname"));
+				
+				url_data_list.add(dataList);
+			}
+		}
+		
+		try {
+			if(url_data_list.size()!=0) {
+				result = dao.insertGroupBookmarkList(url_data_list);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	
 	// 민재
 	// 한 URL을 자신의 그룹 북마크에 추가 
@@ -40,8 +80,8 @@ public class SurfingService {
 		
 		try {
 			result = dao.insertGroupBookmark(gbook);
-		}catch (Exception e) {
-			/*e.printStackTrace();*/
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		return result;
