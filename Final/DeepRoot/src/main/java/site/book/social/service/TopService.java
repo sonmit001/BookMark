@@ -42,13 +42,13 @@ public class TopService {
 		}
 
 		// 반복문 돌면서 가장 urlname 넣어주기
-		for (int i = 0; i < list.size(); i++) {
+		/*for (int i = 0; i < list.size(); i++) {
 			try {
 				list.get(i).setUrlname(top_dao.selectUTop5Urlname(list.get(i).getUrl()));
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 
 		return list;
 	}
@@ -65,13 +65,13 @@ public class TopService {
 		}
 
 		// 반복문 돌면서 가장 urlname 넣어주기
-		for (int i = 0; i < list.size(); i++) {
+		/*for (int i = 0; i < list.size(); i++) {
 			try {
 				list.get(i).setUrlname(top_dao.selectGTop5Urlname(list.get(i).getUrl()));
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 
 		return list;
 	}
@@ -88,13 +88,13 @@ public class TopService {
 		}
 
 		// 반복문 돌면서 가장 urlname 넣어주기
-		for (int i = 0; i < list.size(); i++) {
+		/*for (int i = 0; i < list.size(); i++) {
 			try {
 				list.get(i).setUrlname(top_dao.selectATop5Urlname(list.get(i).getUrl()));
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		
 		return list;
 	}

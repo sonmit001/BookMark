@@ -228,4 +228,19 @@ public class TeamService {
 		}
 		return result;
 	}
+
+	// 그룹 페이제에서 DND
+	public int dropTeamNode(HashMap<String, String> param) {
+
+		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
+		int result = 0;
+		
+		try {
+			g_bookDAO.dropTeamNode(param);
+			result= g_bookDAO.getCurrentGBID();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

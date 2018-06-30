@@ -9,7 +9,7 @@
 }
 
 .skin-blue .main-header .navbar {
-    background-color: #222d32;
+    background-color: #444b52;
     padding-right: 50px;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .skin-blue .main-header .navbar .sidebar-toggle:hover {
-    background-color: #222d32
+    background-color: #444b52
 }
 
 @media (max-width:767px) {
@@ -54,12 +54,12 @@
         color: #fff
     }
     .skin-blue .main-header .navbar .dropdown-menu li a:hover {
-        background: #222d32
+        background: #444b52
     }
 }
 
 .skin-blue .main-header .logo {
-    background-color: #222d32;
+    background-color: #444b52;
     color: #fff;
     border-bottom: 0 solid transparent ;
     font-family: 'Gugi';
@@ -73,7 +73,7 @@
 }
 
 .skin-blue .main-header li.user-header {
-    background-color: #222d32;
+    background-color: #444b52;
 }
 
 .skin-blue .content-header {
@@ -84,7 +84,7 @@
 .skin-blue .wrapper,
 .skin-blue .main-sidebar,
 .skin-blue .left-side {
-    background-color: #222d32;
+    background-color: #444b52;
 }
 
 .skin-blue .user-panel > .info,
@@ -175,7 +175,7 @@
 }
 
 .skin-blue.layout-top-nav .main-header > .logo {
-    background-color: #222d32;
+    background-color: #444b52;
     color: #fff;
     border-bottom: 0 solid transparent
 }

@@ -11,16 +11,15 @@ every 1 day
 starts '2018-06-15 04:00:00'
 do
 BEGIN
-	create or replace view U_Top5 as select url, count(*) as ucount from U_BOOK where url is not null and abid is null group by url order by ucount desc limit 5;
-    create or replace view G_Top5 as select url, count(*) as ucount from G_BOOK where url is not null and abid is null group by url order by ucount desc limit 5;
-    create or replace view A_Top5 as select a.url, count(*) as ucount from (select u.url, u.urlname from U_BOOK u where u.url is not null and u.abid is null union all select g.url, g.urlname from G_BOOK g where g.url is not null and g.abid is null) as a group by a.url order by ucount desc limit 5;
+	create or replace view U_Top5 as select s.url, s.urlname, sum(s.ucount) as ucount from (select u.URL, u.URLNAME, count(*) as ucount from U_BOOK u where u.url is not null and u.abid is null group by u.url, u.urlname order by ucount desc) as s group by s.url order by ucount desc limit 5;
+    create or replace view G_Top5 as select s.url, s.urlname, sum(s.ucount) as ucount from (select u.URL, u.URLNAME, count(*) as ucount from G_BOOK u where u.url is not null and u.abid is null group by u.url, u.urlname order by ucount desc) as s group by s.url order by ucount desc limit 5;
 END //
  -->
 
 <mapper namespace="site.book.social.dao.TopDAO">
 
 	<select id="selectUTop5" resultType="site.book.social.dto.TopDTO">
-		select URL, UCOUNT from U_Top5
+		select URL, URLNAME, UCOUNT from U_Top5
 	</select>
 	
 	<select id="selectUTop5Urlname" resultType="String">
@@ -28,7 +27,7 @@ END //
 	</select>
 	
 	<select id="selectGTop5" resultType="site.book.social.dto.TopDTO">
-		select URL, UCOUNT from G_Top5
+		select URL, URLNAME, UCOUNT from G_Top5
 	</select>
 	
 	<select id="selectGTop5Urlname" resultType="String">

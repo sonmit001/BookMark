@@ -157,9 +157,7 @@ public class AdminController {
 		model.addAttribute("group_bookmark_chartdata", group_bookmark_chartdata);
 		
 		// 공지사항 리스트 가져오기
-		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
-		model.addAttribute("headerNoticeList", headerNoticeList);
-
+		model.addAttribute("headerNoticeList", getNotices());
 		
 		return "admin.main";
 	}
@@ -174,8 +172,7 @@ public class AdminController {
 		model.addAttribute("url_by_category", url_by_category);
 		
 		// 공지사항 리스트 가져오기
-		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
-		model.addAttribute("headerNoticeList", headerNoticeList);
+		model.addAttribute("headerNoticeList", getNotices());
 		
 		return "admin.mainBookList";
 	}
@@ -191,8 +188,7 @@ public class AdminController {
 		model.addAttribute("g_list", g_list);
 		
 		// 공지사항 리스트 가져오기
-		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
-		model.addAttribute("headerNoticeList", headerNoticeList);
+		model.addAttribute("headerNoticeList", getNotices());
 		
 		return "admin.social";
 	}
@@ -205,8 +201,7 @@ public class AdminController {
 		model.addAttribute("userlist", userlist);
 		
 		// 공지사항 리스트 가져오기
-		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
-		model.addAttribute("headerNoticeList", headerNoticeList);
+		model.addAttribute("headerNoticeList", getNotices());
 		
 		return "admin.userListTable";
 	}
@@ -218,10 +213,15 @@ public class AdminController {
 		model.addAttribute("grouplist", grouplist);
 		
 		// 공지사항 리스트 가져오기
-		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
-		model.addAttribute("headerNoticeList", headerNoticeList);
+		model.addAttribute("headerNoticeList", getNotices());
 		
 		return "admin.groupListTable";
+	}
+	
+	// 공지사항 리스트로 가져오기
+	private List<NoticeDTO> getNotices() {
+		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
+		return headerNoticeList;
 	}
 	
 	// 그룹 삭제
@@ -313,8 +313,6 @@ public class AdminController {
 	// URL 추가하기
 	@RequestMapping("addUrl.do")
 	public View addBook(A_BookDTO book, Model model) {
-		//System.out.println("addURL");
-		
 		A_BookDTO newBook = a_book_service.addBook(book);
 		model.addAttribute("newBook", newBook);
 		
@@ -335,7 +333,6 @@ public class AdminController {
 	@RequestMapping("editUrl.do")
 	public View updateBook(A_BookDTO book, Model model) {
 		a_book_service.updateBook(book);
-
 		model.addAttribute("updateBook", book);
 		
 		return jsonview;
@@ -361,6 +358,7 @@ public class AdminController {
 		return jsonview;
 	}
 
+	// 공지사항 쓰기
 	@RequestMapping("noticeReg.do")
 	public View noticeReg(String ncontent, Model model) {
 		NoticeDTO newNotice = notice_service.noticeReg(ncontent);

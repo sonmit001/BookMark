@@ -27,6 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 import site.book.admin.dao.A_BookDAO;
 import site.book.admin.dto.A_BookDTO;
 
+/**
+ * @Class : A_BookService.java
+ * @Date : 2018. 6. 13.
+ * @Author : 김희준
+ */
 @Service
 public class A_BookService {
 	
@@ -101,7 +106,6 @@ public class A_BookService {
 		try {
 			row = bookDAO.deleteBook(abid);
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -126,23 +130,21 @@ public class A_BookService {
 		System.out.println("스케줄러 시작");
 		
 		String path = this.getClass().getResource("").getPath();
-		
 		int index = path.indexOf("WEB-INF");
-		//System.out.println(path);
-		
 		String realpath = path.substring(0, index);
 		
-		//System.out.println(realpath);
-		
+		// chormedriver 경로
 		String exePath = realpath + "\\resources\\chromedriver.exe";
 		System.setProperty("webdriver.chrome.driver", exePath);
 
+		// chormeOption
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--headless"); // 창 없는 옵션
 		options.addArguments("--hide-scrollbars"); // 스크롤바 없애는 옵션
 		options.addArguments("window-size=1080x1080"); // 화면 크기 옵션
 		options.addArguments("disable-gpu"); // 성능
 		
+		// 폴더 없을시 생성
 		File forder = new File(realpath + "\\images\\homepage");
 		if(!forder.exists()) {
 			forder.mkdir();
@@ -152,6 +154,7 @@ public class A_BookService {
 		driver.get(book.getUrl());
 		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		
+		// 파일 저장하기
 		try {
 			FileUtils.copyFile(scrFile, new File(realpath + "\\images\\homepage\\" + book.getAbid() + ".png"));
 		} catch (IOException e) {

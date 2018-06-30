@@ -15,6 +15,7 @@ $(function(){
 		}
 	});
 	
+	
 	// URL 수정
 	$("#editUrlForm").ajaxForm({
 		success: function(data, statusText, xhr, $form){
@@ -68,9 +69,6 @@ $(function(){
 			});
 			dataTableList[data.newCategory.acid] = dataTable;
 			
-			// ColorPicker
-			categorylist.push(new Array(data.newCategory.acid, data.newCategory.color));
-			
 			var color = data.newCategory.color;
 			if(color == "#000"){
 				color = "#FFFFFF";
@@ -123,6 +121,8 @@ $(function(){
 			
 		}
 	});
+	
+	
 	
 	// 카테고리 수정
 	$("#editCategoryForm").ajaxForm({

@@ -43,7 +43,7 @@
     
     <!--Script Start -->
     <script src="${pageContext.request.contextPath}/js/jstree.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/team/stomp.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/team/stomp.js"></script>
     <script src="${pageContext.request.contextPath}/js/team/jquery.contextMenu.js"></script>
     <!-- Script END -->
     

@@ -12,18 +12,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import site.book.admin.dao.A_BookDAO;
 import site.book.admin.dao.A_CategoryDAO;
 import site.book.admin.dto.A_BookDTO;
 import site.book.admin.dto.A_CategoryDTO;
 
+/**
+ * @Class : A_CategoryService.java
+ * @Date : 2018. 6. 13.
+ * @Author : 김희준
+ */
 @Service
 public class A_CategoryService {
 	

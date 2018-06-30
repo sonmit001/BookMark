@@ -51,6 +51,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
 	<!-- jQuery Ajax Form END -->
 	
+	
+	
 <title>뿌리깊은마크 관리자 페이지</title>
 </head>
 <body class="skin-blue sidebar-mini pace-done"
@@ -79,7 +81,7 @@
     <script src="${pageContext.request.contextPath}/js/admin/jquery.dataTables.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/admin/dataTables.bootstrap.min.js"></script>
     <!-- adminTable JS END -->
-	
+    
 	<!-- Color Picker JS START -->
 	<script src="${pageContext.request.contextPath}/js/admin/colorPick.js"></script>
 </body>

@@ -72,10 +72,22 @@ public class ChatController {
     	spath = spath.substring(1);
 		int index = spath.indexOf("WEB-INF");
 		spath = spath.substring(0, index);
-		spath += "team/chat/" + gid +".txt";
+		spath += "team";
+		Path path = Paths.get(spath);
+		
+		if(!Files.exists(path)) {
+			Files.createDirectories(path);
+		}
+		spath += "/chat";
+		path = Paths.get(spath);
+		
+		if(!Files.exists(path)) {
+			Files.createDirectories(path);
+		}
+		spath += "/" + gid +".txt";
 		
     	String fileName = spath;
-        Path path = Paths.get(fileName);
+        path = Paths.get(fileName);
         System.out.println("path : " + path);
         
         BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);

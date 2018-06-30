@@ -966,7 +966,7 @@ function deleteCompletedGroup(gid) {
 	        	btnClass : 'btn-danger',
 	        	keys: ['enter'],
 	        	action : function () {
-	        		$("#completed"+gid).remove(); // 완료된 그룹리스트에서 지우기
+	        		$("#"+gid).remove(); // 완료된 그룹리스트에서 지우기
 	    			$.ajax({
 	    				url: "leaveGroup.do",
 	    				type: "post",
@@ -994,7 +994,7 @@ function addGroup() {
 	$.confirm({
 	    title: '그룹 추가',
 	    content: '' +
-	    '<form id="addGroupForm" action="${pageContext.request.contextPath}/addGroup.do" class="formName" method="post">' +
+	    '<form id="addGroupForm" action="/bit/addGroup.do" class="formName" method="post">' +
 	    '<div class="form-group">' +
 	    '<label>그룹명</label>' +
 	    '<input type="text" name="gname" placeholder="그룹명" class="name form-control" required />' +
@@ -1016,7 +1016,7 @@ function addGroup() {
 	                }
 	                $("#addGroupForm").ajaxForm({
 	                	success: function(data, statusText, xhr, $form){
-	                		var group = '<li id="${team.gid}" class="list-group-item">';
+	                		var group = '<li id="' + data.newTeam.gid + '" class="list-group-item">';
 	                		group += '<label class="my-group-list">' + data.newTeam.gname + '</label>';
 	                		group += '<div class="pull-right action-buttons">';
 	                		group += '<a class="completed">';
@@ -1048,7 +1048,7 @@ function completedGroup(gid) {
 	$.confirm({
 	    title: '그룹 완료',
 	    content: '' +
-	    '<form id="completedGroupForm" action="${pageContext.request.contextPath}/user/completedGroup.do" class="formName" method="post">' +
+	    '<form id="completedGroupForm" action="/bit/user/completedGroup.do" class="formName" method="post">' +
 	    '<div class="form-group">' +
 	    '<label>해시태그</label>' +
 	    '<input type="text" name="htag" placeholder="#해쉬태그" class="name form-control" required />' +

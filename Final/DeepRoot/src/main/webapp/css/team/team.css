@@ -116,24 +116,30 @@ body{
 .offline-content{ width: 100% }
 
 .online{
+	font-family: 'Jua';
     padding-left : 15px;
-    padding-top : 5px;
+    padding-top : 10px;
     padding-bottom : 5px;
-    font-size: 22px;
+    font-size: 20px;
     width: 100%;
     border-bottom: 2px solid #8aa4af;
 }
 
 .offline{
+	font-family: 'Jua';
     padding-left : 20px;
-    padding-top : 5px;
+    padding-top : 10px;
     padding-bottom : 5px;
-    font-size: 22px;
+    font-size: 20px;
     width: 100%;
     border-bottom: 2px solid #8aa4af;
     border-top : 2px solid #8aa4af;
 }
 
+.online > i,
+.offline >i{
+	padding-bottom: 5px;
+}
 /****** height 벗어나면 수정 필요 *****/
 .online-member,
 .offline-member{

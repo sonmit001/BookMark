@@ -56,4 +56,6 @@ public interface G_BookDAO {
 	public int updateTeamNodeText(HashMap<String, String> param) throws ClassNotFoundException, SQLException;
 	//그룹 페이지 jstree 폴더 혹은 url 추가하기
 	public int addTeamFolderOrUrl( G_BookDTO g_book) throws ClassNotFoundException, SQLException;
+	// 그룹 페이지 DND
+	public void dropTeamNode(HashMap<String, String> param) throws ClassNotFoundException, SQLException;
 }

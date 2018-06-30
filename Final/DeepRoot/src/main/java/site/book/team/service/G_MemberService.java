@@ -69,5 +69,18 @@ public class G_MemberService {
 		return result;
 	}
 	
-	
+	//그룹원 강퇴하기 + 강퇴 쪽지 보내기
+	public int banMember(G_MemberDTO member_ban) {
+		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
+		int result = 0;
+		
+		try {
+			result = g_MemberDAO.banMember(member_ban);
+		} catch (Exception e) {
+			result = -1;
+			/*e.printStackTrace();*/
+		}
+		
+		return result;
+	}
 }

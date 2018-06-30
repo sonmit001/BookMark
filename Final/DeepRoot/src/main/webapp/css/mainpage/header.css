@@ -192,6 +192,81 @@ ul.sub-menu {
         transform: scale(1);
     }
 }
+/* Group Notice CSS START */
+.g_alarm_ul.sub-menu{
+	min-width: 350px;
+}
+
+.g_notice{
+    color: red;
+    padding-right: 15px;
+    float: right;
+}
+.g_notice:hover{
+    color: #7bbfa8;
+}
+
+.g_notice_ok{
+    color: green;
+    font-size: 17px;
+    padding: 10px;
+    padding-left: 13px;
+    cursor: pointer;
+}
+
+.fas.fa-check.g_notice_ok:hover,
+.fas.fa-check.g_notice_ok:active,
+.fas.fa-check.g_notice_ok:foucus{
+    color: #7bbfa8;
+    cursor: pointer;
+}
+
+.g_notice_no{
+    color: red;
+    font-size: 17px;
+    padding: 10px;
+    padding-left: 13px;
+    cursor: pointer;
+}
+
+.fas.fa-times.g_notice_no:hover,
+.fas.fa-times.g_notice_no:active,
+.fas.fa-times.g_notice_no:focus{
+	color: #dd4b39;
+}
+
+.g_alarm_head{
+	font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+	font-size: 16px;
+	font-weight: 500;
+	color: #000;
+	padding: 10px;
+}
+
+.g_alarm_name,
+.g_alarm_date{
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
+	font-size: 15px;
+	font-weight: 400;
+	color: #8aa4af;
+	padding-left: 5px;
+}
+
+.g_alarm_content{
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
+	font-size: 15px;
+	font-weight: 400;
+	width: 100%;
+	padding-left: 20px;
+	padding-top: 10px;
+}
+
+.g_alarm_li{
+	border-bottom: 1px solid #7bbfa8;
+	width: 100%;
+}
+/* Group Notice CSS END */
+
 
 /* Notice Alarm Style CSS START */
 

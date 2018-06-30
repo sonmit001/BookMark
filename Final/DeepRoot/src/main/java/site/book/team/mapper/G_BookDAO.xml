@@ -77,4 +77,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</otherwise>
 		</choose>
 	</insert>
+	
+	<update id="dropTeamNode">
+		UPDATE G_BOOK SET PID = #{dropnode} WHERE GBID = #{dragnode}
+	</update>
 </mapper>

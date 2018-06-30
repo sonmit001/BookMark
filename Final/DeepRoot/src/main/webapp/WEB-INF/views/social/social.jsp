@@ -329,7 +329,7 @@
 									<td class="table-write"><a onclick="surfing_modal(this)" id="${u_booklist.nname}">${u_booklist.nname}</a></td>
 									<td class="table-date">${u_booklist.sdate}</td>
 									<td class="table-click">${u_booklist.view}</td>
-									<td class="table-icon indi-share getbookmark" data-toggle="modal" data-target="#socialIndiModal" data-title="${u_booklist.url}" data-urlname = "${u_booklist.fullurlname}">
+									<td class="table-icon indi-share getbookmark" data-toggle="modal" data-target="#socialIndiModal" data-title="${u_booklist.url}" data-urlname = "${u_booklist.sname}">
 										<i class="fa fa-share "></i>
 									</td>
 								</tr>

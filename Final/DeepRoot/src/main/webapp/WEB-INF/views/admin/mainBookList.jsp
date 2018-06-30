@@ -186,7 +186,7 @@
 
 				<div class="modal-content">
 					<form id="addCategoryForm" name="addCategory" method="post" action="addCategory.do"
-						accept-charset="UTF-8">
+						accept-charset="UTF-8" onsubmit="return false;">
 
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal"
@@ -222,7 +222,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<form id="editCategoryForm" name="editCategory" method="post" action="editCategory.do" accept-charset="UTF-8">
-						<div class="modal-header">
+						<div class="modal-header" onsubmit="return false;">
 							<button type="button" class="close" data-dismiss="modal"
 								aria-hidden="true">&times;</button>
 							<h4 class="modal-title"></h4>
@@ -255,7 +255,7 @@
 			<div class="modal-dialog">
 
 				<div class="modal-content">
-					<form id="deleteCategoryForm" name="deleteCategory" method="post" action="deleteCategory.do" accept-charset="UTF-8">
+					<form id="deleteCategoryForm" name="deleteCategory" method="post" action="deleteCategory.do" accept-charset="UTF-8" onsubmit="return false;">
 
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -292,7 +292,7 @@
 			<div class="modal-dialog">
 
 				<div class="modal-content">
-					<form id="addUrlForm" name="addUrl" method="post" action="${pageContext.request.contextPath}/admin/addUrl.do" accept-charset="UTF-8">
+					<form id="addUrlForm" name="addUrl" method="post" action="${pageContext.request.contextPath}/admin/addUrl.do" accept-charset="UTF-8" onsubmit="return false;">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title"></h4>
@@ -344,7 +344,7 @@
 			<div class="modal-dialog">
 
 				<div class="modal-content">
-					<form id="editUrlForm" name="editUrl" method="post" action="editUrl.do" accept-charset="UTF-8">
+					<form id="editUrlForm" name="editUrl" method="post" action="editUrl.do" accept-charset="UTF-8" onsubmit="return false;">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title"></h4>

@@ -1,3 +1,13 @@
+/*team.jsp 에서 gid, uid 를 가져오기 위한 함수*/
+var gid;
+var uid;
+
+function get_info(gid, uid){
+	gid = gid;
+	uid = uid;
+}
+
+
 /* 멤버 초대 */
 function member_insert(){
     $.confirm({
@@ -5,21 +15,22 @@ function member_insert(){
         content: '' +
         '<form id="insertMember" action="" class="formGroup" method="post">' +
         '<div class="form-group">' +
-        '<label>추가 할 멤버의 닉네임 입력하세요</label>' +
-        '<input type="text" name="nname" class="insertName form-control"/>' +
+        '<label>추가 할 멤버의 이메일을 입력하세요</label>' +
+        '<input type="text" name="uid" class="insertUid form-control"/>' +
+        '<input type="hidden" name="gid" value="'+gid+'" class="banName form-control"/>' +
         '</div>' +
         '</form>',
         closeIcon: true,
         closeIconClass: 'fa fa-close',
         buttons: {
-        	'초대하기': {
+            formSubmit: {
+                text: '초대',
                 btnClass: 'btn-success',
+                keys: ['enter'],
                 action: function () {
-                    var toid = this.$content.find('.insertName').val();
-                    console.log(name);
-                    
+                    var toid = this.$content.find('.insertUid').val();
                     if(!toid){
-	                    $.alert('이메일을 적어주세요');
+	                    $.alert('닉네임을 적어주세요');
 	                    return false;
 	                }
 
@@ -43,6 +54,7 @@ function member_insert(){
             			}
                 	});
 
+
                 }
             },
             '취소': {
@@ -50,35 +62,10 @@ function member_insert(){
                 action: function () {
                 //close
                 }
-            }
+            },
         }
     });
 }
-
-$(function() {
-	$(".insertName").autocomplete({
-		source: function() {
-					$.ajax({
-			    		url: "allUserNname.do",
-						type: "post",
-						data: {nname:$(".insertName").val()},
-						dataType: "json",
-						success : function(data){
-							console.log(data.nname);
-							return data.nname;
-						}
-			    	});
-				},
-		select: function( event, ui ) {
-            // 검색리스트에서 선택하였을때, 
-			$('.insertName').val(ui.item.label);
-        }
-    });
-	
-});
-
-
-/* 멤버 초대 END */
 
 /* 그룹 탈퇴 */
 function group_leave(){
@@ -88,7 +75,8 @@ function group_leave(){
         '<form id="leaveGroup" action="" class="formGroup" method="post">' +
         '<div class="form-group">' +
         '<label>그룹을 탈퇴하시겠습니까</label>' +
-        '<input type="hidden" name="nname" class="leaveName form-control"/>' +
+        '<input type="hidden" name="uid" value="'+uid+'" class="leaveUid form-control"/>' +
+        '<input type="hidden" name="gid" value="'+gid+'" class="banName form-control"/>' +
         '</div>' +
         '</form>',
         closeIcon: true,
@@ -98,7 +86,7 @@ function group_leave(){
                 text: '탈퇴',
                 btnClass: 'btn-success',
                 action: function () {
-                    var name = this.$content.find('.leaveName').val();
+                    var name = this.$content.find('.leaveUid').val();
 
                     $("#leaveGroup").submit();
 
@@ -125,7 +113,7 @@ function group_complete(){
         '<div class="form-group">' +
         '<label>해시태그를 입력하세요</label>' +
         '<input type="text" name="htag" class="htagName form-control" required/>' +
-        '<input type="hidden" class="gid" name="gid" />' +
+        '<input type="hidden" name="gid" value="'+gid+'" class="banName form-control"/>' +
         '</div>' +
         '</form>',
         closeIcon: true,
@@ -156,15 +144,34 @@ function group_complete(){
 }
 
 
-/* 멤버 강퇴 */
-function member_ban(){
+
+/* 마우스 오른쪽 이벤트 (회원강퇴) 추가*/
+$(function() {
+    $.contextMenu({
+        selector: '.member', 
+        callback: function(key, opt) {
+            var targetNname = opt.$trigger.text().trim();
+            
+            if(key == "ban"){
+            	member_ban(targetNname);
+            }
+        },
+        items: {
+            "ban": {name: "강퇴"}
+        }
+    });   
+});
+
+/* 멤버 강퇴 START */
+function member_ban(targetNname){
     $.confirm({
         title: '멤버 강퇴',
         content: '' +
-        '<form id="banMember" action="" class="formGroup" method="post">' +
+        '<form id="banMember" action="banMember.do" class="formGroup" method="post" onsubmit="return false;">' +
         '<div class="form-group">' +
-        '<label>해당회원을 강퇴하시겠습니까</label>' +
-        '<input type="hidden" name="nname" class="banName form-control"/>' +
+        '<label>['+targetNname+'] 회원을 강퇴하시겠습니까</label>' +
+        '<input type="hidden" name="nname" value="' + targetNname + '" class="banName form-control"/>' +
+        '<input type="hidden" name="gid" value="' + gid + '" class="banName form-control"/>' +
         '</div>' +
         '</form>',
         closeIcon: true,
@@ -174,10 +181,7 @@ function member_ban(){
                 text: '강퇴',
                 btnClass: 'btn-success',
                 action: function () {
-                    var name = this.$content.find('.banName').val();
-
-                    $("#leaveGroup").submit();
-
+                    $("#banMember").submit();
                 }
             },
             '취소': {
@@ -186,23 +190,30 @@ function member_ban(){
                 //close
                 }
             },
+        },
+        onContentReady: function(){
+        	// 그룹원 강퇴 ajaxFrom()
+        	$("#banMember").ajaxForm({
+        		success: function(data, statusText, xhr, $form){
+        			console.log(data);
+        			var recv_data = data.result.trim();
+        			
+        			if(recv_data == 'fired') {
+        				$.alert('해당 그룹원이 강퇴되었습니다!');
+        			}else if(recv_data == 'empty') {
+        				$.alert('해당 그룹원이 존재하지 않습니다!');
+        			}else {
+        				$.alert('잠시후 다시 시도해주세요!');
+        			}
+        		}
+        	});
         }
+
     });
 }
 
-/*마우스 오른쪽 이벤트 (회원강퇴) 추가*/
+/* 멤버 강퇴 END */
 
 
-$(function() {
-    $.contextMenu({
-        selector: '#member', 
-        callback: function(key, options) {
-            var m = "clicked: " + key;
-            console.log(m);
-        },
-        items: {
-            "abc": {name: "강퇴"},
-            "abc2": {name: "abc2"}
-        }
-    });
-});
+
+	

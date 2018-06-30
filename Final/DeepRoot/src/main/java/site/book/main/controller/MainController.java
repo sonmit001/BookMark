@@ -397,6 +397,7 @@ public class MainController {
 	}
 
 	// 희준
+	// WebCrawling을 통해 해당 사이트에 title, type, imge, url, description 가져오기
 	@RequestMapping("preview.do")
 	public View WebCrawling(String abid, Model model) {
 		
@@ -444,6 +445,7 @@ public class MainController {
 		return jsonview;
 	}
 	
+	// 공지사항 최신순으로 3개 가져오기
 	@RequestMapping("/getNotices.do")
 	public View getNotices(Model model) {
 		
@@ -453,6 +455,7 @@ public class MainController {
 		return jsonview;
 	}
 	
+	// 그룹 추가 / 추가 시 그룹장까지 Transaction으로 처리
 	@RequestMapping("/addGroup.do")
 	public View addGroup(HttpServletRequest req, String gname, Model model) {
 		HttpSession session = req.getSession();

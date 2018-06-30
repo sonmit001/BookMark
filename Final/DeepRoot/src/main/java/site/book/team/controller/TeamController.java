@@ -30,12 +30,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
-<<<<<<< HEAD
 
 import site.book.admin.dto.NoticeDTO;
 import site.book.admin.service.NoticeService;
 import site.book.team.dto.G_AlarmDTO;
-=======
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +42,6 @@ import com.google.common.base.Charsets;
 
 import site.book.admin.dto.NoticeDTO;
 import site.book.admin.service.NoticeService;
->>>>>>> feature/그룹_jstree_설정_하는중
 import site.book.team.dto.G_BookDTO;
 import site.book.team.dto.G_JstreeDTO;
 import site.book.team.dto.G_MemberDTO;
@@ -59,7 +56,7 @@ import site.book.user.service.UserService;
 /**
  * @Class : SocialController.java
  * @Date : 2018. 6. 24.
- * @Author : 김희준, 김태웅
+ * @Author : 김태웅
  */
 @Controller
 @RequestMapping("/team/")
@@ -70,7 +67,7 @@ public class TeamController {
 	
 	//명수
 	@Autowired
-	TeamService teamservice;
+	private TeamService teamservice;
 	
 	@Autowired
     private View jsonview;
@@ -84,13 +81,13 @@ public class TeamController {
 	
 	//태웅
 	@Autowired
-	G_BookService gbookservice;
+	private G_BookService gbookservice;
 	@Autowired
-	G_AlarmService galarmservice;
+	private G_AlarmService galarmservice;
 	
 	//준석
 	@Autowired
-	G_MemberService g_memberservice;
+	private G_MemberService g_memberservice;
 	
 	
 	
@@ -179,6 +176,16 @@ public class TeamController {
 		
 		return jsonview;
 	}
+	 
+	//그룹 페이지에서 DND
+	@RequestMapping("dropTeamNode.do")
+	public View dropTeamNode(@RequestParam HashMap<String, String> param , Model model) {
+		
+		int result = teamservice.dropTeamNode(param);
+		model.addAttribute("result",result);
+		
+		return jsonview;
+	}
 	
 	//태웅
 	//해당 유저의 진행중인 그룹의 카테고리만를 보내준다.
@@ -256,6 +263,7 @@ public class TeamController {
 		
 		HttpSession session = req.getSession();
         String uid = (String)session.getAttribute("info_userid");
+        alarm.setFromid(uid);
         
         // 본인에게 보낸 경우
         if( alarm.getToid().equals(uid) ) {
@@ -269,16 +277,14 @@ public class TeamController {
         } 
         // 정상적인 경우에 실행
         else {
-        	alarm.setFromid(uid);
         	int result = g_memberservice.inviteUser(alarm);
             if(result > 0) {
     			model.addAttribute("result", "success");
     		}else {
     			model.addAttribute("result", "fail");
     		}
+            return jsonview;
         }
-        
-		return jsonview;
 	}
 	
 	// 초대 기능: 닉네임 자동완성 기능
@@ -295,14 +301,26 @@ public class TeamController {
 		return jsonview;
 	}
 	
-	/*// 초대/강퇴/완료 알람: 내가 받은 쪽지 리스트
-	@RequestMapping("getAlarms.do")	
-	public View getAlarmList(HttpServletRequest req, Model model) {
-	
-		model.addAttribute("nname", result);
+	// 그룹원 강퇴  & 강퇴 쪽지 보내기
+	@RequestMapping("banMember.do")	
+	public View banMember(HttpServletRequest req, HttpSession session, Model model, G_MemberDTO member_ban) {
+		
+		String uid = (String)session.getAttribute("info_userid");
+		member_ban.setUid(uid);
+		System.out.println(member_ban);
+		int isbaned = g_memberservice.banMember(member_ban);
+		
+		
+		if(isbaned > 0) {
+			model.addAttribute("result", "fired");
+		}else if(isbaned < 0) {
+			model.addAttribute("result", "empty");
+		}else {
+			model.addAttribute("result", "fail");
+		}
 		
 		return jsonview;
-	}*/
+	}
 	
 	//준석
 	//그룹 페이지  이동

@@ -7,18 +7,13 @@
   padding: 0;
   list-style-type: none;
   list-style-image: none;
+  width: 100%;
 }
 .jstree-node {
   white-space: nowrap;
+  
 }
-.jstree-anchor {
-  display: inline-block;
-  color: #333;
-  white-space: nowrap;
-  padding: 0 4px 0 1px;
-  margin: 0;
-  vertical-align: top;
-}
+
 .jstree-anchor:focus {
   outline: 0;
 }
@@ -129,7 +124,9 @@ font-family: 'Gamja Flower', cursive;
 	font-family:   'Stylish', sans-serif; /* 폰트 */
     font-size: 15px;
     font-weight:800;
-}
+    width: 100%;
+    display: block;
+    }
 #jstree_container{ /* jstree padding 패딩 */
 	padding: 10px;
 }
@@ -367,8 +364,23 @@ font-family: 'Gamja Flower', cursive;
  margin-right: 15px;
  margin-top: 3px;
  text-align:center;
- 
  }
+ /*   */
+
+
+ .jstree-anchor {
+  display : inline-block;
+  color: #333;
+  white-space: nowrap;
+  padding: 0 4px 0 1px;
+  margin: 0;
+  vertical-align: top;
+  overflow :  hidden;
+  text-overflow: ellipsis;
+  width: auto;
+ 
+}
+
 .jstree-proton .jstree-clicked { /* 그냥 클릭 됨 */
   background: #FFFF7E;
   color: #353866;
@@ -479,6 +491,7 @@ filter: gray;
   line-height: 22px;
   margin-left: 22px;
   min-width: 22px;
+  
 }
 .jstree-proton .jstree-anchor {
   line-height: 22px;

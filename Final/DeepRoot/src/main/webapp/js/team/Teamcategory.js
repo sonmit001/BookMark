@@ -21,23 +21,48 @@ function jstree(role , gid, uid,nname){
 						"check_callback" : function(op, node, par, pos, more){ // 특정 이벤트 실행 전에 잡아 낼 수 있음
 							console.log("//////////////////");
 							console.log(par);
-							console.log(pos);
+							console.log(pos); // 수정시 새이름 들어옴 //rename_node  일경우에만 보내야만
 							console.log(more);
+							console.log("more 위 위");
 							console.log(node);
-							console.log(node.text);
-							/*	private String nname;
-	private String doing;
-	private String target;
-	private String location;
-	private String type;
-	private String newnameorplace;*/
-							stompClient.send("/JSTREE/" + gid, {}, JSON.stringify({
-					           	doing : op,
-					           	target : node.text,
-					           	location : par.text,
-					           	nname: nname
-					           	
-					        }));
+							
+							var type= '#';
+							var newnameorplace = '#';
+							
+							if(node.a_attr.href =='#')
+								type='폴더';
+							else
+								type='URL';
+							
+												
+							if(op=='move_node'){
+							// dnd 일경우 more.core =ture 일 경우에만 메세지 보내기
+								if(more.core){
+									newnameorplace = pos.text
+									
+									sendmessage()
+								}//dnd 성공
+								
+								
+							}else if	(op == 'rename_node'){
+								newnameorplace = pos;
+								sendmessage()
+							}else if(op =='remove_node'){
+								sendmessage()
+							}else if(op == 'create_node'){
+								sendmessage()
+							}
+							
+							function sendmessage() {
+								stompClient.send("/JSTREE/" + gid, {}, JSON.stringify({
+						           	doing : op,
+						           	target : node.text,
+						           	location : par.text,
+						           	nname: nname,
+						           	type : type,
+						           	newnameorplace :newnameorplace
+						        }));
+							}
 							
 							//권한 검사해서 DND 가능자와 아닌자 구분
 							if(op === "move_node"){ // dnd 이벤트 일때 
@@ -48,11 +73,10 @@ function jstree(role , gid, uid,nname){
 								
 								$.ajax({	
 									
-									url : 'dropNode.do',
+									url : 'dropTeamNode.do',
 									type : 'POST',
 									data : form,
 									beforeSend : function(){
-										$('#loading').html(" SAVING<span><img src='../images/throbber.gif' /></span>");
 									},
 									success : function(data){
 										$('#loading').html("");
@@ -61,7 +85,7 @@ function jstree(role , gid, uid,nname){
 								return true;
 							}else if(op === "create_node"){   //폴더 생성시 실행 되는 callback 함수
 								return true;
-							}else if(op == "copy_node"){	// 오른쪽 url 왼쪽 폴더로 옮기면 실행되는데 이때도 drag drop으로 처리함
+							}/*else if(op == "copy_node"){	// 오른쪽 url 왼쪽 폴더로 옮기면 실행되는데 이때도 drag drop으로 처리함
 								
 								$.ajax({										
 									url : 'dropNode.do',
@@ -77,7 +101,7 @@ function jstree(role , gid, uid,nname){
 									}
 								});
 								return false;	
-							}
+							}*/
 							return true;	
 						}
 					},
@@ -130,7 +154,9 @@ function jstree(role , gid, uid,nname){
 							     				success : function(data){
 							     					var node_id = $.trim(data.result);
 							     					/*왼쪽 jstree 새폴더 생성과 동시에 이름 수정하게 하기*/
-							     					tree.create_node(par_node , {text : "새 폴더" , id : node_id  ,icon : "fa fa-folder",uid: uid} ,"last",function(new_node){
+							     					console.log("이전ㅇ어어엉");
+							     					tree.create_node(par_node , {text : "새 폴더" , id : node_id  ,icon : "fa fa-folder",uid: uid ,a_attr : {href: '#'}} ,"last",function(new_node){
+							     						console.log("생성");
 							     						new_node.id = node_id;
 							     						tree.edit(new_node);
 						            				 	});

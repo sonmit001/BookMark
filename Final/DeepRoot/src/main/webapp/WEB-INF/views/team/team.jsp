@@ -44,7 +44,7 @@
 					NowTime += '-' + Now.getDate();
 					
 					var today = time[0];
-					console.log("today" + NowTime);
+					//console.log("today" + NowTime);
 					if(NowTime == time[0]){
 						today = "Today";
 					}
@@ -55,8 +55,6 @@
 					var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + time[0] + '</span><hr class="right"/></div>';
 					$(".chatting-contents").append(date);
 				}
-				
-				
 				
 				time[1] = time[1].split(":");
 	        	var hour = time[1][0];
@@ -101,7 +99,7 @@
 	        // 메세지 구독
 	        // WebSocketMessageBrokerConfigurer의 configureMessageBroker() 메소드에서 설정한 subscribe prefix("/subscribe")를 사용해야 함
 	        stompClient.subscribe('/subscribe/chat/' + gid, function(message) {
-	        	console.log(message.body);
+	        	//console.log(message.body);
 	        	
 	        	var new_chat = JSON.parse(message.body);
 	        	
@@ -190,6 +188,9 @@
 	/* jstree START */	
 	$(function () {
 		jstree(role,gid ,uid,nname);
+	})
+	$(function (){
+		get_info(gid, uid);
 	})
 
 </script>
@@ -307,23 +308,23 @@
                     <div class="onoffline-content">
                         <div class="online-content">
                             <div class="online">
-                                <span><i class="fas fa-toggle-on"></i>online</span>
+                            	<i class="fas fa-toggle-on"></i>온라인
                             </div>
                             <div class="online-member">
-                                <p class="member" id="member">
-                                    <img class="member-ico" src="https://s3.amazonaws.com/uifaces/faces/twitter/GavicoInd/128.jpg" alt="images/profile.png">김태웅
-                                </p>
-                                <p class="member">
-                                    <img class="member-ico" src="https://s3.amazonaws.com/uifaces/faces/twitter/GavicoInd/128.jpg" alt="images/profile.png">김희준
-                                </p>
-                                <p class="member">
-                                    <img class="member-ico" src="https://s3.amazonaws.com/uifaces/faces/twitter/GavicoInd/128.jpg" alt="images/profile.png">정민재
-                                </p>
+                            	<script type="text/javascript">console.log("${gmemberlist}")</script>
+                            	<c:set var="userid" value="${sessionScope.info_userid}"/>
+                                <c:forEach items="${gmemberlist}" var="memberlist">
+                               	<c:if test="${memberlist.uid != userid}">
+                               		<p class="member">
+	                                    <img class="member-ico" src="<%= request.getContextPath() %>/images/profile/${memberlist.profile}">${memberlist.nname}
+	                                </p>
+                               	</c:if>
+                                </c:forEach>
                             </div>
                         </div>
                         <div class="offline-content">
                             <div class="offline">
-                                <span><i class="fas fa-toggle-off"></i>offline</span>
+                            	<i class="fas fa-toggle-off"></i>오프라인
                             </div>
                             <div class="offline-member">
                                 <p class="member"><img class="member-ico" src="<%= request.getContextPath() %>/images/team/offline.png">정진수</p>

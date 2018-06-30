@@ -122,7 +122,7 @@ public class G_BookService {
 	public JSONArray getTeamJstree(String gid, String uid) {
 		G_BookDAO dao = sqlsession.getMapper(G_BookDAO.class);
 		JSONArray jsonArray = new JSONArray();
-	
+		
 		List<G_BookDTO> list;
 		
 		try {
@@ -147,6 +147,7 @@ public class G_BookService {
 				for(int i =0;i<list.size();i++) {
 					
 					JSONObject jsonobject = new JSONObject();
+					HashMap<String, String> map = new HashMap<>();
 					
 					String parentid = String.valueOf(list.get(i).getPid());
 					
@@ -160,10 +161,11 @@ public class G_BookService {
 					else {
 						jsonobject.put("icon", "https://www.google.com/s2/favicons?domain="+list.get(i).getUrl());	//favicon 추가
 					}
+					map.put("href", list.get(i).getUrl());
 					jsonobject.put("id", list.get(i).getGbid());
 					jsonobject.put("text", list.get(i).getUrlname());
 					jsonobject.put("uid",uid);
-					
+					jsonobject.put("a_attr",map);			
 					jsonArray.put(jsonobject);
 					
 				}

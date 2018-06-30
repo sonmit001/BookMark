@@ -157,14 +157,11 @@ public class UserController {
 	// 그룹 완료
 	@RequestMapping("completedGroup.do")
 	public View completedGroup(TeamDTO team, Model model) {
-		
 		TeamDTO completedGroup = teamservice.completedGroup(team);
-		
 		model.addAttribute("completedGroup", completedGroup);
 		
 		return jsonview;
 	}
-	
 	
 	// 공유 체크 하지 않은 URL 추가하기
 	@RequestMapping("addUrlNotShare.do")

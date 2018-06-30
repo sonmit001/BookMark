@@ -16,7 +16,7 @@
 	</select>
 	
 	<select id="socialBookmarkList" resultType="site.book.user.dto.S_U_BookDTO">
-		SELECT ub.UBID, ub.URL, ub.UID, u.NNAME, ub.SNAME, ub.VIEW, ub.HTAG, DATE_FORMAT(ub.SDATE,'%Y-%m-%d') as SDATE FROM U_BOOK ub JOIN USER u ON ub.UID = u.UID WHERE HTAG IS NOT NULL
+		SELECT ub.UBID, ub.URL, ub.UID, u.NNAME, ub.SNAME, ub.VIEW, ub.HTAG, DATE_FORMAT(ub.SDATE,'%Y-%m-%d') as SDATE FROM U_BOOK ub JOIN USER u ON ub.HTAG is not null and ub.UID = u.UID
 	</select>
 	
 	<delete id="deleteSocialBookmark">

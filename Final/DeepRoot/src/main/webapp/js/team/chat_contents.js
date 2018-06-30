@@ -1,6 +1,5 @@
 
 // 화면 전환시 채팅 스크롤 최하단으로 위치
-//$(".chat-element").scrollTop($(".chat-content-div")[0].scrollHeight);
 $(".chat-element").scrollTop($(".chatting-contents").height());
 $('#chat-textbox-text').each(function() {
     this.contentEditable = true;

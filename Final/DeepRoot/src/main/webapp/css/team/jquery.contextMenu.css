@@ -160,7 +160,6 @@
 .context-menu-list {
   position: absolute; 
   display: inline-block;
-  min-width: 13em;
   max-width: 26em;
   padding: .25em 0;
   margin: .3em;
@@ -180,7 +179,7 @@
      -moz-box-sizing: content-box;
           box-sizing: content-box;
   padding: .2em 2em;
-  color: #2f2f2f;
+  color: #353866;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -203,9 +202,9 @@
 }
 
 .context-menu-item.context-menu-hover {
-  color: #fff;
+  color: #353866;
   cursor: pointer; 
-  background-color: #2980b9;
+  background-color: #FBFFB9;
 }
 
 .context-menu-item.context-menu-disabled {

@@ -20,7 +20,7 @@
 					Category</button>
 			</div>
 			<div
-				style="background-color: white; border-radius: 15px 15px 15px 15px">
+				style="background-color: white; border-radius: 15px 15px 15px 15px" class="testing">
 				<div id="jstree_container"></div>
 			</div>
 		</div>

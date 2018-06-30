@@ -84,12 +84,6 @@ public class U_BookService {
 		
 		try {
 			list = bookDAO.socialBookmarkList();
-			for(S_U_BookDTO book : list) {
-				book.setFullurlname(book.getSname());
-				if(book.getSname().length() > 10) {
-					book.setSname(book.getSname().substring(0, 9) + "..");
-				}
-			}
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

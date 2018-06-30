@@ -31,15 +31,9 @@
 }
 
 .zoom-btn-person { background-color: #F44336; }
-.zoom-btn-person:hover { background-color: #e57373; }
-.zoom-btn-doc { background-color: #ffeb3b; }
-.zoom-btn-doc:hover { background-color: #fff176; }
-.zoom-btn-tangram { background-color: #4CAF50; }
-.zoom-btn-tangram:hover { background-color: #81c784; }
-.zoom-btn-report { background-color: #2196F3; }
-.zoom-btn-report:hover { background-color: #64b5f6; }
-.zoom-btn-feedback { background-color: #9c27b0; }
-.zoom-btn-feedback:hover { background-color: #ba68c8; }
+.zoom-btn-person:hover { color: #fff; background-color: #e57373; }
+.zoom-btn-feedback { background-color: #2196F3; }
+.zoom-btn-feedback:hover { color: #fff; background-color: #64b5f6; }
 
 .zoom-menu {
 	position: relative;

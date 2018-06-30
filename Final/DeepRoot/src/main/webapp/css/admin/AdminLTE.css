@@ -115,14 +115,13 @@ body {
 
 .content-wrapper,
 .right-side {
-    /*min-height: 100%;*/
-    background-color: #222d32;
+    background-color: #444b52;
     z-index: 800;
     color:#fff;
 }
 
 .main-footer {
-    background: #222d32;
+    background: #444b52;
     padding: 15px;
     color: #b8c7ce;
     border-top: 3px solid #00a65a;
@@ -955,7 +954,7 @@ a:focus {
 
 .control-sidebar-dark,
 .control-sidebar-dark + .control-sidebar-bg {
-    background: #222d32
+    background: #444b52
 }
 
 .control-sidebar-dark .nav-tabs.control-sidebar-tabs {
@@ -988,7 +987,7 @@ a:focus {
 .control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active > a:hover,
 .control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active > a:focus,
 .control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active > a:active {
-    background: #222d32;
+    background: #444b52;
     color: #fff
 }
 
@@ -3248,7 +3247,7 @@ table.text-center th {
     bottom: 0;
     height: 250px;
     width: 100%;
-    background: #222d32;
+    background: #444b52;
     color: #fff;
     overflow: auto
 }

@@ -7,7 +7,7 @@
 		$.confirm({
 		    title: '공지사항 등록',
 		    content: '' +
-		    '<form id="noticeRegForm" action="${pageContext.request.contextPath}/admin/noticeReg.do" class="formName" method="post">' +
+		    '<form id="noticeRegForm" action="${pageContext.request.contextPath}/admin/noticeReg.do" class="formName" method="post" onsubmit="return false;">' +
 		    '<div class="form-group">' +
 		    '<label>공지사항 내용</label>' +
 		    '<input type="text" name="ncontent" placeholder="공지사항 내용" class="name form-control" required />' +
@@ -26,20 +26,10 @@
 		                    $.alert('공지사항 내용을 입력해주세요');
 		                    return false;
 		                }
-		                $("#noticeRegForm").ajaxForm({
-		                	success: function(data, statusText, xhr, $form){
-		                		var newNotice = '<li class="header"><a href="#">' + data.newNotice.ncontent + '</a></li>';
-		                		$("#noticeDropdownMenu").prepend(newNotice);
-		                		console.log(("#noticeDropdownMenu").length);
-		                		if(("#noticeDropdownMenu").length > 4){
-		                			console.log(("#noticeDropdownMenu").length);
-		                			$("#noticeDropdownMenu").children().eq(3).remove();
-		                		}
-		                	}
-		                });
+		                
 		                
 		                $("#noticeRegForm").submit();
-		                
+		                $.alert("공지사항 등록 완료");
 		            }
 		        },
 		        '취소': {
@@ -48,6 +38,22 @@
 		            //close
 		            }
 		        },
+		    },
+		    
+		    onContentReady: function(){
+		    	var jc = this;
+		    	$("#noticeRegForm").ajaxForm({
+                	success: function(data, statusText, xhr, $form){
+                		var newNotice = '<li class="header"><a href="#">' + data.newNotice.ncontent + '</a></li>';
+                		$("#noticeDropdownMenu").prepend(newNotice);
+                		console.log(("#noticeDropdownMenu").length);
+                		if(("#noticeDropdownMenu").length > 4){
+                			console.log(("#noticeDropdownMenu").length);
+                			$("#noticeDropdownMenu").children().eq(3).remove();
+                		}
+                	}
+                });
+		    	
 		    }
 
 		});
