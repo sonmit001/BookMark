@@ -34,4 +34,10 @@ public interface A_CategoryDAO {
 	
 	// 카테고리 삭제
 	public int deleteCategory(int acid) throws ClassNotFoundException, SQLException;
+	
+	// 카테고리 색상 변경
+	public int updateCategoryColor(A_CategoryDTO category) throws ClassNotFoundException, SQLException;
+	
+	// 카테고리 마지막 번호 가져오기
+	public int selectMaxACID() throws ClassNotFoundException, SQLException;
 }

@@ -20,6 +20,8 @@ import site.book.admin.dto.A_BookDTO;
  */
 public interface A_BookDAO {
 	
+	// 희준
+	
 	// URL 전체 보기
 	public List<A_BookDTO> selectAllBook() throws ClassNotFoundException, SQLException;
 	
@@ -34,4 +36,17 @@ public interface A_BookDAO {
 	
 	// URL 삭제하기
 	public int deleteBook(int abid) throws ClassNotFoundException, SQLException;
+	
+	// 카테고리 URL 가져오기
+	public List<A_BookDTO> selectCategoryURL(int acid) throws ClassNotFoundException, SQLException;
+	
+	// URL 마지막 번호 가져오기
+	public int getMaxABID() throws ClassNotFoundException, SQLException;
+	
+	/* 2018-06-11(MON): 김태웅 추가 */
+	// Main에서 URL 전체 보기
+	public List<A_BookDTO> selectAllBookMain() throws ClassNotFoundException, SQLException;
+	
+	// URL 클릭시, +1
+	public int clickURL(int abid) throws ClassNotFoundException, SQLException;
 }

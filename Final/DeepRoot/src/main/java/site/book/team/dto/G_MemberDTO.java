@@ -18,16 +18,28 @@ public class G_MemberDTO {
 	private int gid;
 	private int ccount;
 	private int grid;
+	private String nname;
+	private String profile;
 	
+
 	public G_MemberDTO() {}
 
-	public G_MemberDTO(String uid, int gid, int ccount, int grid) {
+	
+	public G_MemberDTO(String uid, int gid, int ccount, int grid, String nname, String profile) {
+		super();
 		this.uid = uid;
 		this.gid = gid;
 		this.ccount = ccount;
 		this.grid = grid;
+		this.nname = nname;
+		this.profile = profile;
 	}
 	
+	public G_MemberDTO(String uid, int gid) {
+		this.uid = uid;
+		this.gid = gid;
+	}
+
 	//Getters and Setters
 	public String getUid() {return uid;}
 	public void setUid(String uid) {this.uid = uid;}
@@ -37,10 +49,16 @@ public class G_MemberDTO {
 	public void setCcount(int ccount) {this.ccount = ccount;}
 	public int getGrid() {return grid;}
 	public void setGrid(int grid) {this.grid = grid;}
+	public String getNname() {return nname;}
+	public void setNname(String nname) {this.nname = nname;}
+	public String getProfile() {return profile;}
+	public void setProfile(String profile) {this.profile = profile;}
 
 	@Override
 	public String toString() {
-		return "G_MemberDTO [uid=" + uid + ", gid=" + gid + ", ccount=" + ccount + ", grid=" + grid + "]";
+		return "G_MemberDTO [uid=" + uid + ", gid=" + gid + ", ccount=" + ccount + ", grid=" + grid + ", nname=" + nname
+				+ ", profile=" + profile + "]";
 	}
 	
 }
+

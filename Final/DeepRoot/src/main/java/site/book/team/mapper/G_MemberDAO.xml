@@ -7,4 +7,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="leaveAllGroup">
 		DELETE FROM G_MEMBER WHERE UID=#{uid}
 	</delete>
+	
+	<delete id="leaveGroup">
+		DELETE FROM G_MEMBER WHERE UID=#{uid} and GID = #{gid}
+	</delete>
+	
+	<insert id="insertGMember">
+		INSERT INTO G_MEMBER(UID, GID, GRID) VALUES(#{uid}, #{gid}, #{grid})
+	</insert>
+	<!--준석  -->
+	<select id="selectGMemberlist" resultType="site.book.team.dto.G_MemberDTO">
+		select u.NNAME , gm.UID, gm.GID, gm.CCOUNT, gm.GRID, u.profile
+		from G_MEMBER gm join USER u ON gm.UID = u.UID
+		where GID = #{gid}
+	</select>
+	
+	<!-- 태웅 -->
+	<select id="isGroupMember" resultType="Integer">
+		select count(*) from `G_MEMBER` where UID = #{uid} and GID = #{gid}
+	</select>
+	
+	<insert id="sendInviteMemo">
+		INSERT INTO `G_ALARM` () VALUES (#{toid}, #{fromid}, #{gid}, 1, sysdate())
+	</insert>
+	
+	<insert id="banMember" statementType="CALLABLE" parameterType="site.book.team.dto.G_MemberDTO">
+		{  call ban_member_and_send_memo
+			(
+                #{uid},
+                #{nname},
+                #{gid}
+            )
+        }
+	</insert>
+	
 </mapper>

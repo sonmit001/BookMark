@@ -1,3 +1,10 @@
+/*
+ * @Project : DeepRoot
+ * @FileName : U_BookDTO.java
+ * @Date : 2018. 6. 11.
+ * @Author : 김태웅
+*/
+
 package site.book.user.dto;
 
 public class UserDTO {

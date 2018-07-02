@@ -3,7 +3,12 @@
 
 <mapper namespace="site.book.user.dao.U_BookDAO">
 	<!-- 태웅 -->
-	
+	<!-- From Admin Bookmark to My Bookmark -->
+	<insert id="insertToMyBookmark">
+		<if test="abid != 0 or pid != 0">
+		INSERT INTO U_BOOK(URL, URLNAME, REGDATE, UID, PID, ABID) VALUES(#{url}, #{urlname}, SYSDATE(), #{uid}, #{pid}, #{abid})
+		</if>
+	</insert>
 	
 	<!-- 희준 -->
 	<select id="numOfBookByDate" resultType="java.util.HashMap">
@@ -11,43 +16,52 @@
 	</select>
 	
 	<select id="socialBookmarkList" resultType="site.book.user.dto.S_U_BookDTO">
-		SELECT ub.UBID, ub.URL, ub.UID, u.NNAME, ub.SNAME, ub.VIEW, ub.HTAG, ub.SDATE FROM U_BOOK ub JOIN USER u ON ub.UID = u.UID WHERE HTAG IS NOT NULL
+		SELECT ub.UBID, ub.URL, ub.UID, u.NNAME, ub.SNAME, ub.VIEW, ub.HTAG, DATE_FORMAT(ub.SDATE,'%Y-%m-%d') as SDATE FROM U_BOOK ub JOIN USER u ON ub.HTAG is not null and ub.UID = u.UID
 	</select>
 	
 	<delete id="deleteSocialBookmark">
 		DELETE FROM U_BOOK WHERE UBID = #{ubid} AND HTAG IS NOT NULL
 	</delete>
 	
+	<insert id="addUrlNotShare">
+		INSERT INTO U_BOOK(URL, URLNAME, REGDATE, UID, PID) VALUES(#{url}, #{urlname}, SYSDATE(), #{uid}, #{pid})
+	</insert>
+	
 	<!-- 명수 -->
 	<select id="getCategoryList" resultType="site.book.user.dto.U_BookDTO">
-		SELECT * FROM U_BOOK WHERE UID=#{uid}; 
+		SELECT * FROM U_BOOK WHERE UID=#{uid}  AND URL IS NULL  
 	</select>
 
+	<select id="getUrl" resultType="site.book.user.dto.U_BookDTO">
+		SELECT * FROM U_BOOK WHERE PID=#{0} AND URL IS NOT NULL
+	</select>
+	
 	<insert id="insertRootFolder">
-		INSERT INTO U_BOOK (UBID, URLNAME,REGDATE,VIEW,UID)
-			VALUES (#{ubid},'카테고리 시작',SYSDATE(), 0, #{uid});
+		INSERT INTO U_BOOK (URLNAME,REGDATE,VIEW,UID)
+			VALUES ('카테고리 시작',SYSDATE(), 0, #{uid})
 	</insert>
 	
 	<select id="getMaxId" resultType="int">
-		select max(UBID) +1 from U_BOOK
+		select max(UBID) from U_BOOK
 	</select>
 	
-	<update id="updateNodeText" >
-		UPDATE U_BOOK SET URLNAME = #{1} WHERE UBID= #{0}
+	<update id="updateNodeText" parameterType="hashMap">
+		UPDATE U_BOOK SET URLNAME = #{text} WHERE UBID= #{id}
 	</update>
 	
 	<insert id="addFolderOrUrl" parameterType="site.book.user.dto.U_BookDTO">
+	
 		<if test="abid == 0 and htag !=null">
-			INSERT INTO U_BOOK(UBID,URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE)
-			VALUES(#{ubid},#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},SYSDATE())
+			INSERT INTO U_BOOK(URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE)
+			VALUES(#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},SYSDATE())
 		</if>
 		<if test="abid == 0 and htag == null">
-		INSERT INTO U_BOOK(UBID,URL,URLNAME,REGDATE,VIEW,UID,PID)
-			VALUES(#{ubid},#{url},#{urlname},SYSDATE(),0,#{uid},#{pid})
+		INSERT INTO U_BOOK(URL,URLNAME,REGDATE,VIEW,UID,PID)
+			VALUES(#{url},#{urlname},SYSDATE(),0,#{uid},#{pid})
 		</if>
 		<if test="abid != 0">
-		INSERT INTO U_BOOK(UBID,URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE,ABID)
-			VALUES(#{ubid},#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},#{sdate},#{abid})
+		INSERT INTO U_BOOK(URL,URLNAME,REGDATE,VIEW,UID,PID,SNAME,HTAG,SDATE,ABID)
+			VALUES(#{url},#{urlname},SYSDATE(),0,#{uid},#{pid},#{sname},#{htag},#{sdate},#{abid})
 		</if>
 	</insert>
 	
@@ -58,5 +72,28 @@
 	<update id="editUrl" parameterType="site.book.user.dto.U_BookDTO">
 		UPDATE U_BOOK SET URL= #{url} WHERE UBID=#{ubid}
 	</update>
-
+	
+	<update id="dropNode" parameterType="hashMap">
+		UPDATE U_BOOK SET PID = #{dropnode} WHERE UBID = #{dragnode}
+	</update>
+	
+	<update id="shareUrlEdit" parameterType="site.book.user.dto.U_BookDTO">
+		<choose>
+			<when test="htag !=null">
+				UPDATE U_BOOK SET HTAG= #{htag} , SNAME =#{sname} WHERE UBID = #{ubid}
+			</when>
+			<otherwise>
+				UPDATE U_BOOK SET HTAG = NULL , SNAME = NULL , SDATE = NULL WHERE UBID = #{ubid}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<insert id="insertUrlFromCompletedGroup" parameterType="java.util.Map">
+		INSERT INTO U_BOOK(URL,URLNAME,REGDATE,VIEW,UID,PID)
+			VALUES
+			<foreach separator="," item="item" collection="list">
+			(#{item.url},#{item.urlname},SYSDATE(),0,#{item.uid},#{item.pid})
+			</foreach>
+	</insert>
+	
 </mapper>
