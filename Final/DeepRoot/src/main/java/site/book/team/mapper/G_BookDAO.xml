@@ -67,18 +67,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="addTeamFolderOrUrl" parameterType="site.book.team.dto.G_BookDTO">
 		<choose>
-			<when test="url =null">
-				INSERT INTO G_BOOK(REGDATE,GID,PID,UID)
-					VALUES(SYSDATE(),#{gid},#{pid},#{uid})
+			<when test="url !=null">
+				INSERT INTO G_BOOK(URL,URLNAME ,REGDATE,GID,PID,UID)
+					VALUES(#{url},#{urlname},SYSDATE(),#{gid},#{pid},#{uid})
 			</when>
 			<otherwise>
-				INSERT INTO G_BOOK(URL,URLNAME ,REGDATE,GID,PID)
-					VALUES(#{url},#{urlname},SYSDATE(),#{gid},#{pid})
+				INSERT INTO G_BOOK(REGDATE,GID,PID,UID)
+					VALUES(SYSDATE(),#{gid},#{pid},#{uid})
 			</otherwise>
 		</choose>
 	</insert>
 	
 	<update id="dropTeamNode">
 		UPDATE G_BOOK SET PID = #{dropnode} WHERE GBID = #{dragnode}
+	</update>
+	
+	<update id="editTeamUrl" parameterType="hashMap">
+		UPDATE G_BOOK SET URL= #{url} WHERE GBID=#{gbid}
 	</update>
 </mapper>

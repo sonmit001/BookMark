@@ -52,8 +52,8 @@
 	<section class="content-header">
 		<h1>Chart</h1>
 		<ol class="breadcrumb">
-			<li><a href="javascript:;"><i class="fa fa-home"></i>Home</a></li>
-			<li class="active">chart</li>
+			<li><a><i class="fa fa-home"></i>Home</a></li>
+			<li>chart</li>
 		</ol>
 	</section>
 	<!-- 일일/누적 방문자 수 차트 START -->

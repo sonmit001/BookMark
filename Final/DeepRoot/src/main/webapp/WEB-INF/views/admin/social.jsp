@@ -103,7 +103,7 @@
 	<section class="content-header">
 		<h1>Social Bookmark List</h1>
 		<ol class="breadcrumb">
-			<li><a href="javascript:;"><i class="fa fa-home"></i>Home</a></li>
+			<li><a><i class="fa fa-home"></i>Home</a></li>
 			<li class="active">social bookmark list</li>
 		</ol>
 	</section>

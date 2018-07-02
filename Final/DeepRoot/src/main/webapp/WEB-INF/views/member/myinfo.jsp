@@ -11,7 +11,7 @@
                 	<h1>개인정보 수정 </h1>
                 	<p>Edit membership information</p>
                     <hr>
-                	
+                	<div class="error"></div>
                 	<form id="re-confirm-form">
                 		<label class="control-label" for="pwd_check">Password check</label>
                         <input id="pwd_check" class="form-control" type="password" placeholder="Password check" name="pwd" required>
@@ -25,7 +25,7 @@
                         <label class="control-label" for="photo">Profile Photo</label>
                         <br>  
                         <center>
-                            <input type="image" class="currentProfileImg" id="currentProfileImg" src="images/profile/${sessionScope.info_userprofile}" onerror="images/profile.png">
+                            <img class="currentProfileImg" id="currentProfileImg" src="images/profile/${sessionScope.info_userprofile}" onerror="images/profile.png">
                             <input type="file" id="profileImg" name="uploadFile" accept="image/jpeg, image/png" style="display: none;" onchange="profileImgUpLoad(this)">
                         </center>
                             
@@ -55,6 +55,9 @@
     <!-- Edit User Info END -->
     
     <script type="text/javascript">
+    
+    
+        
     $(function() {
 	    $('#re-confirm-password-btn').dblclick(function(){});
 		$('#re-confirm-password-btn').click(function(){
@@ -78,7 +81,7 @@
 	            }
 	        });
 		});
-		$("input[type='image']").click(function(){
+		$("#currentProfileImg").click(function(){
             $("input[id='profileImg']").click();
         })
         
@@ -88,6 +91,32 @@
 			
 		}); */
     });
+    $(function() {
+        //비밀번호 길이 확인 함수
+        $('#pwd_edit').keyup(function() {
+            if (($('#pwd_edit').val().trim() == "") || !($('#pwd_edit').val().length >= 5 && $('#pwd_edit').val().length <= 15)) {
+                $('.error').addClass('alert alert-danger').html("비밀번호는 5자~15자 사이로 만들어야 합니다.");
+                $("#edit-who-info-btn").prop("disabled", true);
+            } else {
+                $('.error').removeClass('alert alert-danger').html('');
+                $("#edit-who-info-btn").prop("disabled", false);
+            }
+        });
+
+      //비밀번호 동일 확인 함수
+        $('#pwd_confirmation').keyup(function() {
+            if (!($('#pwd_edit').val() == $('#pwd_confirmation').val())) {
+                $('.error').addClass('alert alert-danger').html("입력한 비밀번호가 다릅니다.");
+                $("#edit-who-info-btn").prop("disabled", true);
+            } else {
+                $('.error').removeClass('alert alert-danger').html('');
+                $("#edit-who-info-btn").prop("disabled", false);
+            }
+        });
+        
+    });
+
+   
     
     function profileImgUpLoad(img) {
         if(img.files && img.files[0]){
@@ -101,4 +130,19 @@
         }
     }
     
+    /* $("#edit-who-info-btn").prop("disabled", true);
+    
+    $("#edit-who-info-btn").on("dblclick", function(){});
+	$("#edit-who-info-btn").on("click", function(){
+		console.log("xxxx");
+			if($('#pwd_edit').hasClass('form-control')
+			== $('#pwd_confirmation').hasClass('form-control')) {
+				$("#edit-who-info-btn").prop("disabled", false);
+			}else {
+			
+			alert("비밀번호를 모두 작성해주세요");
+			$("#edit-who-info-btn").prop("disabled", true);
+			}
+		
+	}); */
 	</script>

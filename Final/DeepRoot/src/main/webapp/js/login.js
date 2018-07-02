@@ -395,7 +395,7 @@ $(function() {
     /* 로그인 Ajax() START */
     
     // 이메일 형식 확인 함수
-    $('#uid').keyup(function() {
+    $('#uid').keydown(function() {
         var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/; 
         
         // 이메일 길이 확인
@@ -410,16 +410,15 @@ $(function() {
             $('.error').removeClass('alert alert-danger').html('');
         }
     })
-    
     //비밀번호 길이 확인 함수
-    $('#pwd').blur(function() {
-        if (($('#pwd').val().trim() == "") || !($('#pwd').val().length >= 5 && $('#pwd').val().length <= 15)) {
-            $('.error').addClass('alert alert-danger').html("비밀번호는 5~15자로 입력해주세요");
-            //$('#pwd_join').focus();
-        } else {
-            $('.error').removeClass('alert alert-danger').html('');
-            $('#pwd').removeClass('clear_join').addClass('clear_join');
-        }
+    $(function() {
+        $('#pwd').keydown(function() {
+            if (($('#pwd').val().trim() == "") || !($('#pwd').val().length >=4 && $('#pwd').val().length <= 15)) {
+                $('.error').addClass('alert alert-danger').html("비밀번호를 5자~15자 사이로 입력해주세요.");
+            } else {
+                $('.error').removeClass('alert alert-danger').html('');
+            }
+         })
     });
     
 	$("#loginAjax").on("dblclick", function(){ });

@@ -164,7 +164,7 @@ public class G_BookService {
 					map.put("href", list.get(i).getUrl());
 					jsonobject.put("id", list.get(i).getGbid());
 					jsonobject.put("text", list.get(i).getUrlname());
-					jsonobject.put("uid",uid);
+					jsonobject.put("uid",list.get(i).getUid());
 					jsonobject.put("a_attr",map);			
 					jsonArray.put(jsonobject);
 					
@@ -175,6 +175,75 @@ public class G_BookService {
 			e.printStackTrace();
 		}
 		return jsonArray;
+	}
+	// 그룹 페이지 url 수정
+	public int editTeamUrl(HashMap<String, String> param) {
+		G_BookDAO dao = sqlsession.getMapper(G_BookDAO.class);
+		int result =0;
+		try {
+			result = dao.editTeamUrl(param);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// 그룹페이제에서 jstree 노드 삭제하기
+	public int deleteTeamNode(String gbid) {
+
+		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
+		int result =0;
+		try {
+			result = g_bookDAO.deleteTeamNode(gbid);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	// 그룹페이지에서 jstree 노드 제목 수정
+	public int updateTeamNodeText(HashMap<String, String> param) {
+
+		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
+		int result = 0;
+		try {
+			result = g_bookDAO.updateTeamNodeText(param);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// 그룹 페이지에서 jstree 폴더 혹은 url 추가하기
+	public int addTeamFolderOrUrl(G_BookDTO g_book) {
+		
+		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
+		int result = 0;
+		
+		try {
+			g_bookDAO.addTeamFolderOrUrl(g_book);
+			result= g_bookDAO.getCurrentGBID();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// 그룹 페이제에서 DND
+	public int dropTeamNode(HashMap<String, String> param) {
+
+		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
+		int result = 0;
+		
+		try {
+			g_bookDAO.dropTeamNode(param);
+			result= g_bookDAO.getCurrentGBID();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 }

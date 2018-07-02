@@ -13,8 +13,8 @@
 		    '<input type="text" name="ncontent" placeholder="공지사항 내용" class="name form-control" required />' +
 		    '</div>' +
 		    '</form>',
-		    theme: 'dark',
-			type: 'orange',
+		    theme: 'light',
+			type: 'green',
 		    closeIcon: true,
 		    buttons: {
 		        formSubmit: {

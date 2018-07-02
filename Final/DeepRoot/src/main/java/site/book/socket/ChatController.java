@@ -53,7 +53,7 @@ public class ChatController {
     @MessageMapping("/chat/{room}")
     @SendTo("/subscribe/chat/{room}")
     public ChatMessage sendChatMessage(@DestinationVariable("room") String room, ChatMessage message, SimpMessageHeaderAccessor headerAccessor, Principal principal) {
-        System.out.println("채팅 메세지 들어옴");
+        //System.out.println("채팅 메세지 들어옴");
     	
     	message.setDatetime(LocalDateTime.now().toString());
     	
@@ -88,7 +88,7 @@ public class ChatController {
 		
     	String fileName = spath;
         path = Paths.get(fileName);
-        System.out.println("path : " + path);
+        //System.out.println("path : " + path);
         
         BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         String str = message.getProfile() + "|" + message.getNname() + "|" + message.getDatetime() + "|" + message.getContent() + "&";

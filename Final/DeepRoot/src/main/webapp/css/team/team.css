@@ -67,7 +67,7 @@ body{
 }
 
 .teamname-ico{
-	font-size: 40px;
+	font-size: 35px;
 	font-style: oblique;
 	padding-right: 15px;
 	color: #FF4057;
@@ -120,17 +120,17 @@ body{
     padding-left : 15px;
     padding-top : 10px;
     padding-bottom : 5px;
-    font-size: 20px;
+    font-size: 16px;
     width: 100%;
     border-bottom: 2px solid #8aa4af;
 }
 
 .offline{
 	font-family: 'Jua';
-    padding-left : 20px;
+    padding-left : 15px;
     padding-top : 10px;
     padding-bottom : 5px;
-    font-size: 20px;
+    font-size: 16px;
     width: 100%;
     border-bottom: 2px solid #8aa4af;
     border-top : 2px solid #8aa4af;
@@ -151,9 +151,11 @@ body{
 
 .member{
     width:100%;
-    font-size: 15px;
-    margin-bottom: 5px;
+    font-size: 17px;
+    font-family: 'Jua';
+    margin-bottom: 8px;
     padding-left: 10px;
+    vertical-align: middle;
 
 }
 
@@ -174,8 +176,8 @@ body{
 .member-ico{
     border: 1px solid #fff;
     border-radius: 50%;
-    width: 35px;
-    height: 35px;
+    width: 28px;
+    height: 26px;
     margin-right: 5px;
 }
 
@@ -267,6 +269,7 @@ body{
     top: 19px;
     border-color: #888;
 }
+#header-date{font-family: 'Jua'; font-size: 17px;}
 
 .user-status {
     height: -webkit-fill-available;
@@ -289,8 +292,8 @@ body{
     overflow-y: auto;
 }
 
-.divider { width:100%; text-align:center; clear: both; }
-.divider span { font: 15px sans-serif; text-transform: uppercase; }
+.divider { width:100%; text-align:center; clear: both; margin-bottom: 5px}
+.divider span { font: 14px sans-serif; font-weight: 600; text-transform: uppercase;}
 .divider hr { margin: 0px; width:40%; }
 .divider .left { float:left; }
 .divider .right { float:right; }
@@ -304,25 +307,28 @@ body{
 .chatting-contents {
     padding-top: 10px;
 }
-.chatting-text-div { margin-left: 50px; }
+.chatting-text-div { margin-left: 30px; margin-top: 5px; margin-bottom: 5px}
 .chatting-userid {
     margin: 0px;
 }
 .chatting-profile-img {
     margin-right: 5px;
-    width: 40px;
-    height: 40px;
+    margin-top: 5px;
+    width: 25px;
+    height: 25px;
     border-radius: 10px;
     float: left;
 }
 .chatting-userid {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 500;
 }
 .chatting-time {
     color: #848080;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
+    padding-left: 10px;
+    
 }
 .chat-inputbox-div {
     height: 10%;
