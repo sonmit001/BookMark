@@ -238,3 +238,20 @@ a:hover{text-decoration: none; }
 	cursor : pointer;
 }
 
+/* jstree 길이 넘어가면 ... 표시 */
+.jstree-anchor{
+    overflow:hidden;
+	white-space:nowrap;
+	max-width: 80%;
+}
+
+/* confirm 버튼 색상 지정 */
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default {
+	color: #fff;
+	background: #7bbfa8;
+}
+
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover {
+	color: #fff;
+	background: #7bab94;
+}

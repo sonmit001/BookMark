@@ -43,14 +43,16 @@
     <!--Script Start -->
     <script src="${pageContext.request.contextPath}/js/jstree.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/team/stomp.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/team/jquery.contextMenu.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/team/team_alarm.js?ver=2"></script>
     <!-- Script END -->
     
     <!-- jQuery Ajax Form START -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
 	<!-- jQuery Ajax Form START -->
 	
-	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	
 	
 	<!-- ohsnap jstree 알림창 -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/team/ohsnap.js"></script>
@@ -69,6 +71,14 @@
 		<tiles:insertAttribute name="footer" />
 	</div>
     
+    <!-- Custom Script START -->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/team/team.js?ver=1"></script>
+    <script src="${pageContext.request.contextPath}/js/team/chat_contents.js?ver=2"></script>
+    <script src="${pageContext.request.contextPath}/js/team/header_icon_zoom.js?ver=2"></script>
+    <!-- Custom Script END -->
+        <!-- jstree Script -->
+	<script type="text/javascript"  src="${pageContext.request.contextPath}/js/team/Teamcategory.js"></script>
+	
     <!-- URL 추가 모달 -->
     
     	<!-- URL 추가 모달 -->
@@ -158,12 +168,7 @@
 			</div>
 		</div>
 	</div>
-    <!-- jstree Script -->
-	<script type="text/javascript"  src="${pageContext.request.contextPath}/js/team/Teamcategory.js"></script>
-	<!-- Custom Script START -->
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/team/team.js?ver=1"></script>
-    <script src="${pageContext.request.contextPath}/js/team/chat_contents.js?ver=2"></script>
-    <script src="${pageContext.request.contextPath}/js/team/header_icon_zoom.js?ver=2"></script>
-    <!-- Custom Script END -->
+
+	
 </body>
 </html>

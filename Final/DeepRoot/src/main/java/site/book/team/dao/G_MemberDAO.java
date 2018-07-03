@@ -13,6 +13,7 @@ import java.util.List;
 
 import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.G_MemberDTO;
+import site.book.user.dto.UserDTO;
 
 /**
  * @Class : G_MemberDAO.java
@@ -42,4 +43,7 @@ public interface G_MemberDAO {
 	
 	// 특정 그룹원 강퇴 + 강퇴 쪽지 보내기
 	public int banMember(G_MemberDTO member) throws ClassNotFoundException, SQLException;
+	
+	// 닉네임을 통해 상대방 ID 가져오기
+	public UserDTO getToUid(String nname) throws ClassNotFoundException, SQLException;
 }

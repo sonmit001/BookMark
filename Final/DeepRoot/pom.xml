@@ -260,20 +260,6 @@
 	         <version>4.0.1.RELEASE</version>
 	    </dependency>
 		
-		<!-- jsoup -->
-		<dependency>
-		    <groupId>org.jsoup</groupId>
-		    <artifactId>jsoup</artifactId>
-		    <version>1.8.3</version>
-		</dependency>
-		
-		<!-- Selenium -->
-		<dependency>
-		    <groupId>org.seleniumhq.selenium</groupId>
-		    <artifactId>selenium-java</artifactId>
-		    <version>2.45.0</version>
-		</dependency>
-		
 		<!-- Gmail api -->
 		
 		<dependency>

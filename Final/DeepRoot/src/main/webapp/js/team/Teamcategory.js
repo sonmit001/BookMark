@@ -1,39 +1,16 @@
 var urlpid = null;
-var gid2 = null;
-var role = null;
-var location1 = '';
 var target = '';
-var doing = '';
-var type = '#';
+var type= '#';
 var new_name = '#';
-
-function sendmessage() {
-	var op_msg = "";
-    
-	
-    if(new_name == "#" || new_name == null){
-    	op_msg =  location1 + "폴더에서 "+target+"("+type+")를 "+doing+"하였습니다.";             
-     }else{
-     	op_msg =  location1 + "폴더에서 "+target+"("+type+")를 "+new_name+"으로 "+doing+"하였습니다.";    
-     }
-    console.log("jstree 보내기전 ");
-	stompClient.send("/JSTREE/" + gid, {}, JSON.stringify({
-       	nname: nname
-    }));
-	console.log("jstree 보낸후 ");
-	//희준이 message 틀
-	stompClient.send("/chat/" + gid, {}, JSON.stringify({
-		content: op_msg,
-       	nname: nname,
-       	profile: profile
-    }));
-	console.log("chat 보낸후 ");
-	}
-
-
-function jstree(grid , gid, uid ,nname){
-	gid2 =gid;
-	role = grid;
+var location1 = '';
+var doing = '';
+var modal_url = '#';
+var modal_urlname = '#';
+var checked_id = '#';
+var addUrlFolder_id = '';
+var counturl = '';
+//(grid , gid, uid ,nname){
+function jstreetable(){
 	form = {gid : gid}
 	/* 그룹 시작시 jstree 가져오기 */
 	$.ajax({
@@ -54,14 +31,13 @@ function jstree(grid , gid, uid ,nname){
 						},
 						"check_callback" : function(op, node, par, pos, more){ // 특정 이벤트 실행 전에 잡아 낼 수 있음
 							target = node.text;
-							
+							location1 = par.text;
 							if(node.a_attr.href =='#')
 								type='폴더';
 							else
 								type='URL';
-							
-							
-							 switch(op){
+
+						    switch(op){
 						        case 'create_node':   doing = "생성"; 
 						        break;
 						        case 'rename_node':   doing = "수정";
@@ -71,7 +47,6 @@ function jstree(grid , gid, uid ,nname){
 						        case 'move_node':   doing = "이동"; 
 						        break;
 						    }
-								
 												
 							if(op=='move_node'){
 							// dnd 일경우 more.core =ture 일 경우에만 메세지 보내기
@@ -79,28 +54,20 @@ function jstree(grid , gid, uid ,nname){
 								if(par.a_attr.href != "#"){ // 최상단(root)와 동급 불가										
 									return false;	
 								}
-								if(more.core){
-									new_name = pos.text
-									
-									sendmessage()
-								}//dnd 성공
 								
 							}else if	(op == 'rename_node'){
 								new_name = pos;
-								sendmessage()
+								
 							}else if(op =='delete_node'){
-								sendmessage()
+								
 							}else if(op == 'create_node'){
-								sendmessage()
+								sendmessagejstree()
 							}
-							
-							
 							
 							//DND 처리 
 							if(op === "move_node"){ // dnd 이벤트 일때 
 								var dragnode = node.id;
 								var dropnode = par.id;
-								
 								form = {dragnode : dragnode , dropnode : dropnode};
 								
 								$.ajax({	
@@ -111,6 +78,11 @@ function jstree(grid , gid, uid ,nname){
 									beforeSend : function(){
 									},
 									success : function(data){
+										if(more.core){
+											new_name = '1';//move 라는거 구분하기 위해서
+											location1 = par.text;
+											sendmessagejstree()
+										}//dnd 성공
 									}
 								})
 								return true;
@@ -144,8 +116,10 @@ function jstree(grid , gid, uid ,nname){
      					},
 	        			success : function(result){
 	        				//console.log(result.result);
+	        				sendmessagejstree()
 	        			}
 	        		});   
+		    		
 		    	})
 		    	.bind('delete_node.jstree',function(event,data){
 			    		/*왼쪽 jstree 폴더 삭제하기*/
@@ -161,6 +135,7 @@ function jstree(grid , gid, uid ,nname){
      					},
      					success : function(result){
      						//console.log(result.result);
+     						sendmessagejstree()
 						}
 					})  
 		    	})
@@ -169,7 +144,6 @@ function jstree(grid , gid, uid ,nname){
 		    		if(href !='#'){
 						window.open(href); 
 		    		}
-			
 		    	})
 		}
 	})
@@ -182,10 +156,64 @@ function jstree(grid , gid, uid ,nname){
 		$.jstree.reference('#jstree_container').set_icon(data.node, "fa fa-folder")
 	})	
 	
-
+	/*모달창 마이카테고리 폴더 jstree*/
+	$.ajax({
+		url : "/bit/user/getCategoryList.do",
+		type:"POST",
+		dataType:"json",
+		success : function(data){	
+			$('#jstree-to-mybookmark')
+			.jstree({	
+				"core": {
+					"data" : data, //ajax로 가져온 json data jstree에 넣어주기
+					'themes':{
+						'name' : 'proton', //테마 이름
+						'responsive' : true,
+						"dots": false, // 연결선 없애기
+					},
+				}
+			})
+			.bind("loaded.jstree", function (event, data) {
+				$('#jstree-to-mybookmark').jstree("open_all");
+			})
+			.bind("select_node.jstree",function(e,data){
+				checked_id =  data.node.id;
+			})
+		}
+	})
 	
-}
+	/*모달창 마이카테고리 전체 jstree*/
+	$.ajax({
+		url : "/bit/social/getCategoryList.do",
+		type : "POST",
+		data : {nname : nname},
+		dataType :"json",
+		success : function(obj){
+			
+			$('#jstree-from-mybook')
+			.jstree({	
+				"core": {
+					"data" : obj, //ajax로 가져온 json data jstree에 넣어주기
+					'themes':{
+						'name' : 'proton', //테마 이름
+						'responsive' : true,
+						"dots": false, // 연결선 없애기
+					},
+				},
+				"checkbox" : { // 체크 박스 클릭시에만 checked 되기
+		    		"whole_node" : false,
+		            "tie_selection" : false
+		          },
+		          "plugins" : ["checkbox" ]
+			})
+			.bind("loaded.jstree", function (event, data) {
+				$('#jstree-to-mybookmark').jstree("open_all");
+			})
+		}
+	})
 
+};
+	
 function addUrlLevel1() {
 	$(".addUrlLevel1").show();
 	$(".addUrlLevel2").hide();
@@ -238,27 +266,24 @@ function addUrl(){
 	var url = $('#url_btn').val(); //추가 url 값
 	var title = $('#title_btn').val(); // 추가 url 명값
 	var tree = $("#jstree_container").jstree(true);
-	var form = {url : url , urlname : title , pid : urlpid, gid:gid2}
+	var form = {url : url , urlname : title , pid : urlpid, gid:gid}
 	//console.log(form);
 	 if(title == ""){
 		 $.alert("제목을 입력해주세요")
 	 }else {
-	$.ajax({
-		url: "addTeamFolderOrUrl.do",
-		type :"POST",
-		data : form,
-		beforeSend : function(){
-				},
-				success : function(data){
-					$('#linkAdd_btn').modal("toggle"); 
-					var par_node = $('#jstree_container').jstree(true).get_node(urlpid);
-					var node_id = $.trim(data.result);
-					tree.create_node(par_node , {text : title , id : node_id  , icon : "https://www.google.com/s2/favicons?domain="+ url ,uid: uid ,a_attr : {href: url}} ,"last",function(new_node){
-				 	});
-			 	 	}
-   		  	})
+		$.ajax({
+			url: "addTeamFolderOrUrl.do",
+			type :"POST",
+			data : form,
+			success : function(data){
+				$('#linkAdd_btn').modal("toggle"); 
+				var par_node = $('#jstree_container').jstree(true).get_node(urlpid);
+				var node_id = $.trim(data.result);
+				tree.create_node(par_node , {text : title , id : node_id  , icon : "https://www.google.com/s2/favicons?domain="+ url ,uid: uid ,a_attr : {href: url}} ,"last",function(new_node){
+				});
+			}
+		})
 	 }
-	
 	
 }
 
@@ -274,10 +299,34 @@ function customMenu($node){
 				"separator_before": false,
 				"separator_after": false,
 				"label": "URL 추가",
-				"action": function (obj) {
-					$('#form_btn')[0].reset();// form 내부 값 reset
-					$('#linkAdd_btn').modal(); //url 추가 모달 창 띄우기
-					addUrlLevel1()
+				"action": false,
+				"submenu" : {
+					"addurl":{
+						"separator_before": false,
+						"separator_after": false,
+						"label": "URL 추가",
+						"action": function (obj) {
+							$('#form_btn')[0].reset();// form 내부 값 reset
+							$('#linkAdd_btn').modal(); //url 추가 모달 창 띄우기
+							addUrlLevel1()
+						}
+					},
+					"fromMyBook":{
+						"separator_before": false,
+						"separator_after": false,
+						"label": "내 북마크",
+						"action" : function(obj){
+							
+							$('#jstree-from-mybook').jstree().uncheck_all( );		
+							var inst = $.jstree.reference(obj.reference);
+							var par_text = inst.get_node(obj.reference).text;
+							addUrlFolder_id= inst.get_node(obj.reference).id;
+							location1 = par_text;
+							$('#addUrlFolder').val(par_text);
+							$('#fromMytoGroup').modal();
+							
+						}
+					}
 				}
 			},
 			"folder_create": {
@@ -352,9 +401,30 @@ function customMenu($node){
 								//href 가 반드시 http 로 시작해야한다.
 								$(inst.get_node(obj.reference).a_attr).attr("href", newurl);
 								$.jstree.reference('#jstree_container').set_icon(inst.get_node(obj.reference), "https://www.google.com/s2/favicons?domain="+ newurl);
+								doing = "1"; //url 수정 메세지
+								new_name = newurl;
+								sendmessagejstree()
+								
 							}
 						}) 
 					})
+				}
+			},
+			"geturl" : {
+				"icon" : "fas fa-share",
+				"separator_before": false,
+				"separator_after": false,
+				"label": "내 북마크로",
+				"action": function (obj) { 
+					
+					$('#jstree-to-mybookmark').jstree().deselect_all(true);	
+					var inst = $.jstree.reference(obj.reference);
+					modal_url = inst.get_node(obj.reference).a_attr.href;
+					modal_urlname =  inst.get_node(obj.reference).text;
+					checked_id = '#';
+					
+					$('#modalurl').val(modal_url);
+					$('#fromGroupToMy').modal();
 				}
 			},
 			"remove" : {
@@ -367,15 +437,18 @@ function customMenu($node){
 				}
 			}
 	    };
-	if(role == '3'){ // 일반 그룹
+	
+	if(grid == '3'){ // 일반 그룹
 		if(href == '#'){ // 폴더
 			if(uid == node_uid){ // 자기꺼
 				delete items.remove;
 				delete items.editurl;
+				delete items.geturl;
 			}else{ // 남이 생성한거
 				delete items.rename;
 				delete items.remove;
 				delete items.editurl;
+				delete items.geturl;
 			}
 		}else{ // 링크	
 			if(uid == node_uid){ // 자기꺼			
@@ -392,6 +465,7 @@ function customMenu($node){
 	}else{//매니저 그룹장
 		if(href == '#'){// 폴더
 			delete items.editurl;
+			delete items.geturl;
 		}else{ //url
 			delete items.folder_create;
 			delete items.link_create;
@@ -399,4 +473,152 @@ function customMenu($node){
 	}
 	return items;
 }
+//jstree 수정된거 메세지 폼 만들어서 보내기
+function sendmessagejstree() {
+	var op_msg = "";
+	
+	if(doing == "1"){ //url 수정 메세지
+		op_msg = location1 + "폴더에서 "+target+ "의 URL을 "+new_name+"으로 수정하였습니다.";    
+	}else if(doing == "2"){ // 내북마크에서 다중 urㅣ 가져오기
+		op_msg ="내북마크에서 "+ location1 +" 폴더 아래에 " +counturl+ " 개의 URL을 추가하였습니다.";
+	}else if(new_name == "#" || new_name == null){
+    	op_msg =  location1 + "폴더에서 "+target+"("+type+")를 "+doing+"하였습니다.";             
+     }else if(new_name == "1"){
+    	op_msg = target + "("+type+")를 " + location1 +"으로 이동하였습니다.";
+     }else{
+     	op_msg =  location1 + "폴더에서 "+target+"("+type+")를 "+new_name+"으로 "+doing+"하였습니다.";    
+     }
+	stompClient.send("/JSTREE/" + gid, {}, JSON.stringify({
+       	nname: nname
+    }));
+	//희준이 message 틀
+	stompClient.send("/chat/" + gid, {}, JSON.stringify({
+		content: op_msg,
+       	nname: nname,
+       	profile: profile
+    }));
+}
 
+//그룹에서 내 북마크로 가져가기 확인 버튼 누를시
+$('#into-my-bookmark').on("click",function(){
+	var submit_obj = [];
+	
+    if(modal_url == '#'){
+        alert("선택한 URL이 없습니다.")
+        return false
+    };
+    
+    if(checked_id == '#'){
+    	 alert("선택한 폴더가 없습니다.")
+         return false
+    }
+    submit_obj.push({
+		"url": modal_url,
+		"urlname" : modal_urlname,
+		"pid": checked_id
+		});
+    
+    var submit_obj_json = JSON.stringify(submit_obj);
+    
+    $.ajax({
+		url : "/bit/social/getmybookmark.do",
+		type: "post",
+		data: {obj : submit_obj_json},
+		success : function(data){
+			if(data.result == "success") {
+				swal("Thank you!", "북마크에 추가되었습니다!", "success");
+				$('#modalurl').modal("toggle");
+			}else {
+                swal({
+                    title: "목적지 폴더를 확인하셨나요?",
+                    text: "잠시후 다시 시도해주세요!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+				});
+			}
+		},
+		error : function(error) {
+			swal({
+                title: "목적지 폴더를 확인하셨나요?",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+			});
+	    }
+	});
+})
+
+//내 북마크에서 그룹으로 url 보내기 확인 버튼 누를시
+$('#from-my-bookmark').on("click",function(){
+	var checked_ids = [];
+	var submit_obj = [];
+	
+	checked_ids = $('#jstree-from-mybook').jstree("get_checked",null,true);
+	
+	if(checked_ids == null){
+		alert("선택한 URL이 없습니다.")
+		return false
+	};
+    
+	$.each(checked_ids,function(key,value) {
+		//폴더가 아닌 url만 골라 가져가기
+		var checked_url = $('#jstree-from-mybook').jstree(true).get_node(value).a_attr.href;
+		var urlname = $('#jstree-from-mybook').jstree(true).get_node(value).text;
+		if(checked_url !='#'){
+			submit_obj.push({
+				url : checked_url , 
+				urlname : urlname, 
+				pid : addUrlFolder_id, 
+				gid : gid
+			}) 
+		}
+	});
+    counturl = submit_obj.length;
+    var submit_obj_json = JSON.stringify(submit_obj);
+    
+    $.ajax({
+		url : "/bit/social/getGroupBookList.do",
+		type: "post",
+		data: {obj : submit_obj_json},
+		success : function(data){
+			if(data.result == "success") {
+				swal("Thank you!", "북마크에 추가되었습니다!", "success");
+				$('#fromMytoGroup').modal("toggle");
+				doing = "2";//다중의 url 내북마크에서 가져오기
+				sendmessagejstree();
+				
+				form = {gid : gid}
+	            $.ajax({
+	             
+	            	url : "getTeamJstree.do",
+	         		type:"POST",
+	         		data :form,
+	         		dataType:"json",
+	         		success : function(data){
+	         			$("#jstree_container").jstree(true).settings.core.data = data;
+						$("#jstree_container").jstree(true).refresh();
+	         		}
+	             })
+			}else {
+                swal({
+                    title: "목적지 폴더를 확인하셨나요?",
+                    text: "잠시후 다시 시도해주세요!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+				});
+			}
+		},
+		error : function(error) {
+			swal({
+                title: "목적지 폴더를 확인하셨나요?",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+			});
+	    }
+	});
+})

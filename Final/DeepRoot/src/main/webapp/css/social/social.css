@@ -88,8 +88,8 @@ table tr td a{
 /* Table CSS START */
 table thead tr th.table-site,
 table thead tr td.table-site,
-table thead tr th.table-group,
-table thead tr td.table-group{
+table thead tr th.table-groupname,
+table thead tr td.table-groupname{
 	width: 180px;
 }
 
@@ -214,5 +214,49 @@ h1,h2,h3,h4,h5,h6 {
     font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
     font-weight: 300;
 }
+
+/* 소셜 사이트명 길이 넘어가면 ... 표시 */
+.container .table>tbody>tr>td {
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 34px;
+	
+}
+
+/* 소셜 버튼 css */
+.pagination {
+        float: right;
+        margin: 0 0 5px;
+        /*margin: 10px 0 5px;*/
+    }
+
+.pagination li a {
+    border: none;
+    font-size: 13px;
+    min-width: 30px;
+    min-height: 30px;
+    padding: 0 10px;
+    color: #999;
+    margin: 0 2px;
+    line-height: 30px;
+    border-radius: 30px !important;
+    text-align: center;
+
+}
+
+.pagination li a:hover {
+    color: #666;
+    background: #999;
+}
+
+.pagination li.active a {
+    background: #7bab94;
+}
+
+.pagination li.active a:visited {
+    background: #7bab94;
+}
+
 
 /* Social Page CSS END */

@@ -4,6 +4,18 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
 
+
+/* header category */
+.category-dropdown{
+	cursor:pointer;
+}
+.span-categorylist{
+	padding-left: 20px;
+}
+.span-categorylist > .dropdown-menu{
+	/* left:325px; */
+}
+
 /*모달실행시 스크롤바 중복생성 제거*/
 body.modal-open {
     overflow-y: hidden !important;
@@ -38,7 +50,7 @@ body {
     background-color: #444b52;		
     padding: 16px 25px;
     padding-top: 70px;
-    margin: -20px -25px 10px;
+    /* margin: -70px -25px 10px; */
     border-radius: 3px 3px 0 0;
 }
 
@@ -103,8 +115,8 @@ table.table-hover tbody tr:hover {
 /*modal css*/
 
 .addCategory .btn-next, .addCategory .btn-prev, .addCategory .btn-comp{
-    background-color: #7bbfa8; /* #7bbfa8 */
-    border-color: #7bbfa8;
+    background-color: #30cd72; /* #7bbfa8 */
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
@@ -121,8 +133,8 @@ table.table-hover tbody tr:hover {
 }
 
 .addCategory .btn-hash{
-    background-color: #7bbfa8; 
-    border-color: #7bbfa8;
+    background-color: #30cd72; 
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 5px;
@@ -136,22 +148,22 @@ table.table-hover tbody tr:hover {
 }
 
 .addCategory .form-control{
-    border-radius: 3px;
+   /*  border-radius: 3px;
     background-color: rgba(0, 0, 0, 0.09);
-    box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.09) inset;
+    box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.09) inset; */
     color: #FFFFFF;
+    border-bottom: 1px solid #555;
 }
 .addCategory .form-control:hover{
-    background-color: rgba(0,0,0,.16);
+    background-color: #e6e6e6;
 }
 .addCategory .form-control:focus{
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.04) inset;
-    background-color: rgba(0,0,0,0.23);
     color: #666666;
 }
 .addCategory .form input[type="text"]{
-    border-radius: 3px;
-    border: none;
+    border-bottom: 1px solid #555;
+    /* border: none; */
     color: #333333;
     font-size: 15px;
     height: 35px;
@@ -181,8 +193,8 @@ table.table-hover tbody tr:hover {
 
 /*modal css*/
 .editCategory .btn-next, .editCategory .btn-prev, .editCategory .btn-comp{
-    background-color: #7bbfa8; 
-    border-color: #7bbfa8;
+    background-color: #30cd72; 
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
@@ -198,8 +210,8 @@ table.table-hover tbody tr:hover {
 }
 
 .editCategory .btn-hash{
-    background-color: #7bbfa8; 
-    border-color: #7bbfa8;
+    background-color: #30cd72; 
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 5px;
@@ -212,22 +224,24 @@ table.table-hover tbody tr:hover {
 }
 
 .editCategory .form-control{
-    border-radius: 3px;
+    /* border-radius: 3px;
     background-color: rgba(0, 0, 0, 0.09);
-    box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.09) inset;
+    box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.09) inset; */
+    border-bottom: 1px solid #555;
     color: #FFFFFF;
 }
 .editCategory .form-control:hover{
-    background-color: rgba(0,0,0,.16);
+    background-color: #e6e6e6;
+    
 }
 .editCategory .form-control:focus{
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.04) inset;
-    background-color: rgba(0,0,0,0.23);
+    /* background-color: rgba(0,0,0,0.23); */
     color: #666666;
+    
 }
 .editCategory .form input[type="text"]{
-    border-radius: 3px;
-    border: none;
+    border-bottom: 1px solid #555;
     color: #333333;
     font-size: 15px;
     height: 35px;
@@ -257,14 +271,12 @@ table.table-hover tbody tr:hover {
 
 /*modal css*/
 .deleteCategory .btn-next, .deleteCategory .btn-prev, .deleteCategory .btn-comp{
-    background-color: #7bbfa8; 
-    border-color: #7bbfa8;
+    background-color: #30cd72; 
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
-    /* padding: 15px 10px; */
     text-transform: uppercase;
-    /* width: 10%; */
     font-weight: bold;
     text-shadow: none;
 }
@@ -274,8 +286,8 @@ table.table-hover tbody tr:hover {
 }
 
 .deleteCategory .btn-hash{
-    background-color: #7bbfa8; 
-    border-color: #7bbfa8;
+    background-color: #30cd72; 
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 5px;
@@ -294,11 +306,12 @@ table.table-hover tbody tr:hover {
     color: #FFFFFF;
 }
 .deleteCategory .form-control:hover{
-    background-color: rgba(0,0,0,.16);
+    background-color: #e6e6e6;
+    
 }
 .deleteCategory .form-control:focus{
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.04) inset;
-    background-color: rgba(0,0,0,0.23);
+    /* background-color: rgba(0,0,0,0.23); */
     color: #666666;
 }
 .deleteCategory .form input[type="text"]{
@@ -333,14 +346,12 @@ table.table-hover tbody tr:hover {
 
 /*modal css*/
 .addUrl .btn-next, .addUrl .btn-prev, .addUrl .btn-comp{
-    background-color: #7bbfa8; 
-    border-color: #7bbfa8;
+    background-color: #30cd72; 
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
-    /* padding: 15px 10px; */
     text-transform: uppercase;
-    /* width: 10%; */
     font-weight: bold;
     text-shadow: none;
 }
@@ -350,8 +361,8 @@ table.table-hover tbody tr:hover {
 }
 
 .addUrl .btn-hash{
-    background-color: #7bbfa8; 
-    border-color: #7bbfa8;
+    background-color: #30cd72; 
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 5px;
@@ -364,22 +375,18 @@ table.table-hover tbody tr:hover {
 }
 
 .addUrl .form-control{
-    border-radius: 3px;
-    background-color: rgba(0, 0, 0, 0.09);
-    box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.09) inset;
     color: #FFFFFF;
 }
 .addUrl .form-control:hover{
-    background-color: rgba(0,0,0,.16);
+    background-color: #e6e6e6;
 }
 .addUrl .form-control:focus{
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.04) inset;
-    background-color: rgba(0,0,0,0.23);
+    /* background-color: rgba(0,0,0,0.23); */
     color: #666666;
 }
 .addUrl .form input[type="text"]{
-    border-radius: 3px;
-    border: none;
+    border-bottom: 1px solid #555;
     color: #333333;
     font-size: 15px;
     height: 35px;
@@ -409,14 +416,12 @@ table.table-hover tbody tr:hover {
 
 /*modal css*/
 .editUrl .btn-next, .editUrl .btn-prev, .editUrl .btn-comp {
-    background-color: #7bbfa8; 
-    border-color: #7bbfa8;
+    background-color: #30cd72; 
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 0 auto;
-    /* padding: 15px 10px; */
     text-transform: uppercase;
-    /* width: 10%; */
     font-weight: bold;
     text-shadow: none;
 }
@@ -426,8 +431,8 @@ table.table-hover tbody tr:hover {
 }
 
 .editUrl .btn-hash{
-    background-color: #7bbfa8; 
-    border-color: #7bbfa8;
+    background-color: #30cd72; 
+    border-color: #30cd72;
     border-width: 0;
     color: #FFFFFF;
     margin: 5px;
@@ -440,28 +445,25 @@ table.table-hover tbody tr:hover {
 }
 
 .editUrl .form-control{
-    border-radius: 3px;
-    background-color: rgba(0, 0, 0, 0.09);
-    box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.09) inset;
     color: #FFFFFF;
 }
 .editUrl .form-control:hover{
-    background-color: rgba(0,0,0,.16);
+    background-color: #e6e6e6;
 }
 .editUrl .form-control:focus{
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.04) inset;
-    background-color: rgba(0,0,0,0.23);
+    /* background-color: rgba(0,0,0,0.23); */
     color: #666666;
 }
 .editUrl .form input[type="text"]{
-    border-radius: 3px;
-    border: none;
+    border-bottom: 1px solid #555;
     color: #333333;
     font-size: 15px;
     height: 35px;
     margin-bottom: 5px;
     padding: 13px 12px;
     width: 100%;
+    
 }
 
 .editUrl .form select{
@@ -483,6 +485,12 @@ table.table-hover tbody tr:hover {
     width: 20px;
 }
 
+#acname5{
+    background-color: #ccc;
+    border-radius: 10px;
+    border: none;
+}
+
 /* category CSS START */
 .content-category{
     font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
@@ -492,11 +500,11 @@ table.table-hover tbody tr:hover {
 }
 
 .dropdown-menu.category {
-    transform: translate3d(325px, -35px, 0px);
+    transform: translate3d(320px, -30px, 0px);
 }
 
 .dropdown-menu.categorylist {
-    transform: translate3d(110px, -30px, 0px);
+    transform: translate3d(435px, -25px, 0px);
 }
 
 .btn-category {

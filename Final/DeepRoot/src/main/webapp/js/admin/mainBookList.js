@@ -215,7 +215,7 @@ function editAdminCategory() {
 			closeIcon: true,
 			buttons: {
 				'수정': {
-					btnClass : 'btn-danger',
+					btnClass : 'btn-success',
 					keys: ['enter'],
 					action : function () {
 						$("#editCategoryForm").submit();
@@ -225,7 +225,7 @@ function editAdminCategory() {
 					}
 				},
 				'취소': {
-					btnClass : 'btn-success',
+					btnClass : 'btn-danger',
 					action : function() {}
 				}
 			}

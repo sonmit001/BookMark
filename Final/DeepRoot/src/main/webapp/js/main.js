@@ -49,12 +49,12 @@ $(function() {
         mouseleave: function() { $(this).children('button').css('display', 'none') }
     });
     $(document).on("click", ".fa-folder-open", function() {
-        $(this).parent().parent().children('ul').hide(500);
+        $(this).parent().parent().children('ul').hide(300);
         $(this).removeClass("fa-folder-open");
         $(this).addClass("fa-folder");
     });
     $(document).on("click", ".fa-folder", function() {
-        $(this).parent().parent().children('ul').show(500);
+        $(this).parent().parent().children('ul').show(300);
         $(this).removeClass("fa-folder");
         $(this).addClass("fa-folder-open");
     });
@@ -114,19 +114,6 @@ jQuery(function($) {
 			});
 		}
 	});
-  
-	/* scroll overflow controller */
-	$(window).scroll(function(){
-		if($(window).scrollTop() == ($(document).height()-$(window).height())){
-			//스크롤 끝에 닿으면 이벤트 발생
-			var overflowPosition = $("#floatMenu");
-			overflowPosition.data('extenddiv',overflowPosition.css('top')).animate({top:1185 + "px"});
-			//끝에 닿는 순간 해당 좌표로 이동..
-	
-		}
-	});
-
-
 	$('.timer').each(count);
 
 	function count(options) {
@@ -196,7 +183,7 @@ jQuery(function($) {
 		$(window).scroll(function() {
 			// 현재 스크롤 위치를 가져온다.
 			var scrollTop = $(window).scrollTop();
-			var newPosition = scrollTop + floatPosition - 500 + "px";
+			var newPosition = scrollTop + floatPosition - 627 + "px";
 			var fixedpositon = floatPosition + "px";
 			//console.log(scrollTop);
 			// 애니메이션 없이 바로 따라감

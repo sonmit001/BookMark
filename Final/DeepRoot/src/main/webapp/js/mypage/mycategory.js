@@ -775,8 +775,9 @@ function openAddUrlLevel2() {
 	});
 	
 	var url = $("#url_btn").val().trim();
-	if(url == ""){
-		$.alert("URL을 입력해주세요");
+	var regex =/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/;
+	if(!(regex.test($('#url_btn').val()))){
+		$.alert("URL을 확인해주세요");
 	}else {
 		$.ajax({
     		url: "/bit/admin/preview.do",
@@ -810,10 +811,16 @@ function openAddUrlLevel2() {
 
 // 2단계 폼 보여주기
 function addUrlLevel2() {
+	if($("#share_btn").is(":checked")){
+		$(".addUrlLevel2-1").hide();
+		$(".addUrlLevel2-2").show();
+	}else {
+		$(".addUrlLevel2-2").hide();
+		$(".addUrlLevel2-1").show();
+	}
+	
 	$(".addUrlLevel2").show();
-	$(".addUrlLevel2-1").show();
 	$(".addUrlLevel1").hide();
-	$(".addUrlLevel2-2").hide();
 	$(".addUrlLevel3").hide();
 }
 
@@ -908,9 +915,11 @@ function addUrlShare() {
 				$('#linkAdd_btn').modal("toggle"); // 모달 창 닫아주기
 				//console.log(data);	//id 확인
 				var node_id = $.trim(data.ubid);
-				tree_child.create_node( null , {text : title , id : node_id , a_attr : {href : url} , icon : "https://www.google.com/s2/favicons?domain="+ url} ,"last",function(new_node){
+				$('#jstree_container').jstree().deselect_all(true);											
+				$('#jstree_container').jstree(true).select_node(urlpid);		
+				//tree_child.create_node( null , {text : title , id : node_id , a_attr : {href : url} , icon : "https://www.google.com/s2/favicons?domain="+ url} ,"last",function(new_node){
 					//console.log(new_node.id);
-				});
+				//});
 			}
 		});
 	}
@@ -923,13 +932,19 @@ function deleteGroup(gid) {
 		theme: 'light',
 		backgroundDismiss: true,
 		closeIcon: true,
-	    closeIconClass: 'fa fa-close',
 		buttons: {
 	        '삭제': {
 	        	btnClass : 'btn-danger',
 	        	keys: ['enter'],
 	        	action : function () {
 	        		$("#"+gid).remove(); // 그룹리스트에서 지우기
+	        		$("#headerGroup" + gid).remove();
+	        		
+	        		if($(".groupMenu").length < 10 && $("#headerGroupAdd") == 0){
+	        			var groupAddHTML = '<li id="headerGroupAdd" class="groupMenu" onclick="headerAddGroup()"><a href="#"><i class="fa fa-plus-circle" style="color: red;"></i>&nbsp;&nbsp;그룹 추가</a></li>';
+	        			$("#groupDropdownMenu").append(groupAddHTML);
+	    			}
+	        		
 	    			$.ajax({
 	    				url: "leaveGroup.do",
 	    				type: "post",
@@ -960,7 +975,6 @@ function deleteCompletedGroup(gid) {
 		theme: 'light',
 		backgroundDismiss: true,
 		closeIcon: true,
-	    closeIconClass: 'fa fa-close',
 		buttons: {
 	        '삭제': {
 	        	btnClass : 'btn-danger',
@@ -994,14 +1008,13 @@ function addGroup() {
 	$.confirm({
 	    title: '그룹 추가',
 	    content: '' +
-	    '<form id="addGroupForm" action="/bit/addGroup.do" class="formName" method="post">' +
+	    '<form id="addGroupForm" action="/bit/addGroup.do" class="formName" method="post" onsubmit="return false;">' +
 	    '<div class="form-group">' +
 	    '<label>그룹명</label>' +
 	    '<input type="text" name="gname" placeholder="그룹명" class="name form-control" required />' +
 	    '</div>' +
 	    '</form>',
 	    closeIcon: true,
-	    closeIconClass: 'fa fa-close',
 	    
 	    buttons: {
 	        formSubmit: {
@@ -1026,6 +1039,12 @@ function addGroup() {
 							group += '</li>';
 							
                 			$("#participatingGroupList").children().last().before(group);
+                			
+                			var groupheader = '<li id="headerGroup' + data.newTeam.gid + '" class="groupMenu"><a href="/bit/team/main.do?gid=' + data.newTeam.gid + '&gname=' + data.newTeam.gname + '">' + data.newTeam.gname + '</a></li>';
+    		    			$("#groupDropdownMenu").children().last().before(groupheader);
+    		    			if($(".groupMenu").length > 10){
+    		    				$("#groupDropdownMenu").children().last().remove();
+    		    			}
 	                	}
 	                });
 	                
@@ -1048,7 +1067,7 @@ function completedGroup(gid) {
 	$.confirm({
 	    title: '그룹 완료',
 	    content: '' +
-	    '<form id="completedGroupForm" action="/bit/user/completedGroup.do" class="formName" method="post">' +
+	    '<form id="completedGroupForm" action="/bit/user/completedGroup.do" class="formName" method="post" onsubmit="return false;">' +
 	    '<div class="form-group">' +
 	    '<label>해시태그</label>' +
 	    '<input type="text" name="htag" placeholder="#해쉬태그" class="name form-control" required />' +
@@ -1056,7 +1075,6 @@ function completedGroup(gid) {
 	    '</div>' +
 	    '</form>',
 	    closeIcon: true,
-	    closeIconClass: 'fa fa-close',
 	    
 	    buttons: {
 	        formSubmit: {
@@ -1076,13 +1094,20 @@ function completedGroup(gid) {
 	                		
 	                		var addCompletedGroup = "";
 	                		addCompletedGroup += '<li id="' + data.completedGroup.gid + '" class="list-group-item">';
-	                		addCompletedGroup += '<label class="my-group-list" onclick="open_completed_group_modal('+ data.completedGroup.gname + "','" + data.completedGroup.gid + ')">' + data.completedGroup.gname + '</label>';
+	                		addCompletedGroup += '<label class="my-group-list" onclick="open_completed_group_modal(\''+ data.completedGroup.gname + "', " + data.completedGroup.gid + ')">' + data.completedGroup.gname + '</label>';
 	                		addCompletedGroup += '<div class="pull-right action-buttons">';
 	                		addCompletedGroup += '<a class="trash"><span class="glyphicon glyphicon-trash" onclick="deleteCompletedGroup(' + data.completedGroup.gid + ')"></span></a>';
 	                		addCompletedGroup += '</div>';
 	                		addCompletedGroup += '</li>';
 	                		
 	                		$("#completedGroupList").append(addCompletedGroup);
+	                		
+	                		$("#headerGroup" + gid).remove();
+	    	        		
+	    	        		if($(".groupMenu").length < 10 && $("#headerGroupAdd").length == 0){
+	    	        			var groupAddHTML = '<li id="headerGroupAdd" class="groupMenu" onclick="headerAddGroup()"><a href="#"><i class="fa fa-plus-circle" style="color: red;"></i>&nbsp;&nbsp;그룹 추가</a></li>';
+	    	        			$("#groupDropdownMenu").append(groupAddHTML);
+	    	    			}
 	                	}
 	                });
 	                

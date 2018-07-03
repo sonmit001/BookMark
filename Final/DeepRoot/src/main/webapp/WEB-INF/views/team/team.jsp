@@ -17,15 +17,7 @@
 		chatList.push("${filecontent}");
 	</c:forEach>
 	var grid = '<c:out value="${grid}"/>';
-	
-	/* jstree START */	
-	$(function () {
-		jstree(grid , gid ,uid,nname);
-		getnname(nname);
-	})
-	$(function (){
-		get_info(gid, uid);
-	})
+	var gname ='<c:out value="${gname}"/>';
 
 </script>
 
@@ -117,7 +109,7 @@
 			                <div class="group-member-content">
 			                    <div>
 			                        <div class="group-member-header">
-			                            <p><i class="far fa-address-card"></i> Member <i class="fas fa-user-plus" onclick="member_insert();"></i></p>
+			                            <p><i class="far fa-address-card"></i> Member <i class="member_insert_ico fas fa-user-plus" onclick="member_insert();"></i></p>
 			                        </div>
 			                    </div>
 			                    <div class="onoffline-content">
@@ -125,29 +117,55 @@
 			                            <div class="online">
 			                            	<i class="fas fa-toggle-on"></i>온라인
 			                            </div>
-			                            <div class="online-member">
-			                                <p class="member">
-			                                    <img class="member-ico" src="https://s3.amazonaws.com/uifaces/faces/twitter/GavicoInd/128.jpg" alt="images/profile.png">김태웅
-			                                </p>
-			                                <p class="member">
-			                                    <img class="member-ico" src="https://s3.amazonaws.com/uifaces/faces/twitter/GavicoInd/128.jpg" alt="images/profile.png">김희준
-			                                </p>
-			                                <p class="member">
-			                                    <img class="member-ico" src="https://s3.amazonaws.com/uifaces/faces/twitter/GavicoInd/128.jpg" alt="images/profile.png">정민재
-			                                </p>
+			                            <div id="online-member" class="online-member">
+			                            	
 			                            </div>
 			                        </div>
 			                        <div class="offline-content">
 			                            <div class="offline">
 			                            	<i class="fas fa-toggle-off"></i>오프라인
 			                            </div>
-			                            <div class="offline-member">
-			                                <p class="member"><img class="member-ico" src="<%= request.getContextPath() %>/images/team/offline.png">정진수</p>
-			                                <p class="member"><img class="member-ico" src="<%= request.getContextPath() %>/images/team/offline.png">김명수</p>
-			                                <p class="member"><img class="member-ico" src="<%= request.getContextPath() %>/images/team/offline.png">방준석</p>
+			                            <div id="offline-member" class="offline-member">
+			                            
 			                            </div>
 			                        </div>
-			                    </div>    
+			                    </div> 
+			                    
+			                    
+			                    <script type="text/javascript">
+			                    $(document).ready(function() {
+			                    	var onlinelist = JSON.parse('${onlinelist}');
+                            		//console.log(onlinelist.hasOwnProperty("민재"));
+                            		//console.log('${gmemberlist}');
+                            		
+                            		var memberNnameList = new Array(); // 전체 카테고리 리스트 비동기로 받아오기
+                            		var memberUidList = new Array(); // 전체 카테고리 리스트 비동기로 받아오기
+                            		<c:forEach items="${gmemberlist}" var="member">
+                            			memberNnameList.push("${member.nname}");
+                            			memberUidList.push("${member.uid}");
+	                            	</c:forEach>
+	                            	
+	                            	$.each(memberNnameList, function(index, element) {
+	                            		var member = element;
+	                            		//console.log(member);
+	                            		if(onlinelist.hasOwnProperty(member)) {
+                            				var insertOnline = '<p id="' + member + '"' + ' class="member">' 
+				                								+ '<img class="member-ico" src="/bit/images/profile.png" '
+				                								+ 'onerror="this.src=' + "'/bit/images/profile.png'\">" + member
+				                							  + '</p>';
+				                			$('#online-member').prepend(insertOnline);
+	                            			
+	                            		}else {
+	                            			var insertOffline = '<p id="' + member + '"' + ' class="member">' 
+					            								+ '<img class="member-ico" src="/bit/images/profile.png" '
+					            								+ 'onerror="this.src=' + "'/bit/images/profile.png'\">" + member
+					            							  +'</p>';
+					            			$('#offline-member').prepend(insertOffline);
+	                            		}
+	                            	});
+			                    });
+                            	</script>
+                            	   
 			                </div>
 			            </section>
 			            <!-- Group Member div END -->
@@ -157,3 +175,74 @@
     		</div>
     	</div>
     </div>
+    
+    
+<!-- 그룹 북마크 마이카테고리로 가져가기 div START -->
+<div id="fromGroupToMy" class="modal fade" tabindex="-1" role="dialog">
+	<div class="main-modal-controller">
+		<div class="main-modal-center">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="gridSystemModalLabel">북마크 가져가기</h4>
+					</div>
+					<div class="modal-body">
+						<div class="completed-modal-left">
+							<h4 class="completed-modal-from"><b>URL :</b>
+							<input type="text" id="modalurl"class="indishare-url" readonly></h4>
+			            </div>
+			            <hr>
+			            <div class="completed-modal-left abc123">
+			                <h4 class="completed-modal-to"><b>가져가기 :  My Bookmark</b></h4>
+			                <!-- <div class="completed-modal-dropdown">
+			                       My Bookmark
+			                </div> -->
+			                <div id="jstree-to-mybookmark" style="clear: both;"></div>
+			            </div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default indishare" data-dismiss="modal">취소</button>
+						<button id="into-my-bookmark" type="button" class="btn btn-primary">확인</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+	</div>
+</div><!-- /.modal -->
+
+<!--마이북마크 가져오기 -->
+<div id="fromMytoGroup" class="modal fade" tabindex="-1" role="dialog">
+	<div class="main-modal-controller">
+		<div class="main-modal-center">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="gridSystemModalLabel">북마크 가져오기</h4>
+					</div>
+					<div class="modal-body">
+						<div class="completed-modal-left">
+							<h4 class="completed-modal-from"><b>폴더 :</b>
+							<input type="text" id="addUrlFolder"class="indishare-url" readonly></h4>
+			            </div>
+			            <hr>
+			            <div class="completed-modal-left abc123">
+			                <h4 class="completed-modal-to"><b>가져오기 : </b></h4>
+			                <div id="jstree-from-mybook" style="clear: both;"></div>
+			            </div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default indishare" data-dismiss="modal">취소</button>
+						<button id="from-my-bookmark" type="button" class="btn btn-primary">확인</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+	</div>
+</div><!-- /.modal -->
+    

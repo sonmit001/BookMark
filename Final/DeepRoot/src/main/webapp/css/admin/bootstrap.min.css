@@ -3143,7 +3143,7 @@ output {
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #555;
     border-top: none;
     border-left: none;
     border-right: none;
@@ -7108,6 +7108,8 @@ button.close {
 }
 
 .modal-header {
+	border-top: 10px solid #4ad685;
+    border-radius: 12px;
     padding: 15px;
     border-bottom: 1px solid #e5e5e5
 }

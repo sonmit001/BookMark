@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import site.book.team.dao.G_MemberDAO;
 import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.G_MemberDTO;
+import site.book.user.dto.UserDTO;
 
 @Service
 public class G_MemberService {
@@ -82,5 +83,19 @@ public class G_MemberService {
 		}
 		
 		return result;
+	}
+	
+	// 닉네임으로 상대방 이메일 가져오기
+	public String getToUid(String nname) {
+		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
+		UserDTO member = null;
+		
+		try {
+			member = g_MemberDAO.getToUid(nname);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return member.getUid();
 	}
 }

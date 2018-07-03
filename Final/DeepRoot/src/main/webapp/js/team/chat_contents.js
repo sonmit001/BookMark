@@ -1,7 +1,3 @@
-var user_nname = null;
-function getnname(nname) {
-	user_nname = nname
-}
 // 화면 전환시 채팅 스크롤 최하단으로 위치
 $(".chat-element").scrollTop($(".chatting-contents").height());
 $('#chat-textbox-text').each(function() {
@@ -25,6 +21,7 @@ $('#chat-textbox-text').keydown(function (e) {
 $(function() {
     
 	connect();
+	jstreetable();
 	
 	var lastDate = null;
 	
@@ -47,7 +44,12 @@ $(function() {
 				}else {
 					NowTime += '-' + (Now.getMonth() + 1) ;
 				}
-				NowTime += '-' + Now.getDate();
+				
+				if(Now.getDate() < 10){
+					NowTime += '-0' + Now.getDate();
+				}else {
+					NowTime += '-' + Now.getDate();
+				}
 				
 				var today = time[0];
 				//console.log("today" + NowTime);
@@ -56,10 +58,14 @@ $(function() {
 				}
 				
 				var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + today + '</span><hr class="right"/></div>';
-				$(".chatting-contents").append(date);
+				$(".chatting-contents").prepend(date);
 			}else if(lastDate != time[0]){
+				console.log("lastdate: " + lastDate);
+				console.log("time[0] :" + time[0])
+				
 				var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + time[0] + '</span><hr class="right"/></div>';
-				$(".chatting-contents").append(date);
+				$(".chatting-contents").prepend(date);
+				lastDate = time[0];
 			}
 			
 			time[1] = time[1].split(":");
@@ -157,10 +163,11 @@ $(function() {
         					}
         					
         					var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + today + '</span><hr class="right"/></div>';
-        					$(".chatting-contents").append(date);
+        					$(".chatting-contents").prepend(date);
         				}else if(lastDate != time[0]){
         					var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + time[0] + '</span><hr class="right"/></div>';
-        					$(".chatting-contents").append(date);
+        					$(".chatting-contents").prepend(date);
+        					lastDate = time[0];
         				}
         				
         				time[1] = time[1].split(":");
@@ -218,10 +225,11 @@ $(function() {
         					}
         					
         					var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + today + '</span><hr class="right"/></div>';
-        					$(".chatting-contents").append(date);
+        					$(".chatting-contents").prepend(date);
         				}else if(lastDate != time[0]){
         					var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + time[0] + '</span><hr class="right"/></div>';
-        					$(".chatting-contents").append(date);
+        					$(".chatting-contents").prepend(date);
+        					lastDate = time[0];
         				}
         				
         				time[1] = time[1].split(":");
@@ -283,7 +291,11 @@ function connect() {
 				}else {
 					NowTime += '-' + (Now.getMonth() + 1) ;
 				}
-				NowTime += '-' + Now.getDate();
+				if(Now.getDate() < 10){
+					NowTime += '-0' + Now.getDate();
+				}else {
+					NowTime += '-' + Now.getDate();
+				}
 				
 				var today = time[0];
 				if(NowTime == time[0]){
@@ -320,12 +332,12 @@ function connect() {
             $(".chat-element").scrollTop($(".chatting-contents").height());
         });
         
+        console.log("jstree subscrib 시작 전");
         //JSTREE 알림 메시지 ex) 누구님이 무엇을 수정했습니다
  		stompClient.subscribe('/subscribe/JSTREE/' + gid,function(message){
  			var body = JSON.parse(message.body);
-            var nname = body.nname;
-            
-            if(user_nname == nname){
+            var whosend = body.nname;
+            if(nname == whosend){
             	
             }else{
 	             
@@ -339,7 +351,6 @@ function connect() {
 	         		success : function(data){
 	         			$("#jstree_container").jstree(true).settings.core.data = data;
 						$("#jstree_container").jstree(true).refresh();
-	         			
 	         		}
 	             })
             }
@@ -347,15 +358,43 @@ function connect() {
  		
  		stompClient.send('/online/' + gid , {}, JSON.stringify({nname: nname, status: "ON"}));
  		stompClient.subscribe('/subscribe/online/' + gid, function(message) {
- 			 var new_connect = JSON.parse(message.body);
- 			 console.log(new_connect);
+ 			var new_connect = JSON.parse(message.body);
+ 			var temp_member = new_connect.nname;
+ 			$('#' + temp_member).remove();
+ 			
+			var insertOnline = '<p id="' + temp_member + '"' + ' class="member">' 
+							+ '<img class="member-ico" src="/bit/images/profile.png" '
+							+ 'onerror="this.src=' + "'/bit/images/profile.png'\">" + temp_member
+						  +'</p>';
+			$('#online-member').prepend(insertOnline);
  		});
+
+ 		stompClient.subscribe('/subscribe/offline/' + gid, function(message) {
+ 			var new_connect = JSON.parse(message.body);
+ 			var temp_member = new_connect.nname;
+ 			
+ 			$('#' + temp_member).remove();
+ 			
+			var insertOffline = '<p id="' + temp_member + '"' + ' class="member">' 
+							+ '<img class="member-ico" src="/bit/images/profile.png" '
+							+ 'onerror="this.src=' + "'/bit/images/profile.png'\">" + temp_member
+						  +'</p>';
+			$('#offline-member').prepend(insertOffline);
+ 		});
+ 		
+ 		// Header Alarm socket connect
+ 		if(userid != null || userid != "") {
+ 			alarmConnect(stompClient, userid);
+ 		}
+ 		
+    }, function(message) {
+        stompClient.disconnect();
+
     });
     
+    
     ws.onclose = function() {
-    	$.alert('close');
-    	stompClient.send('/offline/' + gid , {}, JSON.stringify({nname: nname, status: "OFF"}));
-        stompClient.disconnect();
+    	disconnect();
         location.href = "/bit/user/mybookmark.do";
     };
 }
@@ -377,20 +416,14 @@ function sendMessage() {
         }));
     }
 }
-
-// 내가 들어왔으니 온라인으로 이동시켜달라 요청
-function sendOnlineMessage() {
-	
-    // WebSocketMessageBrokerConfigurer의 configureMessageBroker() 메소드에서 설정한 send prefix("/")를 사용해야 함
-    stompClient.send("/online/" + gid, {}, JSON.stringify({
-       	uid: uid,
-       	content: "ON"
-    }));
-    
-}
  
 // 채팅방 연결 끊기
 function disconnect() {
+	stompClient.send("/offline/" + gid, {}, JSON.stringify({
+       	nname: nname,
+       	status: "OFF"
+    }));
+	
     stompClient.disconnect();
 }
 

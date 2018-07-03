@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Script Common JavaScript & CSS END -->
-    
+
     <!-- Google Icon CDN -->
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<!-- Google Icon CDN END -->
@@ -67,6 +67,13 @@
     <script type="text/javascript" src="js/login.js?ver=2"></script>
     <!-- Custom Script END -->
     
+    <!-- Header Socket JS -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/team/stomp.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/header/alarm_socket.js?ver=1"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/header/alarm.js?ver=1"></script>
+	<!-- Header Socket JS END -->
+    
     <!-- jstree css & javascript -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
     <script src="${pageContext.request.contextPath}/js/jstree.min.js"></script>
@@ -78,6 +85,7 @@
     <script>
     	/**************************  Category Click Evnet Start  *******************/
 	    $(function(){
+	    	
 	    	var categoryList = new Array(); // 전체 카테고리 리스트 비동기로 받아오기
 	    	
 	    	<c:forEach items="${categoryList}" var="category">
@@ -95,7 +103,7 @@
 	    		*/
 	    		if (id == "Show All") {
 	    			$.each(categoryList, function(index, element) {
-	    				$('li[id="' + element + '"]').slideDown("slow");
+	    				$('li[id="' + element + '"]').slideDown("fast");
 	    			});
 	    			$.each(selectedCategory, function(index, element) {
 	    				$(".category").removeClass("reddiv");
@@ -118,14 +126,14 @@
 	    				// 이미 선택된 카테고리가 1개 이상인 경우
 	    				if(selectedCategory.length > 0){
 	    					$.each(categoryList, function(index, element) {
-	    						$('li[id="' + element + '"]').slideUp("slow");
+	    						$('li[id="' + element + '"]').slideUp("fast");
 	    					});
 	    					$.each(selectedCategory, function(index, element) {
-	    						$('li[id="' + element + '"]').slideDown("slow");
+	    						$('li[id="' + element + '"]').slideDown("fast");
 	    					});
 	    				}else { // 선택된 카테고리가 하나도 없을 경우 Show All로 변경
 	    					$.each(categoryList, function(index, element) {
-	    						$('li[id="' + element + '"]').slideDown("slow");
+	    						$('li[id="' + element + '"]').slideDown("fast");
 	    					});
 	    					$.each(selectedCategory, function(index, element) {
 	    						$(".category").removeClass("reddiv");
@@ -143,16 +151,16 @@
 	    				$(this).addClass("reddiv");
 	    				
 	    				$.each(categoryList, function(index, element) {
-	    					$('li[id="' + element + '"]').slideUp("slow");
+	    					$('li[id="' + element + '"]').slideUp("fast");
 	    				});
 	    				
 	    				$.each(selectedCategory, function(index, element) {
 	    					if(index == 0) {
-	    						$('li[id="' + element + '"]').slideDown("slow");
+	    						$('li[id="' + element + '"]').slideDown("fast");
 	    					}else {
 	    						// 선택된 카테고리 보여줄 시 이전 카테고리 위로 insert해서 보여줌
 	    						$('li[id="' + element + '"]').insertBefore($('li[id="' + selectedCategory[index-1] + '"]'));
-	    						$('li[id="' + element + '"]').slideDown("slow");
+	    						$('li[id="' + element + '"]').slideDown("fast");
 	    					}
 	    				});
 	    			}
@@ -163,6 +171,7 @@
     </script>
 </head>
 <body>
+
 	<div id="main-header">
 		<tiles:insertAttribute name="header" />
 	</div>

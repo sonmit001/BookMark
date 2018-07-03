@@ -84,31 +84,23 @@
 		<h1>
 			Main Bookmark List
 			<!-- Category insert / Delete START -->
-			<span class="btn-category" data-toggle="dropdown"><i
-				class="fa fa-th-list category-dropdown"></i></span>
-			<ul class="dropdown-menu category">
-				<li><a data-toggle="modal" onclick="openCategoryModal();">카테고리
-						추가<i class="fa fa-plus"></i>
-				</a></li>
-				<li><a data-toggle="modal" onclick="openCategoryDeleteModal();">카테고리
-						삭제<i class="fa fa-minus"></i>
-				</a></li>
-			</ul>
-			<!-- Category inert / Delete END -->
-		</h1>
-		<ol class="breadcrumb">
-			<li><a><i class="fa fa-home"></i>Home</a></li>
-			<li class="active">main bookmark list</li>
-		</ol>
-	</section>
-
-	<!-- Category lsit Dropdown START -->
-	<section class="content-category">
-		<div class="row">
-			<div class="col-sm-12 category">
+			<span class="span-category">
+				<span class="btn-category" data-toggle="dropdown"><i
+					class="fa fa-th-list category-dropdown"></i></span>
+				<ul class="dropdown-menu category">
+					<li>
+						<a data-toggle="modal" onclick="openCategoryModal();">카테고리 추가
+						<i class="fa fa-plus"></i></a>
+					</li>
+					<li>
+						<a data-toggle="modal" onclick="openCategoryDeleteModal();">카테고리 삭제
+						<i class="fa fa-minus"></i></a>
+					</li>
+				</ul>
+			</span>
+			<span class="span-categorylist">
 				<!-- Category lsit Dropdown START -->
-				<button class="btn-category categorylist" data-toggle="dropdown"
-					type="button">
+				<button class="btn-category categorylist" data-toggle="dropdown" type="button">
 					카테고리<i class="fa fa-caret-right"></i>
 				</button>
 				<ul id="dropDownCategoryList" class="dropdown-menu categorylist">
@@ -117,10 +109,14 @@
 					</c:forEach>
 				</ul>
 				<!-- Category lsit Dropdown END -->
-			</div>
-		</div>
+			</span>
+			<!-- Category inert / Delete END -->
+		</h1>
+		<ol class="breadcrumb">
+			<li><a><i class="fa fa-home"></i>Home</a></li>
+			<li class="active">main bookmark list</li>
+		</ol>
 	</section>
-	<!-- Category lsit Dropdown END -->
 
 	<!--groupList table start-->
 	<section class="content">
@@ -144,7 +140,6 @@
 								</div>
 							</div>
 							<!-- /.panel-heading -->
-
 
 							<!-- Category Name & edit & insert END -->
 							<div class="panel-body">
@@ -176,7 +171,6 @@
 					</c:forEach>	
 				</c:forEach>
 			</div>
-			<!-- /.row -->
 		</div>
 		<!-- /#page-wrapper -->
 

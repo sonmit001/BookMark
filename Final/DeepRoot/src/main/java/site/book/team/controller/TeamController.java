@@ -33,18 +33,21 @@ import org.springframework.web.servlet.View;
 
 import site.book.admin.dto.NoticeDTO;
 import site.book.admin.service.NoticeService;
+import site.book.socket.service.OnOffMemberSingleton;
 import site.book.team.dto.G_AlarmDTO;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Charsets;
+import com.google.gson.Gson;
 
 import site.book.admin.dto.NoticeDTO;
 import site.book.admin.service.NoticeService;
 import site.book.team.dto.G_BookDTO;
 import site.book.team.dto.G_JstreeDTO;
 import site.book.team.dto.G_MemberDTO;
+import site.book.team.dto.G_MyAlarmDTO;
 import site.book.team.dto.TeamDTO;
 import site.book.team.service.G_AlarmService;
 import site.book.team.service.G_BookService;
@@ -319,12 +322,13 @@ public class TeamController {
 		
 		String uid = (String)session.getAttribute("info_userid");
 		member_ban.setUid(uid);
-		System.out.println(member_ban);
+		
 		int isbaned = g_memberservice.banMember(member_ban);
-		
-		
+
 		if(isbaned > 0) {
-			model.addAttribute("result", "fired");
+			String toid = g_memberservice.getToUid(member_ban.getNname());
+			System.out.println(toid);
+			model.addAttribute("result", toid);
 		}else if(isbaned < 0) {
 			model.addAttribute("result", "empty");
 		}else {
@@ -341,6 +345,7 @@ public class TeamController {
 		
 		HttpSession session = req.getSession();
         String uid = (String)session.getAttribute("info_userid");
+        String nname = (String)session.getAttribute("info_usernname");
 
         // 태웅: 사용자가 주소창으로 장난친다면?
         G_MemberDTO temp_member = new G_MemberDTO(uid, Integer.parseInt(gid));
@@ -352,6 +357,10 @@ public class TeamController {
 		List<G_MemberDTO> gmemberlist = g_memberservice.selectGMemberlist(gid);
 		
 		model.addAttribute("gmemberlist",gmemberlist);
+		
+		// 현재 접속중인 유저 SEND (Map -> JSON)
+		model.addAttribute("onlinelist", OnOffMemberSingleton.returnConvertJson(nname, gid));
+		
 		model.addAttribute("gid", gid);
         
         UserDTO user = userservice.getMember(uid);
@@ -366,6 +375,10 @@ public class TeamController {
 		}
 		
 		model.addAttribute("gname", gname);
+		
+		// 그룹 초대/강퇴/완료 알람  쪽지 리스트
+		List<G_MyAlarmDTO> headerAlarmList = galarmservice.getAlarmList(uid);
+		model.addAttribute("headerAlarmList", headerAlarmList);
 		
 		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
 		model.addAttribute("headerNoticeList", headerNoticeList);

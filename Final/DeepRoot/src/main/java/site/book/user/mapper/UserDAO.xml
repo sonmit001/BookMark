@@ -40,10 +40,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="editUser">
     	<choose>
     		<when test="profile == null">
-    			UPDATE USER SET PWD=#{pwd} WHERE UID=#{uid};
+    			UPDATE USER SET PWD=#{pwd} WHERE UID=#{uid}
     		</when>
     		<otherwise>
-    			UPDATE USER SET PWD=#{pwd}, PROFILE=#{profile} WHERE UID=#{uid};
+    			UPDATE USER SET PWD=#{pwd}, PROFILE=#{profile} WHERE UID=#{uid}
     		</otherwise>
     	</choose>
     </update>
@@ -53,11 +53,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
     
     <update id="updatePwd">
-        UPDATE USER SET PWD=#{pwd} WHERE UID=#{uid};
+        UPDATE USER SET PWD=#{pwd} WHERE UID=#{uid}
     </update>
     
     <select id="getAllUserNname" resultType="java.util.List">
-    	SELECT NNAME FROM USER WHERE NNAME like concat('%', #{nname}, '%');
+    	SELECT NNAME FROM USER WHERE NNAME like concat('%', #{nname}, '%')
     </select>
 	
 	<!-- 희준 -->

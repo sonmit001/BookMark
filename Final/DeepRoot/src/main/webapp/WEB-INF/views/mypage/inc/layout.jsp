@@ -26,6 +26,13 @@
     <script  src="${pageContext.request.contextPath}/js/mypage/modal.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <!-- Script Common JavaScript & CSS END -->
+    
+    <!-- Header Socket JS -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/team/stomp.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/header/alarm_socket.js?ver=1"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/header/alarm.js?ver=1"></script>
+	<!-- Header Socket JS END -->
 
 	<!--  jsTree CSS & JS START -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />

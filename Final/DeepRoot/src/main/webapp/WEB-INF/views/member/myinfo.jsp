@@ -97,12 +97,15 @@
             if (($('#pwd_edit').val().trim() == "") || !($('#pwd_edit').val().length >= 5 && $('#pwd_edit').val().length <= 15)) {
                 $('.error').addClass('alert alert-danger').html("비밀번호는 5자~15자 사이로 만들어야 합니다.");
                 $("#edit-who-info-btn").prop("disabled", true);
+                $('#edit-who-info-btn').css('cursor', 'not-allowed');
             } else if(!($('#pwd_edit').val().length >= 5 && $('#pwd_edit').val().length <= 15) || !($('#pwd_edit').val() == $('#pwd_confirmation').val())) {
                     $('.error').addClass('alert alert-danger').html("입력한 비밀번호가 다릅니다.");
                     $("#edit-who-info-btn").prop("disabled", true);
+                    $('#edit-who-info-btn').css('cursor', 'not-allowed');
             } else {
                 $('.error').removeClass('alert alert-danger').html('');
                 $("#edit-who-info-btn").prop("disabled", false);
+                $('#edit-who-info-btn').css('cursor', 'pointer');
             }
         });
 
@@ -111,12 +114,15 @@
             if (!($('#pwd_edit').val() == $('#pwd_confirmation').val())) {
                 $('.error').addClass('alert alert-danger').html("입력한 비밀번호가 다릅니다.");
                 $("#edit-who-info-btn").prop("disabled", true);
+                $('#edit-who-info-btn').css('cursor', 'not-allowed');
             } else if(($('#pwd_edit').val().trim() == "") || !($('#pwd_edit').val().length >= 5 && $('#pwd_edit').val().length <= 15)) {
                 $('.error').addClass('alert alert-danger').html("비밀번호는 5자~15자 사이로 만들어야 합니다.");
                 $("#edit-who-info-btn").prop("disabled", true);
+                $('#edit-who-info-btn').css('cursor', 'not-allowed');
             } else {
                 $('.error').removeClass('alert alert-danger').html('');
                 $("#edit-who-info-btn").prop("disabled", false);
+                $('#edit-who-info-btn').css('cursor', 'pointer');
             }
         });
         
@@ -135,20 +141,4 @@
                 reader.readAsDataURL(img.files[0]);
         }
     }
-    
-    /* $("#edit-who-info-btn").prop("disabled", true);
-    
-    $("#edit-who-info-btn").on("dblclick", function(){});
-	$("#edit-who-info-btn").on("click", function(){
-		console.log("xxxx");
-			if($('#pwd_edit').hasClass('form-control')
-			== $('#pwd_confirmation').hasClass('form-control')) {
-				$("#edit-who-info-btn").prop("disabled", false);
-			}else {
-			
-			alert("비밀번호를 모두 작성해주세요");
-			$("#edit-who-info-btn").prop("disabled", true);
-			}
-		
-	}); */
 	</script>

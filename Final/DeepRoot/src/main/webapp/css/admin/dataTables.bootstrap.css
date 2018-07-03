@@ -9,6 +9,12 @@ div.dataTables_length select {
 	display: inline-block;
 }
 
+div.dataTables_length select:focus,
+div.dataTables_length select:hover{
+	border-color: #fff;
+	cursor: pointer;
+}
+
 div.dataTables_filter {
 	text-align: right;
 }

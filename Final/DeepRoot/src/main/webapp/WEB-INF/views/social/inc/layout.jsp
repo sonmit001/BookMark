@@ -24,6 +24,13 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 	<!-- jQuery Confirm END -->
+	
+	<!-- Header Socket JS -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/team/stomp.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/header/alarm_socket.js?ver=1"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/header/alarm.js?ver=1"></script>
+	<!-- Header Socket JS END -->
 
 	<!-- Common Script START -->
     <!-- Latest compiled JavaScript & CSS -->

@@ -147,6 +147,13 @@ $(document).ready(function(){
     // [확인]: 그룹 북마크로 추가 버튼 클릭했을 때, 
     $('#into-group-bookmark-getgroup-btn').on('dblclick', function(){});
     $('#into-group-bookmark-getgroup-btn').on('click', function(){
+    	
+    	var checked_ids = $('#jstree-from-left').jstree("get_checked",null,true);
+    	var selected_node_id = $('.groupshare-userpid-left').val();
+    	console.log(selected_node_id);
+    	var gid = $('.groupshare-gid-left').val();
+    	var submit_obj = [];
+    	
     	// 좌측 DIV 폴더클릭 막기
     	if($('.groupshare-url').text() == '#'){
 			swal({
@@ -158,16 +165,27 @@ $(document).ready(function(){
 			});
 			return;
 		}
-    	
+
+        $.each(checked_ids, function(key,value) {
+    	        //폴더가 아닌 url만 골라 가져가기
+    	        var checked_url = $('#jstree-from-left').jstree(true).get_node(value).a_attr.href;
+    	        var urlname = $('#jstree-from-left').jstree(true).get_node(value).text;
+    	        if(checked_url !='#'){
+    	            submit_obj.push({
+    	            	url : checked_url,
+    	            	urlname : urlname,
+    	            	pid : selected_node_id,
+    	            	gid : gid
+    	            }) 
+    	        }
+        	});
+        
+        var submit_obj_json = JSON.stringify(submit_obj);
+        
     	$.ajax({
-			url : "/bit/social/getGroupBook.do",
+			url : "/bit/social/getGroupBookList.do",
 			type: "POST",
-			data: {
-				url: $('.groupshare-url').text(),
-				urlname: $('.groupshare-urlname-left').val(),
-				pid: $('.groupshare-userpid-left').val(), 
-   				gid: $('.groupshare-gid-left').val()
-			},
+			data:  {obj : submit_obj_json},
 			success : function(data){
 				if(data.result == "success") {
 					swal("Thank you!", "북마크에 추가되었습니다!", "success");

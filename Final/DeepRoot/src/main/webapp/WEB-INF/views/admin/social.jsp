@@ -173,7 +173,7 @@
 									<!-- 그룹 공유   -->
 									<c:forEach items="${g_list}" var="g_booklist">
 										<tr id="gid${g_booklist.gid}">
-											<td><a href="" target="_blank">${g_booklist.gname}</a></td>
+											<td><a>${g_booklist.gname}</a></td>
 											<td class="table-tag">"${g_booklist.htag}"</td>
 											<td>${g_booklist.nname}</td>
 											<td class="table-date">${g_booklist.duedate}</td>

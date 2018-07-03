@@ -250,7 +250,18 @@ public class MainController {
 	
 	/* 회원정보 수정 페이지 GET */
 	@RequestMapping(value="/myInfo.do", method=RequestMethod.GET)
-	public String initMemberInfo(Model model) {
+	public String initMemberInfo(HttpServletRequest req, Model model) {
+		
+		HttpSession session = req.getSession();
+		String uid = (String)session.getAttribute("info_userid");
+		
+		if(uid != null) {
+			List<TeamDTO> headerTeamList = teamservice.getTeamList(uid);
+			model.addAttribute("headerTeamList", headerTeamList);
+		}
+		
+		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
+		model.addAttribute("headerNoticeList", headerNoticeList);
 		
 		return "member.myinfo";
 	}

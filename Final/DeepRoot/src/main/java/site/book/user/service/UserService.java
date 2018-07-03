@@ -7,6 +7,9 @@ package site.book.user.service;
  */
 import java.io.FileOutputStream;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +17,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,6 +52,9 @@ public class UserService {
 	// 희준
 	@Autowired
 	private SqlSession sqlsession;
+	
+	@Autowired
+	private VelocityEngine velocityEngine;
 	
 	// 명수
 	
@@ -110,14 +118,23 @@ public class UserService {
 		// Auth Mail Form $ Send email
 		try {
 			RollinMailHandler sendMail = new RollinMailHandler(mailSender);
-			sendMail.setSubject("[뿌리깊은마크 이메일 인증]");
-			sendMail.setText(
-					new StringBuffer().append("<h1>메일인증</h1>")
-									  .append("<h3>사용자님의 인증키입니다.</h3>")
-									  .append("<h3>[Auth Key]: " + key + "</h3>")
-									  .append("<h5 style='color:red'>※주의: 5분 안에 인증이 안될 시 회원가입이 취소됩니다.</h5>")
-									  .toString()
-			);
+			
+			String templateLocation = "userAuthentication.vm";
+			
+			Calendar cal = Calendar.getInstance();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분");
+			String dateTime = sdf.format(cal.getTime());
+			System.out.println("dateTime : " + dateTime);
+			
+			Map<String, Object> vmmodel = new HashMap<>();
+			vmmodel.put("key", key);
+			vmmodel.put("dateTime", dateTime);
+			
+			String content = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, 
+															templateLocation, "UTF-8", vmmodel);
+			
+			sendMail.setSubject("[뿌리깊은마크 회원가입 이메일 인증]");
+			sendMail.setText(content);
 			sendMail.setFrom("bitcamp104@gmail.com", "뿌리깊은마크 관리자");
 			sendMail.setTo(authcode.getUid());
 			sendMail.send();
@@ -230,14 +247,17 @@ public class UserService {
 				result = userDAO.updatePwd(user);
 				
 				RollinMailHandler sendMail = new RollinMailHandler(mailSender);
-				sendMail.setSubject("[뿌리깊은마크 이메일 인증]");
-				sendMail.setText(
-						new StringBuffer().append("<h1>임시 비밀번호 발급</h1>")
-										  .append("<p>사용자님의 인증키입니다.</p>")
-										  .append("<p>[Temp Password]: <b>" + pwd + "</b></p>")
-										  .append("<h5 style='color:red'>※주의: 로그인 후, 비밀번호를 변경해주세요.</h5>")
-										  .toString()
-				);
+				
+				String templateLocation = "temporaryPassword.vm";
+				
+				Map<String, Object> vmmodel = new HashMap<>();
+				vmmodel.put("pwd", pwd);
+				
+				String content = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, 
+																templateLocation, "UTF-8", vmmodel);
+				
+				sendMail.setSubject("[뿌리깊은마크 임시비밀번호 발급]");
+				sendMail.setText(content);
 				sendMail.setFrom("bitcamp104@gmail.com", "뿌리깊은마크 관리자");
 				sendMail.setTo(user.getUid());
 				sendMail.send();
@@ -264,14 +284,23 @@ public class UserService {
 				// Send email Authcode
 				
 				RollinMailHandler sendMail = new RollinMailHandler(mailSender);
-				sendMail.setSubject("[뿌리깊은마크 이메일 인증]");
-				sendMail.setText(
-						new StringBuffer().append("<h1>회원 인증 서비스</h1>")
-										  .append("<p>사용자님의 인증키입니다.</p>")
-										  .append("<p>[Authcode]: <b>" + key + "</b></p>")
-										  .append("<h5 style='color:red'>※주의: 5분 안에 인증이 안될 시 비밀번호 찾기 서비스가 취소됩니다.</h5>")
-										  .toString()
-				);
+				
+				String templateLocation = "passwordAuthentication.vm";
+				
+				Calendar cal = Calendar.getInstance();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분");
+				String dateTime = sdf.format(cal.getTime());
+				System.out.println("dateTime : " + dateTime);
+				
+				Map<String, Object> vmmodel = new HashMap<>();
+				vmmodel.put("key", key);
+				vmmodel.put("dateTime", dateTime);
+				
+				String content = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, 
+																templateLocation, "UTF-8", vmmodel);
+				
+				sendMail.setSubject("[뿌리깊은마크 비밀번호 찾기 이메일 인증]");
+				sendMail.setText(content);
 				sendMail.setFrom("bitcamp104@gmail.com", "뿌리깊은마크 관리자");
 				sendMail.setTo(user.getUid());
 				sendMail.send();

@@ -30,8 +30,10 @@ import site.book.social.dto.TopDTO;
 import site.book.social.service.SurfingService;
 import site.book.social.service.TopService;
 import site.book.team.dto.G_BookDTO;
+import site.book.team.dto.G_MyAlarmDTO;
 import site.book.team.dto.S_TeamDTO;
 import site.book.team.dto.TeamDTO;
+import site.book.team.service.G_AlarmService;
 import site.book.team.service.G_BookService;
 import site.book.team.service.TeamService;
 import site.book.user.dto.S_U_BookDTO;
@@ -46,6 +48,9 @@ import site.book.user.service.U_BookService;
 @Controller
 @RequestMapping("/social/")
 public class SocialController {
+	/* 태웅 파라미터 */
+	@Autowired
+	G_AlarmService galarmservice;
 	
 	/* 민재 파라미터 */
 	@Autowired
@@ -91,6 +96,10 @@ public class SocialController {
 			List<TeamDTO> headerTeamList = teamservice.getTeamList(uid);
 			model.addAttribute("headerTeamList", headerTeamList);
 		}
+		
+		// 그룹 초대/강퇴/완료 알람  쪽지 리스트
+		List<G_MyAlarmDTO> headerAlarmList = galarmservice.getAlarmList(uid);
+		model.addAttribute("headerAlarmList", headerAlarmList);
 		
 		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
 		model.addAttribute("headerNoticeList", headerNoticeList);
