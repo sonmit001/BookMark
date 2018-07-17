@@ -10,7 +10,9 @@ package site.book.team.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
+import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.S_TeamDTO;
 import site.book.team.dto.TeamDTO;
 
@@ -44,6 +46,12 @@ public interface TeamDAO {
 	// 그룹 완료
 	public int completedGroup(TeamDTO team) throws ClassNotFoundException, SQLException;
 	
+	// 그룹 멤버 리스트 가져오기
+	public List<G_AlarmDTO> getGroupMember(G_AlarmDTO alarm) throws ClassNotFoundException, SQLException;
+	
+	// 그룹 완료 쪽지 보내기
+	public int sendCompletedMemo(List<G_AlarmDTO> alarms) throws ClassNotFoundException, SQLException;
+	
 	// 그룹 하나 가져오기
 	public TeamDTO selectGroup(int gid) throws ClassNotFoundException, SQLException;
 	
@@ -56,4 +64,7 @@ public interface TeamDAO {
 
 	// 완료된 그룹 삭제하기
 	public int deleteCompletedTeam(String uid);
+	
+	// 그룹 리스트 조회수 증가
+	public int updateViewCount(int gid) throws ClassNotFoundException, SQLException;
 }

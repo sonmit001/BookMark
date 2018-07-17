@@ -38,26 +38,27 @@ $(function(){
 			
 			// content row에 테이블 추가
 			var html = '<div class="col-sm-6">';
-			html += '<div id="panel' + data.newCategory.acid + '" class="panel">';
-			html += '<div class="panel-heading">';
-			html += '<span id="categoryName' + data.newCategory.acid + '"> '+ data.newCategory.acname + '</span>';
-			html += '<button class="colorPickSelector categoryColor'+ data.newCategory.acid + '"></button>';
-			html += '<i class="fas fa-pencil-alt" data-toggle="modal" onclick="openCategoryEditModal('+ data.newCategory.acid + ", '" + data.newCategory.acname + "'" + ');"></i>';
-			html += '<div class="pull-right">';
-			html += '<i class="fa fa-plus-circle i-plus-circle" data-toggle="modal" onclick="openUrlModal(' + data.newCategory.acid + ", '" + data.newCategory.acname + "'" +');"></i>';
-			html += '</div>'
-			html += '<div class="panel-body">';
-			html += '<table width="100%" class="table table-hover" id="table' + data.newCategory.acid + '">';
-			html += '<thead>';
-			html += '<tr>';
-			html += '<th>사이트명</th>';
-			html += '<th>URL 주소</th>';
-			html += '<th>Actions</th>';
-			html += '</tr>';
-			html += '</thead>';
-			html += '</table>';
-			html += '</div>';
-			html += '</div>';
+				html += '<div id="panel' + data.newCategory.acid + '" class="panel">';
+					html += '<div class="panel-heading">';
+						html += '<span id="categoryName' + data.newCategory.acid + '">'+ data.newCategory.acname + '</span>';
+						html += '<button class="colorPickSelector categoryColor'+ data.newCategory.acid + '"></button>';
+						html += '<i class="fas fa-pencil-alt" data-toggle="modal" onclick="openCategoryEditModal('+ data.newCategory.acid + ", '" + data.newCategory.acname + "'" + ');"></i>';
+						html += '<div class="pull-right">';
+							html += '<i class="fa fa-plus-circle i-plus-circle" data-toggle="modal" onclick="openUrlModal(' + data.newCategory.acid + ", '" + data.newCategory.acname + "'" +');"></i>';
+						html += '</div>'
+					html += '</div>';		
+				html += '<div class="panel-body">';
+					html += '<table width="100%" class="table table-hover" id="table' + data.newCategory.acid + '">';
+					html += '<thead>';
+					html += '<tr>';
+					html += '<th>사이트명</th>';
+					html += '<th>URL 주소</th>';
+					html += '<th>Actions</th>';
+					html += '</tr>';
+					html += '</thead>';
+					html += '</table>';
+				
+				html += '</div>';
 			html += '</div>';
 			
 			$(".content>#page-wrapper>.row").append(html);
@@ -295,8 +296,9 @@ function getTitleWithWebCrawling() {
 	var url = $("#url").val().trim();
 	
 	// URL를 입력 안한 경우 alert 창을 띄운다.
-	if(url == ""){
-		$.alert("URL을 입력해주세요");
+	var regex =/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/;
+	if(!(regex.test(url))){
+		$.alert("URL을 확인해주세요");
 	}else {
 		preview(url);
 	}
@@ -380,8 +382,9 @@ function getTitleEditUrl() {
 	var url = $("#editurl").val().trim();
 	
 	// URL을 입력하지 않은 경우 alert창을 띄운다.
-	if(url == ""){
-		$.alert("URL을 입력해주세요");
+	var regex =/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/;
+	if(!(regex.test(url))){
+		$.alert("URL을 확인해주세요");
 	}else {
 		editUrlPreview(url);
 	}

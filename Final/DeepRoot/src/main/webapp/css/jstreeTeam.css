@@ -545,7 +545,7 @@ filter: gray;
 .jstree-proton > .jstree-no-dots .jstree-node,
 .jstree-proton > .jstree-no-dots .jstree-leaf > .jstree-ocl {
   background: transparent;
-  padding-left:5px;
+  padding-left:20px;
 }
 .jstree-proton > .jstree-no-dots .jstree-open > .jstree-ocl {
   background-position: -37px -5px;

@@ -85,4 +85,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="editTeamUrl" parameterType="hashMap">
 		UPDATE G_BOOK SET URL= #{url} WHERE GBID=#{gbid}
 	</update>
+	
+	<select id="getMyCategoryList" resultType="site.book.user.dto.U_BookDTO">
+		SELECT * FROM U_BOOK WHERE UID=#{uid}
+	</select>
 </mapper>

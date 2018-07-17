@@ -4,6 +4,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script type="text/javascript">
+
+	var headerTeamList = new Array(); // 전체 카테고리 리스트 비동기로 받아오기
+	
+	<c:forEach items="${headerTeamList}" var="team">
+		headerTeamList.push("${team.gid}");
+	</c:forEach>
+
 	// 헤더 이동시 socket disconnect & href 
 	function disconnectLocation(link) {
 		location.href = link;
@@ -18,7 +25,7 @@
 		    '<form id="addGroupForm" action="${pageContext.request.contextPath}/addGroup.do" class="formName" method="post" onsubmit="return false;">' +
 		    '<div class="form-group">' +
 		    '<label>그룹명</label>' +
-		    '<input type="text" name="gname" placeholder="그룹명" class="name form-control" required />' +
+		    '<input type="text" name="gname" placeholder="그룹명" class="name form-control" maxlength="12" required />' +
 		    '</div>' +
 		    '</form>',
 		    type: 'green',
@@ -78,7 +85,8 @@
 			
 			<div class="collapse navbar-collapse">
 			
-				<se:authorize access="isAuthenticated()">
+				<%-- <se:authorize access="isAuthenticated()"> --%>
+				<c:if test="${sessionScope.info_userid != null}">
 				<ul class="nav navbar-nav navbar-right">
 					<li>
 						<a onclick="disconnectLocation('<%= request.getContextPath() %>/user/mybookmark.do');">MyBookmark</a>
@@ -118,11 +126,13 @@
 					<!-- Social Link  -->
 					
 					<!-- Alarm START -->
-					<li class="dropdown">
-						<a href="#">Notice <i class="fa fa-angle-down"></i></a>
+					<li id="alarm_menu_li" class="dropdown">
+						<a href="#" id="alarm_menu" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							Notice <i class="fa fa-angle-down"></i>
+						</a>
 						<!-- headerAlarmList -->
 						<c:if test="${(headerAlarmList ne null) && (!empty headerAlarmList)}">
-						<ul role="menu" class="g_alarm_ul sub-menu">
+						<ul role="menu" class="g_alarm_ul dropdown-menu">
 							<c:forEach items="${headerAlarmList}" var="alarmList">
 								<li id="alarmlist${alarmList.gid}" class="g_alarm_li">
 									<span class="g_alarm_head">Group&nbsp;: <span class="g_alarm_name">${alarmList.gname}</span></span> 
@@ -147,15 +157,16 @@
 										<c:when test="${alarmList.ganame == '완료'}">
 											<span class="g_alarm_head">
 												From&nbsp;&nbsp;&nbsp;: <span class="g_alarm_name">${alarmList.fromid}</span>
-												<span class="g_alarm_date">${alarmList.senddate}</span>
-												<i class="fas fa-check g_notice_ok" onclick="deleteMemo('${alarmList.gid}','${alarmList.fromid}','${alarmList.ganame}')"></i>
+												<span class="g_alarm_date">${alarmList.senddate}</span>	
 											</span>
 											<br>
-											<span>해당 그룹이 완료되었습니다!</span>
+											<span class="g_alarm_content">해당 그룹이 완료되었습니다!
+											<i class="fas fa-check g_notice_ok" onclick="deleteMemo('${alarmList.gid}','${alarmList.fromid}','${alarmList.ganame}')"></i>
+											</span>
 										</c:when>
 											
 										<c:otherwise>
-											<span>해당 그룹에서 회원님을 강퇴했습니다!</span>
+											<span class="g_alarm_content">해당 그룹에서 회원님을 강퇴했습니다!</span>
 											<i class="fas fa-ban g_notice_no" onclick="deleteMemo('${alarmList.gid}','${alarmList.fromid}','${alarmList.ganame}')"></i>
 										</c:otherwise>
 										
@@ -164,7 +175,18 @@
 							</c:forEach>
 						</ul>
 						</c:if>
+						<div id="alarm-count-text" class="alarm-count-div animated flash"></div>
 					</li>
+					<script type="text/javascript">
+						var alarm_count = $('.g_alarm_li').length;
+						if( alarm_count <= 3 && alarm_count > 0 ) {
+							$('#alarm-count-text').html("<i class='fas fa-bullhorn'>&nbsp;" + alarm_count + "&nbsp;</i>");
+						}else if( alarm_count == 0 ){
+							$('#alarm-count-text').html('');
+						}else {
+							$('#alarm-count-text').html("<i class='fas fa-bullhorn'>&nbsp;3+&nbsp;</i>");
+						}
+					</script>
 					<!-- Alarm START END -->
 					
 					<!-- Notice Alarm START -->
@@ -195,7 +217,8 @@
 					</li>
 					<!-- USER INFO END -->
 				</ul>
-				</se:authorize>
+				</c:if>
+				<%-- </se:authorize> --%>
 				<script type="text/javascript">var userid = '<c:out value="${sessionScope.info_userid}"/>';</script>
 			</div>
 		</div>

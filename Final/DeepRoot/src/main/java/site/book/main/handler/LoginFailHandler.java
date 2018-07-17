@@ -20,7 +20,13 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 		
-		request.setAttribute("msg", "fail");
+		//System.out.println(exception.getLocalizedMessage());
+		if(exception.getLocalizedMessage().toUpperCase().contains("SESSION")) {
+			request.setAttribute("msg", "duplicate");
+		}else {
+			request.setAttribute("msg", "fail");
+		}
+		
 		request.getRequestDispatcher("/joinus/login.do").forward(request, response);
 	}
 }

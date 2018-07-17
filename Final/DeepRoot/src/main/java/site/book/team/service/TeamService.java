@@ -11,6 +11,7 @@ package site.book.team.service;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 import site.book.team.dao.G_BookDAO;
 import site.book.team.dao.G_MemberDAO;
 import site.book.team.dao.TeamDAO;
-import site.book.team.dto.G_BookDTO;
+import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.G_MemberDTO;
+import site.book.team.dto.G_RoleDTO;
 import site.book.team.dto.S_TeamDTO;
 import site.book.team.dto.TeamDTO;
+import site.book.user.dao.U_BookDAO;
 
 /**
  * @Class : TeamService.java
@@ -38,19 +41,18 @@ public class TeamService {
 	
 	
 	//태웅
-	public boolean isGroupMember(G_MemberDTO member) {
+	public G_RoleDTO isGroupMember(G_MemberDTO member) {
 		G_MemberDAO memberDAO = sqlsession.getMapper(G_MemberDAO.class);
-		boolean list = false;
+		G_RoleDTO role = null;
 		
 		try {
-			int result = memberDAO.isGroupMember(member);
-			if(result > 0){ list = true; }
+			role = memberDAO.isGroupMember(member);
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return list;
+		return role;
 	}
 	
 	
@@ -66,9 +68,6 @@ public class TeamService {
 		
 		try {
 			list = teamDAO.socialGroupList();
-			for(S_TeamDTO team : list) {
-				team.setView(g_bookDAO.selectGroupViews(team.getGid()));
-			}
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -140,12 +139,19 @@ public class TeamService {
 	}
 	
 	// 그룹 완료하기
-	public TeamDTO completedGroup(TeamDTO team) {
+	@Transactional
+	public TeamDTO completedGroup(TeamDTO team, G_AlarmDTO alarm) {
 		TeamDAO teamDAO = sqlsession.getMapper(TeamDAO.class);
 		TeamDTO completedTeam = null;
 		try {
+			// 그룹 완료 -> 모든 그룹원에게 완료 쪽지 보내기 -> 그룹 select
 			teamDAO.completedGroup(team);
+			
+			List<G_AlarmDTO> alarms = teamDAO.getGroupMember(alarm);
+			teamDAO.sendCompletedMemo(alarms);
+			
 			completedTeam = teamDAO.selectGroup(team.getGid());
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -185,6 +191,19 @@ public class TeamService {
 		
 		return result;
 		
+	}
+	
+	// 소셜 조회수 증가 
+	public int updateGroupViewCount(int gid) {
+
+		TeamDAO dao = sqlsession.getMapper(TeamDAO.class);
+		int result = 0;
+		try {
+			result = dao.updateViewCount(gid);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

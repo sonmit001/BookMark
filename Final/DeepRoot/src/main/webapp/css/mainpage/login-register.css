@@ -116,7 +116,7 @@
 }
 .login .box .social {
     float: none;
-    margin: 0 auto 30px;
+    margin: 0 auto 15px;
     text-align: center;
 }
 
@@ -140,7 +140,7 @@
     background-color: #F74933;
 }
 .login .social .github{
-    background-color: #403A3A;
+    background-color: #003aff;
 }
 .login .facebook:hover{
     background-color: #159238;

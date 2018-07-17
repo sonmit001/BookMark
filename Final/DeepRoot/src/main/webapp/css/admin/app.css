@@ -1,4 +1,4 @@
-@import url(plugins/datatables/dataTables.bootstrap.css);
+/* @import url(plugins/datatables/dataTables.bootstrap.css); */
 @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
 /* 헤더 로고 폰트 */
 @import url('https://fonts.googleapis.com/css?family=Gugi');
@@ -7,31 +7,39 @@
 
 /* CHART ID CSS START */
 #chartdiv1 {
-    background-color: #444b52; 
-    color: #fff; 
+    background-color: #fff; 
+    color: #000; 
     width: 90%;
     height: 300px;
+    border-radius: 15px;
+    border: 5px solid #8aa4af;
 }
 
 #chartdiv2 {
-    background-color: #444b52; 
-    color: #fff; 
+    background-color: #fff; 
+    color: #000; 
     width: 90%;
     height: 300px;
+    border-radius: 15px;
+    border: 5px solid #8aa4af;
 }
 
 #chartdiv3 {
-    background-color: #444b52; 
-    color: #fff; 
+    background-color: #fff; 
+    color: #000; 
     width: 90%;
     height: 300px;
+    border-radius: 15px;
+    border: 5px solid #8aa4af;
 }
 
 #chartdiv4 {
-    background-color: #444b52; 
-    color: #fff; 
+    background-color: #fff; 
+    color: #000; 
     width: 90%;
     height: 300px;
+    border-radius: 15px;
+    border: 5px solid #8aa4af;
 }
 
 #chartdiv1 image,
@@ -55,16 +63,20 @@
     display: none !important;
 }
 
+.amcharts-value-axis > text { font-size: 13px;}
+.amcharts-category-axis > text { font-size: 13px;}
+.amcharts-export-menu li:last-child>a {background-color: #eee}
+
 /* CHART ID CSS END */
 .admin-notice:hover,
 .admin-notice:focus{
-	color: #f39c12;
+	color: #fff;
 	
 }
 
 .admin-mail:hover,
 .admin-mail:focus {
-	color: #00a65a;
+	color: #fff;
 }
 
 .wrapper.fixed_layout .main-header {
@@ -106,6 +118,10 @@
     height: 4em
 }
 
+/* panel head home icon */
+.fa.fa-home{
+	margin-right: 5px;
+}
 hr.visible-xs-block {
     width: 100%;
     background-color: rgba(0, 0, 0, .17);
@@ -168,7 +184,6 @@ hr.visible-xs-block {
 body,
 html {
     height: 94.8%;
-    background-color: #444b52; /*모달실행시 스크롤바 중복생성 영역의 색상*/
 }
 
 .container-table {
@@ -440,3 +455,40 @@ td {
     white-space: nowrap;
     max-width: 0;
 }
+
+
+/* header */
+#userMenu {
+	width: 150px;
+	text-align: center;
+}
+
+#userMenu li {
+	width: 150px;
+	padding: 7px 10px 7px 10px;
+}
+
+.content-head{ margin-right: 5px;}
+.content-header-ico{
+ 	color: #333; 
+ 	padding-left: 35px; 
+ 	margin-right: 15px;
+}
+.content-header-chartico{
+	color: #333;
+	padding-left: 15px;
+	margin-right: 15px;
+}
+
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default,
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover,
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:active,
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:focus{
+    color: #fff;
+    background-color: #2ecc71;
+}
+.jconfirm.jconfirm-light .jconfirm-box {
+    border-top: 10px solid #2ecc71;
+}
+
+.fas.fa-user-circle{font-size: 20px;}

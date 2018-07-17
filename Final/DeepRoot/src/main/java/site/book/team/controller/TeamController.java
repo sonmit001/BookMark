@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,12 +49,15 @@ import site.book.team.dto.G_BookDTO;
 import site.book.team.dto.G_JstreeDTO;
 import site.book.team.dto.G_MemberDTO;
 import site.book.team.dto.G_MyAlarmDTO;
+import site.book.team.dto.G_RoleDTO;
 import site.book.team.dto.TeamDTO;
 import site.book.team.service.G_AlarmService;
 import site.book.team.service.G_BookService;
 import site.book.team.service.G_MemberService;
 import site.book.team.service.TeamService;
+import site.book.user.dto.U_BookDTO;
 import site.book.user.dto.UserDTO;
+import site.book.user.service.U_BookService;
 import site.book.user.service.UserService;
 
 /**
@@ -74,6 +78,9 @@ public class TeamController {
 	
 	@Autowired
     private View jsonview;
+	
+	@Autowired
+	private U_BookService u_bookservice;
 	
 	//희준
 	@Autowired
@@ -202,6 +209,72 @@ public class TeamController {
 		return jsonview;
 	}
 	
+	@RequestMapping("getMyCategoryList.do")
+	public void getMyCategoryList(HttpServletRequest req,  HttpServletResponse res) {
+		
+		res.setCharacterEncoding("UTF-8");
+		
+		HttpSession session = req.getSession();
+        String uid = (String)session.getAttribute("info_userid");
+        
+        JSONArray jsonArray = new JSONArray();	
+        HashMap<String, String> href = new HashMap();
+		List<U_BookDTO> list = gbookservice.getMyCategoryList(uid);
+        
+		if(list.size() ==0) {
+			
+			JSONObject jsonobject = new JSONObject();
+			
+			// 처음 가입자는 첫 카테고리를  생성해 준다.
+			int ubid = u_bookservice.insertRootFolder(uid);
+			
+			//처음 가입한 유저일 경우 root폴더 생성해 준다.
+				
+			jsonobject.put("id", ubid);
+			jsonobject.put("parent", "#");
+			jsonobject.put("text", "첫 카테고리");
+			jsonobject.put("icon", "fa fa-folder");
+			jsonobject.put("uid", uid);
+			jsonArray.put(jsonobject);
+				
+		}else {
+			
+			for(int i =0;i<list.size();i++) {
+				
+				JSONObject jsonobject = new JSONObject();
+				
+				String parentid = String.valueOf(list.get(i).getPid());
+				
+				if(parentid.equals("0") || parentid.equals(""))
+					jsonobject.put("parent", "#");
+				else
+					jsonobject.put("parent", parentid);
+				
+				if(list.get(i).getUrl() == null)
+					jsonobject.put("icon", "fa fa-folder");	//favicon 추가
+				else {
+					jsonobject.put("icon", "https://www.google.com/s2/favicons?domain="+list.get(i).getUrl());	//favicon 추가
+				}
+				href.put("href", list.get(i).getUrl());
+				
+				jsonobject.put("id", list.get(i).getUbid());
+				jsonobject.put("text", list.get(i).getUrlname());
+				jsonobject.put("uid",uid);
+				jsonobject.put("a_attr", href);
+				
+				jsonArray.put(jsonobject);
+				
+			}
+		}
+		try {
+			res.getWriter().println(jsonArray);
+		}catch (JSONException | IOException e) {
+			e.printStackTrace();
+		}
+        
+	}
+	
+	
 	//태웅
 	//해당 유저의 진행중인 그룹의 카테고리만를 보내준다.
 	@RequestMapping("getGroupCategoryList.do")	
@@ -272,7 +345,7 @@ public class TeamController {
 		return jsonview;
 	}
 	
-	// 초대 기능: 닉네임으로 초대 쪽지 보내기
+	// 초대 기능: 이메일로 초대 쪽지 보내기
 	@RequestMapping("invite.do")	
 	public View inviteUser(HttpServletRequest req, Model model, G_AlarmDTO alarm) {
 		
@@ -280,9 +353,18 @@ public class TeamController {
         String uid = (String)session.getAttribute("info_userid");
         alarm.setFromid(uid);
         
+        G_MemberDTO member = new G_MemberDTO();
+        member.setUid(alarm.getToid());
+        member.setGid(alarm.getGid());
+        
         // 본인에게 보낸 경우
         if( alarm.getToid().equals(uid) ) {
         	model.addAttribute("result", "self");
+        	return jsonview;
+        }
+        // 이미 그룹원인 경우
+        else if( teamservice.isGroupMember(member) != null ) {
+        	model.addAttribute("result", "member");
         	return jsonview;
         }
         // 이미 초대한 사용자에게 보낸 경우
@@ -290,6 +372,7 @@ public class TeamController {
         	model.addAttribute("result", "already");
         	return jsonview;
         } 
+        
         // 정상적인 경우에 실행
         else {
         	int result = g_memberservice.inviteUser(alarm);
@@ -322,15 +405,60 @@ public class TeamController {
 		
 		String uid = (String)session.getAttribute("info_userid");
 		member_ban.setUid(uid);
+		System.out.println(member_ban);
 		
+		// 강퇴 대상이 그룹장인 경우 return
+		if( member_ban.getGrid() == 1 ) {
+			model.addAttribute("result", "master");
+			return jsonview;
+		}
+		// 강퇴 대상이 매니저 vs 매니저인 경우 return
+		else if( member_ban.getGrid() == member_ban.getMygrid() ) {
+			model.addAttribute("result", "manager");
+			return jsonview;
+		}
+		
+		// 강퇴 대상이 그룹장->그룹원, 그룹장->매니저, 매니저->그룹원
 		int isbaned = g_memberservice.banMember(member_ban);
 
 		if(isbaned > 0) {
 			String toid = g_memberservice.getToUid(member_ban.getNname());
-			System.out.println(toid);
 			model.addAttribute("result", toid);
 		}else if(isbaned < 0) {
 			model.addAttribute("result", "empty");
+		}else {
+			model.addAttribute("result", "fail");
+		}
+		
+		return jsonview;
+	}
+	
+	// 그룹원에게 권한 부여
+	@RequestMapping("giveGorupRole.do")	
+	public View giveGorupRole(HttpServletRequest req, HttpSession session, Model model, G_MemberDTO member_auth, String key) {
+		
+		//System.out.println(key + ": " + member_auth);
+		// 권한 부여 대상이 그룹장인 경우 return
+		if( member_auth.getGrid()  == 1 ) {
+			model.addAttribute("result", "master");
+			return jsonview;
+		}
+		// 권한 부여 대상이 이미 매니저인 경우
+		else if( member_auth.getGrid() == 2 && key.equals("manager")) {
+			model.addAttribute("result", "manager");
+			return jsonview;
+		}
+		// 권한 부여 대상이 이미 그룹원인 경우
+		else if( member_auth.getGrid() == 3 && key.equals("member")) {
+			model.addAttribute("result", "member");
+			return jsonview;
+		}
+		
+		// 권한 부여 대상: 그룹원->매니저, 매니저->그룹원
+		int isAuth = (key.equals("manager")) ? g_memberservice.giveManager(member_auth) : g_memberservice.giveMember(member_auth);
+
+		if(isAuth > 0) {
+			model.addAttribute("result", "success");
 		}else {
 			model.addAttribute("result", "fail");
 		}
@@ -349,9 +477,14 @@ public class TeamController {
 
         // 태웅: 사용자가 주소창으로 장난친다면?
         G_MemberDTO temp_member = new G_MemberDTO(uid, Integer.parseInt(gid));
-        if(teamservice.isGroupMember(temp_member) != true) {
+        G_RoleDTO roll_name = teamservice.isGroupMember(temp_member);
+        if(roll_name == null) {
         	// 마이 페이지로 이동
         	return "redirect:/user/mybookmark.do";
+        }else {
+        	// 그룹원이라면, 해당 유저의 그룹 권한 명을 model
+        	req.setAttribute("group_auth", roll_name.getGrname());
+        	model.addAttribute("gmemberrole", roll_name.getGrname());
         }
         
 		List<G_MemberDTO> gmemberlist = g_memberservice.selectGMemberlist(gid);
@@ -371,7 +504,6 @@ public class TeamController {
 		if(uid != null) {
 			List<TeamDTO> headerTeamList = teamservice.getTeamList(uid);
 			model.addAttribute("headerTeamList", headerTeamList);
-			
 		}
 		
 		model.addAttribute("gname", gname);
@@ -418,7 +550,7 @@ public class TeamController {
     	if(Files.exists(path)) {
     		byte [] fileBytes = Files.readAllBytes(path);
         	String temp = new String(fileBytes, "UTF-8");
-        	list = Arrays.asList(temp.split("&"));
+        	list = Arrays.asList(temp.split("⊙"));
     	}
     	
     	/*char singleChar;

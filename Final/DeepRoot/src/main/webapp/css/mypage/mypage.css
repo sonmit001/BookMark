@@ -8,6 +8,8 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
+#main{ height: 100%; }
+
 a:hover{text-decoration: none; }
 .material-icons.md-18 { float: left; font-size: 18px; }
 .material-icons.md-24 { float: left; font-size: 24px; }
@@ -23,6 +25,12 @@ a:hover{text-decoration: none; }
     display: table;
     width: 100%;
     height: 100%;
+}
+.jstree-modal-center{
+	 margin: 0;
+    position: absolute;
+    top: 30%;
+    left: 30%;
 }
 #completedGroupModal {
 	perspective-origin: center center;
@@ -65,7 +73,7 @@ a:hover{text-decoration: none; }
 	position: relative;
 	left: 10px;
 	right: 20px;
-	font-family: 'Jua', 'Jua';
+	font-family: 'Jua';
 }
 .spring {
   position: relative;
@@ -93,19 +101,18 @@ a:hover{text-decoration: none; }
 }
 
 .my-row-bg {
-  /*background: #6291cc;*/
   padding: 25px 0px 25px 30px;
   border-radius: 20px;
 }
 
 .mydiv-height {
   padding: 0;
-  height: 735px;
+  height: 757px;
 }
 
 .mypage-title {
   font-size: 23px;
-  font-family: 'Jua', 'Jua';
+  font-family: 'Jua';
 }
 .heading {
   color: #fff;
@@ -163,7 +170,6 @@ a:hover{text-decoration: none; }
   margin-left: 25px;
   background-color: #fff;
   border: 1px solid;
-  /*border-right: none;*/
   border-color: #000;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -173,7 +179,6 @@ a:hover{text-decoration: none; }
   margin-left: 10px;
   background-color: #fff;
   border: 1px solid;
-  /*border-left: none;*/
   border-right-style: double;
   border-color: #000;
   border-top-right-radius: 10px;
@@ -185,17 +190,16 @@ a:hover{text-decoration: none; }
 .group-list-div {
   padding: 0;
   margin: 0;
-  height: 69%;
+  height: 67%;
   box-shadow: 10px 10px 20px 0px;
   border-bottom-left-radius: 0px;
 }
 .group-list-panel {
   padding-bottom: 0px;
-  margin: 0 0 7px 20px;
+  margin: 0 0 10px 20px;
   border-color: #000;
   border: 1px solid;
   overflow: hidden;
-  /*border-top-right-radius: 30px;*/
 }
 
 .completed-group-list-div {
@@ -208,8 +212,6 @@ a:hover{text-decoration: none; }
 .group-completed-list-panel {
   border-color: #000;
   border: 1px solid;
-  /*padding-bottom: 30px;*/
-  /*border-bottom-right-radius: 30px;*/
 }
 
 .my-group-list {
@@ -239,19 +241,53 @@ a:hover{text-decoration: none; }
 }
 
 /* jstree 길이 넘어가면 ... 표시 */
-.jstree-anchor{
+.my-bookmark-print-div .jstree-anchor{
     overflow:hidden;
 	white-space:nowrap;
 	max-width: 80%;
 }
 
+.jstree-container-ul.jstree-children.jstree-no-dots.jstree-contextmenu.jstree-wholerow-ul{
+	max-width: 100%;
+}
+
 /* confirm 버튼 색상 지정 */
 .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default {
 	color: #fff;
-	background: #7bbfa8;
+	background: #5cb85c;
 }
 
 .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover {
 	color: #fff;
-	background: #7bab94;
+	background: #5cb85c;
+}
+/*modal*/
+.modal-body {
+	padding-top:0;
+}
+.modal-footer {
+	clear: both;
+}
+
+/* jstree scrolling */
+.jstree-container-ul {
+	overflow: auto;
+    max-height: 702px;
+    min-height: 702px;
+}
+
+.jstree-container-ul::-webkit-scrollbar{width: 10px; height: 10px;}
+.jstree-container-ul::-webkit-scrollbar-track {background-color:#fff0;}
+.jstree-container-ul::-webkit-scrollbar-thumb {background-color:#ccc; border-radius: 10px;}
+.jstree-container-ul::-webkit-scrollbar-thumb:hover {background: #b9b9b9;}
+.jstree-container-ul::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment {
+    width: 5px;
+    height: 5px;
+    background-color: #fff0;
+}
+.completed-group .jstree-container-ul {
+	overflow: auto;
+    max-height: 300px;
+    min-height: 300px;
+
 }

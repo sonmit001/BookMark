@@ -282,7 +282,7 @@ public class U_BookService {
 				list.add(dto);
 			}
 		}
-		System.out.println(list.toString());
+		//System.out.println(list.toString());
 		map.put("list", list);
 		
 		try {
@@ -295,7 +295,18 @@ public class U_BookService {
 		
 		return result;
 	}
+	// 소셜 조회수 증가 
+	public int updateViewCount(int ubid) {
 
+		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
+		int result = 0;
+		try {
+			result = dao.updateViewCount(ubid);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	// 함수 End
 }

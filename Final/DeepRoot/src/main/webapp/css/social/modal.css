@@ -219,50 +219,55 @@
 /* 마이페이지 모달 버튼색상 */
 .btn.btn-default.btn-sm.addUrlLevel1 {
 	color: #fff;
-	background: #7bbfa8;
+	background: #5cb85c;
 }
 
 .btn.btn-default.btn-sm.addUrlLevel1:hover {
 	color: #fff;
-	background: #7bab94;
+	background: #5cb85c;
+	opacity: 0.7;
 }
 
 .btn.btn-default.btn-sm.addUrlLevel2 {
 	color: #fff;
-	background: #7bbfa8;
+	background: #5cb85c;
 }
 
 .btn.btn-default.btn-sm.addUrlLevel2:hover {
 	color: #fff;
-	background: #7bab94;
+	background: #5cb85c;
+	opacity: 0.7;
 }
 
 .btn.btn-default.btn-sm.addUrlLevel2-1 {
 	color: #fff;
-	background: #7bbfa8;
+	background: #5cb85c;
 }
 
 .btn.btn-default.btn-sm.addUrlLevel2-1:hover {
 	color: #fff;
-	background: #7bab94;
+	background: #5cb85c;
+	opacity: 0.7;
 }
 
 .btn.btn-default.btn-sm.addUrlLevel2-2 {
 	color: #fff;
-	background: #7bbfa8;
+	background: #5cb85c;
 }
 
 .btn.btn-default.btn-sm.addUrlLevel2-2:hover {
 	color: #fff;
-	background: #7bab94;
+	background: #5cb85c;
+	opacity: 0.7;
 }
 
 .btn.btn-default.btn-sm.addUrlLevel3 {
 	color: #fff;
-	background: #7bbfa8;
+	background: #5cb85c;
 }
 
 .btn.btn-default.btn-sm.addUrlLevel3:hover {
 	color: #fff;
-	background: #7bab94;
+	background: #5cb85c;
+	opacity: 0.7;
 }

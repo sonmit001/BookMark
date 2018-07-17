@@ -44,17 +44,19 @@
 	padding-top: 10px;
 }
 .modal > a {
-  margin: 22px 40px 0px 0px;
+  	margin: 22px 40px 0px 0px;
 }
 .modal-header {
-  padding: 15px 15px 10px 15px;
-  border-bottom: 2px solid #a94442;
+	padding: 15px 15px 10px 15px;
+	border-bottom: 2px solid #a94442;
+	margin-bottom: 1px;
+
 }
 
 .modal-header.groupshare {
-  border-bottom: 1px solid #ccc;
-  padding-top : 10px;
-  padding-bottom: 5px;
+	border-bottom: 1px solid #ccc;
+	padding-top : 10px;
+	padding-bottom: 5px;
 }
 
 
@@ -64,9 +66,9 @@
 
 /* surfingshare */
 .modal-header.surfingshare {
-  border-bottom: 1px solid #ccc;
-  padding-top : 10px;
-  padding-bottom: 5px;
+	border-bottom: 1px solid #ccc;
+	padding-top : 10px;
+	padding-bottom: 5px;
 }
 
 

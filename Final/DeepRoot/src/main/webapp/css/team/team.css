@@ -16,7 +16,24 @@ body{
     width: 1350px;
     
 }
+.modal { z-index: -10; }
+.modal-open .modal { z-index: 1050; }
 
+.jstree-modal-center{
+	 margin: 0;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+}
+.main-modal-controller { display: table-row; width: 100%; }
+.main-modal-center { 
+	display: table-cell; 
+	vertical-align: middle; 
+	position: absolute;
+    padding-bottom: 50px;
+    top: 30%;
+    left: 30%;
+}
 .whole-body{margin-top:100px;}
 .container-fluid.team-container .row .col-sm-12{
     border : 5px double #000;
@@ -55,6 +72,12 @@ body{
     padding-left: 80px;
     padding-right: 55px;
 }
+.jstree-modal-fromgrouptomy{
+		 margin: 0;
+    position: absolute;
+    top: 20%;
+    left: 30%;
+}
 
 /* Top Content CSS START */
 .teamname{
@@ -75,6 +98,20 @@ body{
 /* Top Content CSS END */
 
 /* group-member css START */
+.group-master {
+	margin-left: 2px;
+	font-size: 10px;
+    color: orange;
+    vertical-align: text-top;
+}
+
+.group-manager {
+	margin-left: 3px;
+	font-size: 14px;
+    color: #dd77ff;
+    vertical-align: text-top;
+}
+
 .group-member{
     padding: 5px;
     height: 700px;
@@ -142,7 +179,6 @@ body{
 /****** height 벗어나면 수정 필요 *****/
 .online-member,
 .offline-member{
-    
     padding-top: 10px;
     overflow-y: auto;
 }
@@ -156,7 +192,6 @@ body{
     padding-left: 10px;
     vertical-align: middle;
     cursor: pointer;
-
 }
 
 .fas.fa-toggle-on{
@@ -186,34 +221,38 @@ body{
     margin-right: 5px;
 }
 
-/******/
+.online-ico{
+	color: green;
+	margin-right: 5px;
+	font-size: 12px;
+}
+
+.offline-ico{
+	color: gray;
+	margin-right: 5px;
+	font-size: 12px;
+}
+
 .whole-body{ 
     height: 100%; 
     vertical-align: middle;
     background-image: url('https://data.ac-illust.com/data/thumbnails/fa/fa2a672a7db92d77b1df1d650b6b0806_w.jpeg');
 }
 .col-sm-12 .col-sm-7{ height: 100%;}
-.col-sm-12 .col-sm-5.option{
-    text-align: right;
-    
-}
+.col-sm-12 .col-sm-5.option{ text-align: right;}
 .team-ico{
     font-size: 25px;
     margin-right: 10px;
     color: #fb7070;
 }
 
-.col-sm-5.option .option-ico a{
-    text-decoration: none;
-}
+.col-sm-5.option .option-ico a{text-decoration: none;}
 .member_insert_input{
     border: 1px solid green;
     border-radius: 5px 5px;
     width: 100%;
     padding-left: 5px;
 }
-/******/
-
 /* group-member css END */
 
 /* group-chart CSS START */
@@ -292,9 +331,10 @@ body{
 }
 
 .chat-element {
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     height: 75%;
     overflow-y: auto;
+    word-break: break-all;
 }
 
 .divider { width:100%; text-align:center; clear: both; margin-bottom: 5px}
@@ -308,7 +348,6 @@ body{
     border-color: #888;
 }
 
-/* 채팅 한번 치면 일어나는 놈들 */
 .chatting-contents {
     padding-top: 10px;
 }
@@ -318,7 +357,6 @@ body{
 }
 .chatting-profile-img {
     margin-right: 5px;
-    margin-top: 5px;
     width: 25px;
     height: 25px;
     border-radius: 10px;
@@ -378,8 +416,6 @@ body{
     height: 1px;
     background: #fff0;
 }
-
-/* 채팅 한번 치면 일어나는 놈들 */
 /* group-chart CSS END  */
 
 
@@ -445,15 +481,20 @@ a:active {
 .jstree-from {
     padding: 10px 0px 10px 0px;
     height: 75%;
-    max-height: 650px;
+    max-height: 644px;
+    min-height: 644px;
     overflow-y: auto;
 }
-
-
 /* group-category CSS END */
 
+/* Team Header Notice dropdown > li CSS */
+.dropdown-menu > li{
+    padding: 5px 10px 5px 10px;
+    background-color: #fff;
+}
 
-/* team CSSS END */
+/* team CSS END */
+
 /* jstree모달*/
 .indishare-url{
 	margin-left: 10px;
@@ -478,4 +519,12 @@ a:active {
 	margin-right: 10px;
 	color: #081971; 
 	font-size : 15px;
+}
+
+.modal-header {
+    padding: 15px 15px 10px 15px;
+    border-bottom: 2px solid #7bbfa8;
+}
+.modal-body{
+	padding-top: 0px;
 }

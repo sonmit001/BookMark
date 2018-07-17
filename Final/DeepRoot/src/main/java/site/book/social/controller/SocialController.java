@@ -196,24 +196,54 @@ public class SocialController {
 	}
 	
 	// 진수, 개인 공유 북마크&파도타기 북마크 배열에 담아 내 그룹으로 가져가기
-		@RequestMapping("getGroupBookList.do")	
-		public View addGroupBookmarkList(HttpServletRequest req, Model model) {
-	        
-			HttpSession session = req.getSession();
-	        String uid = (String)session.getAttribute("info_userid");
-	        
-	        JSONArray jarr = new JSONArray();
-			jarr = new JSONArray(req.getParameter("obj"));
-	        
-	        int result = surfingservice.insertGroupBookmarkList(jarr, uid);
-	        
-			if(result > 0) {
-				model.addAttribute("result", "success");
-			}else {
-				model.addAttribute("result", "fail");
-			}
-			
-			return jsonview;
+	@RequestMapping("getGroupBookList.do")	
+	public View addGroupBookmarkList(HttpServletRequest req, Model model) {
+        
+		HttpSession session = req.getSession();
+        String uid = (String)session.getAttribute("info_userid");
+        
+        JSONArray jarr = new JSONArray();
+		jarr = new JSONArray(req.getParameter("obj"));
+        
+        int result = surfingservice.insertGroupBookmarkList(jarr, uid);
+        
+		if(result > 0) {
+			model.addAttribute("result", "success");
+		}else {
+			model.addAttribute("result", "fail");
 		}
+		
+		return jsonview;
+	}
+	
+	// 진수, 소셜 조회수 증가
+	@RequestMapping("indiViewCount.do")	
+	public View updateViewCount(String ubid, Model model) {
+        
+        int result = u_bookservice.updateViewCount(Integer.parseInt(ubid));
+        
+        if(result > 0) {
+			model.addAttribute("result", "success");
+		}else {
+			model.addAttribute("result", "fail");
+		}
+        
+		return jsonview;
+	}
+	
+	// 진수, 그룹 조회수 증가
+	@RequestMapping("groupViewCount.do")	
+	public View updateGroupViewCount(String gid, Model model) {
+        
+        int result = teamservice.updateGroupViewCount(Integer.parseInt(gid));
+        
+        if(result > 0) {
+			model.addAttribute("result", "success");
+		}else {
+			model.addAttribute("result", "fail");
+		}
+        
+		return jsonview;
+	}
 	
 }

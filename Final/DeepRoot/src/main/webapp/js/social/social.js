@@ -72,7 +72,11 @@ $(function() {
     	var selected_node_id = $(".indishare-userpid").val();
     	
     	if(selected_node_id == 0) {
-	        alert("가져가기 할 폴더를 선택하지 않았습니다.")
+    		swal({title: "목적지 폴더를 확인하셨나요?",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
     	
@@ -98,7 +102,6 @@ $(function() {
                         title: "목적지 폴더를 확인하셨나요?",
                         text: "잠시후 다시 시도해주세요!",
                         icon: "warning",
-                        buttons: true,
                         dangerMode: true
 					});
 				}
@@ -108,7 +111,6 @@ $(function() {
                     title: "목적지 폴더를 확인하셨나요?",
                     text: "잠시후 다시 시도해주세요!",
                     icon: "warning",
-                    buttons: true,
                     dangerMode: true
 				});
 		    }
@@ -121,10 +123,14 @@ $(function() {
     	var selected_node_id = $(".indishare-userpid").val();
     	
     	if(selected_node_id == 0) {
-	        alert("가져가기 할 폴더를 선택하지 않았습니다.")
+    		swal({title: "목적지 폴더를 확인하셨나요?",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
-    	
+	    
 		$.ajax({
 			url : "getGroupBook.do",
 			type: "POST",
@@ -142,20 +148,18 @@ $(function() {
 					$('#socialIndiModal').modal("toggle");
 				}else {
                     swal({
-                        title: "목적지 폴더를 확인하셨나요?",
+                    	title: "목적지 폴더를 확인하셨나요?",
                         text: "잠시후 다시 시도해주세요!",
                         icon: "warning",
-                        buttons: true,
                         dangerMode: true
 					});
 				}
 			},
 			error : function(error) {
 				swal({
-                    title: "목적지 폴더를 확인하셨나요?",
+					title: "목적지 폴더를 확인하셨나요?",
                     text: "잠시후 다시 시도해주세요!",
                     icon: "warning",
-                    buttons: true,
                     dangerMode: true
 				});
 		    }
@@ -333,12 +337,20 @@ $(document).ready(function(){
 	    checked_ids = $('#jstree-from-left-group').jstree("get_checked",null,true);
 	    
 	    if(checked_ids == null){
-	        alert("선택한 URL이 없습니다.")
+	    	swal({title: "선택한 URL이 없습니다!",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
 	    
 	    if(selected_node_id == 0) {
-	        alert("가져가기 할 폴더를 선택하지 않았습니다.")
+	    	swal({title: "목적지 폴더를 확인하셨나요?",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
 	    
@@ -354,7 +366,17 @@ $(document).ready(function(){
 	            }) 
 	        }
 	     });
-	    
+
+        if(submit_obj.length == 0){
+    		swal({
+    			title: "해당 카테고리엔 URL이 존재하지 않습니다!",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+    		});
+    		return;
+    	}
+        
 	    var submit_obj_json = JSON.stringify(submit_obj);
 
     	$.ajax({
@@ -375,9 +397,9 @@ $(document).ready(function(){
     					title: "목적지 폴더를 확인하셨나요?",
                         text: "잠시후 다시 시도해주세요!",
                         icon: "warning",
-                        buttons: true,
                         dangerMode: true
     				});
+    				return;
     			}
     		},
     		error : function(error) {
@@ -385,12 +407,11 @@ $(document).ready(function(){
     				title: "목적지 폴더를 확인하셨나요?",
                     text: "잠시후 다시 시도해주세요!",
                     icon: "warning",
-                    buttons: true,
                     dangerMode: true
     			});
+    			return;
     		}
 		})
-		$('#socialGroupModal').css({"z-index":"0"});
     });
     
     //[버튼]:그룹 북마크로 추가 버튼 클릭했을 때
@@ -401,7 +422,6 @@ $(document).ready(function(){
 				title: "목적지 폴더를 확인하셨나요?",
                 text: "잠시후 다시 시도해주세요!",
                 icon: "warning",
-                buttons: true,
                 dangerMode: true
 			});
 			return;
@@ -413,12 +433,20 @@ $(document).ready(function(){
 	    checked_ids = $('#jstree-from-left-group').jstree("get_checked",null,true);
 	    
 	    if(checked_ids == null){
-	        alert("선택한 URL이 없습니다.")
+	    	swal({title: "선택한 URL이 없습니다!",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
 	    
 	    if(selected_node_id == 0) {
-	        alert("가져가기 할 폴더를 선택하지 않았습니다.")
+	    	swal({title: "목적지 폴더를 확인하셨나요?",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
 	    
@@ -436,7 +464,17 @@ $(document).ready(function(){
 	            }) 
 	        }
 	    });
-	    
+
+        if(submit_obj.length == 0){
+    		swal({
+    			title: "해당 카테고리엔 URL이 존재하지 않습니다!",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+    		});
+    		return;
+    	}
+        
 	    var submit_obj_json = JSON.stringify(submit_obj);
 
 		$.ajax({
@@ -454,9 +492,8 @@ $(document).ready(function(){
 				} else {
 					swal({
 						title: "목적지 폴더를 확인하셨나요?",
-						text: "잠시후 다시 시도해주세요!",
+	                    text: "잠시후 다시 시도해주세요!",
 	                    icon: "warning",
-	                    buttons: true,
 	                    dangerMode: true
 					});
 				}
@@ -466,12 +503,10 @@ $(document).ready(function(){
 					title: "목적지 폴더를 확인하셨나요?",
                     text: "잠시후 다시 시도해주세요!",
                     icon: "warning",
-                    buttons: true,
                     dangerMode: true
 				});
 			}
 		});
-		$('#socialGroupModal').css({"z-index":"0"});
 	});
 })
     
@@ -632,10 +667,9 @@ $(document).ready(function(){
     	if($('.indishare-url-surfing').text() == '#'){
     		swal({
     			title: "목적지 폴더를 확인하셨나요?",
-    			text: "잠시후 다시 시도해주세요!",
-    			icon: "warning",
-    			buttons: true,
-    			dangerMode: true
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
     		});
     		return;
     	}
@@ -646,12 +680,20 @@ $(document).ready(function(){
         checked_ids = $('#jstree-from-left-all').jstree("get_checked",null,true);
         
         if(checked_ids == null){
-	        alert("선택한 URL이 없습니다.")
+        	swal({title: "선택한 URL이 없습니다!",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
 	    
 	    if(selected_node_id == 0) {
-	        alert("가져가기 할 폴더를 선택하지 않았습니다.")
+	    	swal({title: "목적지 폴더를 확인하셨나요?",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
         
@@ -667,6 +709,17 @@ $(document).ready(function(){
 	            }) 
             }
         });
+        
+        if(submit_obj.length == 0){
+    		swal({
+    			title: "해당 카테고리엔 URL이 존재하지 않습니다!",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+    		});
+    		return;
+    	}
+        
         var submit_obj_json = JSON.stringify(submit_obj);
     	
     	$.ajax({
@@ -685,7 +738,6 @@ $(document).ready(function(){
     					title: "목적지 폴더를 확인하셨나요?",
                         text: "잠시후 다시 시도해주세요!",
                         icon: "warning",
-                        buttons: true,
                         dangerMode: true
     				});
     			}
@@ -695,7 +747,6 @@ $(document).ready(function(){
     				title: "목적지 폴더를 확인하셨나요?",
                     text: "잠시후 다시 시도해주세요!",
                     icon: "warning",
-                    buttons: true,
                     dangerMode: true
     			});
     		}
@@ -711,7 +762,6 @@ $(document).ready(function(){
 				title: "목적지 폴더를 확인하셨나요?",
                 text: "잠시후 다시 시도해주세요!",
                 icon: "warning",
-                buttons: true,
                 dangerMode: true
 			});
 			return;
@@ -723,12 +773,20 @@ $(document).ready(function(){
         checked_ids = $('#jstree-from-left-all').jstree("get_checked",null,true);
 		
         if(checked_ids == null){
-	        alert("선택한 URL이 없습니다.")
+        	swal({title: "선택한 URL이 없습니다!",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
 	    
 	    if(selected_node_id == 0) {
-	        alert("가져가기 할 폴더를 선택하지 않았습니다.")
+	    	swal({title: "목적지 폴더를 확인하셨나요?",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+			});
 	        return false
 	    };
         
@@ -746,6 +804,16 @@ $(document).ready(function(){
 	            }) 
             }
         });
+
+        if(submit_obj.length == 0){
+    		swal({
+    			title: "해당 카테고리엔 URL이 존재하지 않습니다!",
+                text: "잠시후 다시 시도해주세요!",
+                icon: "warning",
+                dangerMode: true
+    		});
+    		return;
+    	}
         
         var submit_obj_json = JSON.stringify(submit_obj);
         
@@ -763,9 +831,8 @@ $(document).ready(function(){
 				} else {
 					swal({
 						title: "목적지 폴더를 확인하셨나요?",
-						text: "잠시후 다시 시도해주세요!",
+	                    text: "잠시후 다시 시도해주세요!",
 	                    icon: "warning",
-	                    buttons: true,
 	                    dangerMode: true
 					});
 				}
@@ -775,7 +842,6 @@ $(document).ready(function(){
 					title: "목적지 폴더를 확인하셨나요?",
                     text: "잠시후 다시 시도해주세요!",
                     icon: "warning",
-                    buttons: true,
                     dangerMode: true
 				});
 			}
@@ -815,6 +881,48 @@ function seletedGroup(group, gid) {
 			});
 		}
 	});
+}
+
+// 진수, 개인 북마크 조회수 증가
+function indiViewCount(ubid) {
+	var count = $('#social_'+ ubid + ' .indiCount').text();
+	
+	$.ajax({
+		url : "indiViewCount.do",
+		type:"POST",
+		data: {ubid : ubid},
+		success : function(data){
+			if(data.result == "success"){
+				$('#social_'+ ubid + ' .indiCount').text(Number(count) + 1);
+			} else {
+				$('#social_'+ ubid + ' .indiCount').text(Number(count));
+			}
+		}
+	});
+}
+
+
+//진수, 그룹 조회수 증가
+function groupViewCount(gid) {
+	var count = $('#group_'+ gid + ' .groupCount').text();
+	
+	$.ajax({
+		url : "groupViewCount.do",
+		type:"POST",
+		data: {gid : gid},
+		success : function(data){
+			if(data.result == "success"){
+				$('#group_'+ gid + ' .groupCount').text(Number(count) + 1);
+			} else {
+				$('#group_'+ gid + ' .groupCount').text(Number(count));
+			}
+		}
+	});
+}
+
+function socialGetGroup(group, gid){
+	get_groupbook(group);
+	groupViewCount(gid);
 }
 
 /*진수 end*/

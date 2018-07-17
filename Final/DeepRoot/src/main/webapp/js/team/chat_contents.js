@@ -22,13 +22,14 @@ $(function() {
     
 	connect();
 	jstreetable();
+	myContextMenu();
 	
 	var lastDate = null;
 	
 	$.each(chatList, function(index, value){
 		position = index;
 		if(index < 50){
-			chatList[index] = chatList[index].split('|');
+			chatList[index] = chatList[index].split('▣');
 			// <div id="2018-06-27" class="divider"><hr class="left"/><span>2018-06-27</span><hr class="right"/></div>
 			//console.log(chatList[index]);
 			var chatListIndex = chatList[index];
@@ -107,7 +108,7 @@ $(function() {
 	var scrollTop = $('.chat-element').scrollTop();
 	
 	var scrollPos = $('.chat-element').scrollTop();
-    var date_eq = $(".chat-element").children(".divider").length - 1;
+    var date_eq = $(".chatting-contents").children(".divider").length - 1;
     
 	$('.chat-element').scroll(function() {
         var curScrollPos = $(this).scrollTop();
@@ -116,14 +117,20 @@ $(function() {
         if (curScrollPos > scrollPos) { //Scrolling Down
             if(date_line <= 35 ) {
                 var temp = $(".divider:eq(" + date_eq + ") > span").text(); // 가장 맨 위의 내용
+                //console.log("donw: " + date_line);
+                //console.log(temp);
                 $("#header-date").text(temp);
-                if( date_eq < $(".chat-element").children(".divider").length - 1 ) { date_eq += 1; }
+                if( date_eq < $(".chatting-contents").children(".divider").length - 1 ) { date_eq += 1; }
+                
             }
         } else { //Scrolling Up
             if(date_line > 30 ) {
                 if( date_eq > 0 ) { date_eq -= 1; }
                 var temp = $(".divider:eq(" + date_eq + ") > span").text(); // 가장 맨 위의 내용
+                //console.log("up: " + date_line);
+                //console.log(temp);
                 $("#header-date").text(temp);
+                
             }
         }
         
@@ -138,7 +145,7 @@ $(function() {
         		
         		if(chatList.length - position > 50){
         			for(var index=position; index < position+50; index++){
-        				chatList[index] = chatList[index].split('|');
+        				chatList[index] = chatList[index].split('▣');
         				// <div id="2018-06-27" class="divider"><hr class="left"/><span>2018-06-27</span><hr class="right"/></div>
         				//console.log(chatList[index]);
         				var chatListIndex = chatList[index];
@@ -200,7 +207,7 @@ $(function() {
         			$(this).scrollTop(50 * 42);
         		}else {
         			for(var index = position; index < chatList.length; index++){
-        				chatList[index] = chatList[index].split('|');
+        				chatList[index] = chatList[index].split('▣');
         				// <div id="2018-06-27" class="divider"><hr class="left"/><span>2018-06-27</span><hr class="right"/></div>
         				//console.log(chatList[index]);
         				var chatListIndex = chatList[index];
@@ -275,10 +282,7 @@ function connect() {
     stompClient = Stomp.over(ws);
     stompClient.connect({}, function(frame) {
         // 메세지 구독
-        // WebSocketMessageBrokerConfigurer의 configureMessageBroker() 메소드에서 설정한 subscribe prefix("/subscribe")를 사용해야 함
         stompClient.subscribe('/subscribe/chat/' + gid, function(message) {
-        	//console.log(message.body);
-        	
         	var new_chat = JSON.parse(message.body);
         	
         	var time =  new_chat.datetime.split("T");
@@ -332,7 +336,6 @@ function connect() {
             $(".chat-element").scrollTop($(".chatting-contents").height());
         });
         
-        console.log("jstree subscrib 시작 전");
         //JSTREE 알림 메시지 ex) 누구님이 무엇을 수정했습니다
  		stompClient.subscribe('/subscribe/JSTREE/' + gid,function(message){
  			var body = JSON.parse(message.body);
@@ -360,26 +363,43 @@ function connect() {
  		stompClient.subscribe('/subscribe/online/' + gid, function(message) {
  			var new_connect = JSON.parse(message.body);
  			var temp_member = new_connect.nname;
- 			$('#' + temp_member).remove();
  			
-			var insertOnline = '<p id="' + temp_member + '"' + ' class="member">' 
-							+ '<img class="member-ico" src="/bit/images/profile.png" '
-							+ 'onerror="this.src=' + "'/bit/images/profile.png'\">" + temp_member
+ 			var your_grid = ($('#' + temp_member).attr("data-grid") != null) ? $('#' + temp_member).attr("data-grid") : "3";
+			var insertOnline = '<p id="'+ temp_member +'"' + ' class="member" data-grid="' +your_grid+ '">'
+								+ '<i class="fas fa-circle online-ico"></i>'
+								+ temp_member
 						  +'</p>';
+			
+			//var $who = $('#' + temp_member).clone();
+			$('#' + temp_member).remove();
 			$('#online-member').prepend(insertOnline);
+			
+			if(your_grid == "1") {
+				$("#" + temp_member).append('<i class="fas fa-crown group-master"></i>');
+			}else if(your_grid == "2") {
+				$("#" + temp_member).append('<i class="fas fa-chess-knight group-manager"></i>');
+			}
  		});
 
  		stompClient.subscribe('/subscribe/offline/' + gid, function(message) {
  			var new_connect = JSON.parse(message.body);
  			var temp_member = new_connect.nname;
- 			
- 			$('#' + temp_member).remove();
- 			
-			var insertOffline = '<p id="' + temp_member + '"' + ' class="member">' 
-							+ '<img class="member-ico" src="/bit/images/profile.png" '
-							+ 'onerror="this.src=' + "'/bit/images/profile.png'\">" + temp_member
+
+ 			var your_grid = ($('#' + temp_member).attr("data-grid") != null) ? $('#' + temp_member).attr("data-grid") : "3";
+			var insertOffline = '<p id="' + temp_member + '"' + ' class="member" data-grid="' +your_grid+ '">'
+								+ '<i class="fas fa-circle offline-ico"></i>'
+								+ temp_member
 						  +'</p>';
+			
+			//var $who = $('#' + temp_member).clone();
+			$('#' + temp_member).remove();
 			$('#offline-member').prepend(insertOffline);
+			
+			if(your_grid == "1") {
+				$("#" + temp_member).append('<i class="fas fa-crown group-master"></i>');
+			}else if(your_grid == "2") {
+				$("#" + temp_member).append('<i class="fas fa-chess-knight group-manager"></i>');
+			}
  		});
  		
  		// Header Alarm socket connect
@@ -406,9 +426,8 @@ function sendMessage() {
     var str = $("#chat-textbox-text").html().trim();
     str = str.replace(/ /gi, '&nbsp;')
     str = str.replace(/\n|\r/g, '<br>');
-    //console.log(str);
+    str = str.replace(/"/gi, '&uml;');
     if(str.length > 0) {
-        // WebSocketMessageBrokerConfigurer의 configureMessageBroker() 메소드에서 설정한 send prefix("/")를 사용해야 함
         stompClient.send("/chat/" + gid, {}, JSON.stringify({
            	content: str,
            	nname: nname,

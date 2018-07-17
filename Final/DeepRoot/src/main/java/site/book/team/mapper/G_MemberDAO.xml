@@ -17,14 +17,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	<!--준석  -->
 	<select id="selectGMemberlist" resultType="site.book.team.dto.G_MemberDTO">
-		select u.NNAME , gm.UID, gm.GID, gm.CCOUNT, gm.GRID, u.profile
-		from G_MEMBER gm join USER u ON gm.UID = u.UID
-		where GID = #{gid}
+		SELECT u.NNAME , gm.UID, gm.GID, gm.CCOUNT, gm.GRID, u.profile
+		FROM G_MEMBER gm join USER u ON gm.UID = u.UID
+		WHERE GID = #{gid}
 	</select>
 	
 	<!-- 태웅 -->
-	<select id="isGroupMember" resultType="Integer">
-		select count(*) from `G_MEMBER` where UID = #{uid} and GID = #{gid}
+	<select id="isGroupMember" resultType="site.book.team.dto.G_RoleDTO">
+		SELECT r.GRNAME as GRNAME
+		FROM `G_MEMBER` m JOIN `G_ROLE` r 
+		ON m.GRID = r.GRID
+		WHERE UID=#{uid} AND GID=#{gid}
 	</select>
 	
 	<insert id="sendInviteMemo">
@@ -44,5 +47,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getToUid" resultType="site.book.user.dto.UserDTO">
 		SELECT UID FROM `USER` WHERE NNAME=#{nname}
 	</select>
+	
+	<update id="giveManager">
+		UPDATE `G_MEMBER` m JOIN `USER` u on m.UID=u.UID
+		SET m.GRID=#{grid} WHERE m.GID=#{gid} and u.NNAME=#{nname};
+	</update>
 	
 </mapper>

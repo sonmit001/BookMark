@@ -67,20 +67,33 @@
                     <div class="slide-text">
                         <!-- introduce text START -->
                         <div class="introduce-text">
-							개발자들에게 필요한 사이트들을 제공해줍니다<br>
-							자신만의 북마크 사이트를 추가하고<br>
-							다른사람들과 공유해보세요<br>
+                        	<span class="intro-text">어디서든 빠르고 쉽게</span><br>
+							<span class="intro-span1">
+								<span class="intro-text1">개발자</span>가 사용하기 좋은 사이트들을 제공해줍니다!</span><br>
+							<span class="intro-span2">
+								<span class="intro-text2">자신만의 북마크</span>를 만들고</span><br>
+							<span class="intro-span3">
+								<span class="intro-text3">그룹</span>과
+								<span class="intro-text3">소셜</span> 페이지 에서</span><br>
+							<span class="intro-span4">다른 사람들과 
+								<span class="intro-text2">북마크를 공유</span>해보세요!</span><br>
                         </div>
                         <!-- introduce text END -->
                         <!-- Login / Roll in Button START -->
-                        <se:authorize access="!hasRole('ROLE_USER')">
+                        
+                        <%-- <se:authorize access="!hasRole('ROLE_USER')"> --%>
+                        <c:if test="${sessionScope.info_userid == null}">
                         <a href="javascript:void(0)" data-toggle="modal" onclick="openLoginModal();" class="btn btn-common">LOG IN</a>
                         <a href="javascript:void(0)" data-toggle="modal" onclick="openRegisterModal();" class="btn btn-common">SIGN UP</a>
-                        </se:authorize>
+                        </c:if>
+                        <%-- </se:authorize> --%>
                         <!-- Login / Roll in Button END -->
                     </div>
+                   	
                     <!-- Login / Roll in / password find modal START -->
-                    <div class="modal fade login" id="loginModal">
+                    <div id="main-modal-controller">
+					<div id="main-modal-center">
+                    <div class="modal fade login" id="loginModal" style="top: 10%;">
                         <div class="modal-dialog login animated">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -91,30 +104,62 @@
                                     <div class="box">
                                         <div class="content">
                                             <div class="social">
-                                                <a class="circle github" href="#">
-                                                        <i class="fab fa-github" ></i>
-                                                    </a>
+                                                <a class="logo-text-modal" href="#">뿌리깊은마크</a>
+                                                
                                                 <a id="google_login" class="circle google" href="#">
-                                                        <i class="fab fa-google"></i>
-                                                    </a>
-                                                <a id="facebook_login" class="circle facebook" href="#">
-                                                        <span class="naver">N</span>
-                                                    </a>
+                                                    <i class="fab fa-google"></i>
+                                                </a>
+                                                <script type="text/javascript">
+                                                	$('#google_login').dblclick(function() {});
+                                                	$('#google_login').click(function() {
+                                                		$.ajax({ 
+                                                			url:"joinus/googleLogin",
+                                                	        type:"GET",
+                                                	        dataType:"json", 
+                                                	        beforeSend: function() { $('html').css("cursor", "wait"); },
+                                                	        complete: function() { $('html').css("cursor", "auto"); },
+                                                	        success: function(data){
+                                                	 			//alert(data.url);
+                                                	        	location.href= data.url;
+                                                	        }
+                                                	    });
+                                                	});
+                                                </script>
+                                                
+                                                <a id="facebook_login" class="circle github" href="#">
+                                                    <i class="fab fa-facebook-f"></i>
+                                                </a>
+                                                <script type="text/javascript">
+                                                	$('#facebook_login').dblclick(function() {});
+                                                	$('#facebook_login').click(function() {
+                                                		$.alert("준비중입니다!")
+                                                	});
+                                                </script>
+                                                
+                                                <a id="naver_login" class="circle facebook" href="#">
+                                                    <span class="naver">N</span>
+                                                </a>
+                                                <script type="text/javascript">
+                                                	$('#naver_login').dblclick(function() {});
+                                                	$('#naver_login').click(function() {
+                                                		$.alert("준비중입니다!")
+                                                	});
+                                                </script>
                                             </div>
+                                                
                                             <div class="division">
                                                 <div class="line l"></div>
-                                                <span>or</span>
+                                                	<span>or</span>
                                                 <div class="line r"></div>
                                             </div>
                                             <div class="error"></div>
                                             <div class="form loginBox">
                                                 <!-- Login START -->
-                                                <%-- <form action='<c:url value="/security/login" />' method="POST"> --%>
                                                 <form id="login-form">
                                                 	<strong class="error-text"></strong>
-                                                    <input id="uid" class="form-control" type="text" placeholder="Email" name="uid">
-                                                    <input id="pwd" class="form-control" type="password" placeholder="Password" name="pwd">
-                                                    <!-- <input id="loginAjax" class="btn btn-default btn-login" type="submit" value="Login"> -->
+                                                    <input id="uid" class="form-control" type="text" placeholder="Email" name="uid" maxlength="33">
+                                                    <input id="pwd" class="form-control" type="password" placeholder="Password" name="pwd" maxlength="15">
+                                    
                                                     <input id="loginAjax" class="btn btn-default btn-login" type="button" value="Login">
                                                 </form>
                                                 <!-- Login END -->
@@ -127,14 +172,16 @@
                                             <div class="form">
                                                 <form id="rollin-form">
                                                 	<strong class="error-text"></strong>
-                                                    <input id="uid_join" class="form-control" type="text" placeholder="Email@example.com" name="uid">
-                                                    <input id="pwd_join" class="form-control" type="password" placeholder="Password" name="pwd">
-                                                    <input id="pwd_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="pwd_confirmation">
-                                                    <input id="nname_join" class="form-control" type="text" placeholder="Nickname" name="nname">
+                                                    <input id="uid_join" class="form-control" type="text" placeholder="Email@example.com" name="uid" autocomplete="off" maxlength="33">
                                                     <div id="auth-div" class="form-group" style="display: none">
-                                                       <input id="authcode_join" class="form-control" type="text" placeholder="Auth Code" name="authcode">
+                                                       <input id="authcode_join" class="form-control" type="text" placeholder="Auth Code" name="authcode" autocomplete="off" maxlength="10">
                                                        <input id="authcode_check" class="btn btn-default" type="button" value="인증키 재전송">
                                                    	</div>
+                                                   	
+                                                    <input id="pwd_join" class="form-control" type="password" placeholder="Password" name="pwd" autocomplete="off" maxlength="15">
+                                                    <input id="pwd_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="pwd_confirmation" autocomplete="off" maxlength="15">
+                                                    <input id="nname_join" class="form-control" type="text" placeholder="Nickname" name="nname" autocomplete="off" maxlength="10">
+
                                                     <div>
                                                     	<input id="agree-site-rule" class="form-check-input" type="checkbox"><span class="agree-site-rule-text">
                                                     	뿌리깊은마크를 악의적인 용도로 사용하면 안됩니다.</span>
@@ -149,7 +196,7 @@
                                         <div class="content findBox" style="display:none;">
                                             <!-- password find START -->
                                             <div class="form">
-                                                <form>
+                                                <form id="find-form">
                                                     <input id="uid_find" class="form-control" type="text" placeholder="Email">
                                                     <input id="check_email_find" class="btn btn-default btn-find" type="button" value="Are you a member?">
                                                     
@@ -183,6 +230,8 @@
                             </div>
                         </div>
                     </div>
+                    </div>
+                    </div>
                     <!-- Login / Roll in / password find modal END -->
                     <img src="images/home/slider/hill.png" class="slider-hill" alt="slider image">
                 </div>
@@ -200,8 +249,7 @@
                 <div class="col-sm-12">
                     <!-- Admin Bookmark & Search Area START -->
                     <span class="bookmark-title">
-                        <i class="fa fa-book" aria-hidden="true" style="color: #270119"></i>
-                        Admin Bookmark
+                        <i class="fas fa-seedling" aria-hidden="true" style="color: #54e00e"></i>&nbsp;&nbsp;추천 사이트
                     </span>
                     <div id="custom-search-input">
                         <div class="input-group">
@@ -212,11 +260,10 @@
                     <!-- Admin Bookmark & Search Area END -->
 
                     <!-- Category Area START -->
-                    <div class="col-sm-12">
+                    <div id="category-div" class="col-sm-12">
                         <div class="category-div">
                             <span class="bookmark-category">
-                            <i class="fa fa-tags" aria-hidden="true" style="color: #294400"></i>
-                            Category
+                            <i class="fa fa-tags" aria-hidden="true" style="color: #294400; font-size: 20px;"></i>&nbsp;카테고리
                           </span>
                         </div>
                         <div id="category-display" class="col-sm-12 category-items">
@@ -254,8 +301,8 @@
 	                                        	<img class="zoom_img" src="icon/url_save.png"></button>
 	                                       	</se:authorize>
 	                                        <button class="url_hover_btn" type="button">
-	                                        	<img class="zoom_img" src="icon/open_preview.png" onclick="preview(${bList.abid})"></button>
-	                                        <img class="favicon" src="https://www.google.com/s2/favicons?domain=${bList.url}" alt="">
+	                                        <img class="zoom_img" src="icon/open_preview.png" onclick="preview(${bList.abid})"></button>
+	                                        <img class="favicon" src="https://www.google.com/s2/favicons?domain=${bList.url}">
 	                                        <p class="url ${bList.abid}" data-abid="${bList.abid}"
 				                                        			     data-url="${bList.url}"
 				                                        			     data-regdate="${bList.regdate}"
@@ -294,11 +341,16 @@
                             </h2>
                         </div>
                         <div id="preview_content" >
-                            <div id="layout">미리보기: Page Image</div>
+                            <div id="layout">
+								
+							</div>
                             <div id="comment" >
                             	<div id="comment-detail" >
-                            		설명 Detail
-                            	</div>
+									<div class="video-container">
+										<iframe class="preview_video" 
+										src="https://www.youtube.com/embed/SGJtZVfHGj4?rel=0&amp;autoplay=1" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+									</div>
+							</div>
                             	<div id="ajax-loading-div">
                             	</div>
                             	<div id="world-ranking-visitor">

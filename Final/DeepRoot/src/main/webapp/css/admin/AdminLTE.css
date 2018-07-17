@@ -113,19 +113,24 @@ body {
     }
 }
 
-.content-wrapper,
 .right-side {
-    background-color: #444b52;
-    z-index: 800;
-    color:#fff;
+    background-color: #018786;
+    color:#000;
+}
+.content-wrapper{
+	background-color: #eee;
+	color:#000;
+	z-index: 800;
 }
 
 .main-footer {
-    background: #444b52;
+	position: absolute;
+    width: 100%;
     padding: 15px;
-    color: #b8c7ce;
-    border-top: 3px solid #00a65a;
+    color: #fff;
     font-size: 13px;
+    /* box-shadow: 0px 0px 5px 0px #083431; */
+    background: linear-gradient(to right, rgb(19, 158, 149) 0, #3f8ca6 70%)
     
 }
 
@@ -179,6 +184,13 @@ body.hold-transition .main-header .logo {
     margin-right: auto;
     margin-left: auto;
 }
+.content.chart {
+    text-align: center;
+    min-height: 250px;
+    padding: 20px 10px 68px 80px;
+    margin-right: auto;
+    margin-left: auto;
+}
 /* Body Content CSS END */
 
 /*admin modal CSS start*/
@@ -209,7 +221,7 @@ h6,
 }
 
 a {
-    color: #3c8dbc
+    color: #000
 }
 
 a:hover,
@@ -217,7 +229,8 @@ a:active,
 a:focus {
     outline: none;
     text-decoration: none;
-    color: #72afd2
+    color: #222d32;
+    cursor: pointer;
 }
 
 .page-header {
@@ -236,7 +249,6 @@ a:focus {
     width:100%;
     max-height: 100px;
     z-index: 900;
-    border-bottom: 3px solid #00a65a;
     
 }
 
@@ -380,7 +392,7 @@ a:focus {
 
 .content-header {
     position: relative;
-    padding: 15px 15px 0 15px;
+    padding: 25px 15px 0 55px;
 }
 
 .content-header > h1 {
@@ -403,8 +415,8 @@ a:focus {
     background: transparent;
     margin-top: 0;
     margin-bottom: 0;
-    font-size: 14px;
-    padding: 7px 5px;
+    font-size: 16px;
+    padding: 20px 5px 5px 5px;
     position: absolute;
     top: 15px;
     right: 10px;
@@ -413,7 +425,7 @@ a:focus {
 }
 
 .content-header > .breadcrumb > li > a {
-    color: #fff;
+    color: #000;
     text-decoration: none;
     display: inline-block
 }
@@ -500,6 +512,7 @@ a:focus {
     left: 0;
     padding-top: 60px;
     width: 230px;
+    height:100%;
     z-index: 810;
     -webkit-transition: -webkit-transform .3s ease-in-out, width .3s ease-in-out;
     -moz-transition: -moz-transform .3s ease-in-out, width .3s ease-in-out;
@@ -703,8 +716,8 @@ a:focus {
         -ms-transform: translate(0, 0);
         -o-transform: translate(0, 0);
         transform: translate(0, 0);
-        width: 50px !important;
-        z-index: 850
+        width: 70px !important;
+        z-index: 800
     }
     .sidebar-mini.sidebar-collapse .sidebar-menu > li {
         position: relative
@@ -955,7 +968,7 @@ a:focus {
 
 .control-sidebar-dark,
 .control-sidebar-dark + .control-sidebar-bg {
-    background: #444b52
+    background: #018786
 }
 
 .control-sidebar-dark .nav-tabs.control-sidebar-tabs {
@@ -988,7 +1001,7 @@ a:focus {
 .control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active > a:hover,
 .control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active > a:focus,
 .control-sidebar-dark .nav-tabs.control-sidebar-tabs > li.active > a:active {
-    background: #444b52;
+    background: #018786;
     color: #fff
 }
 
@@ -1064,7 +1077,8 @@ a:focus {
 
 .dropdown-menu {
     box-shadow: none;
-    border-color: #eee
+    border: 2px solid #222d32;
+    border-radius: 5px;
 }
 
 .dropdown-menu > li > a {
@@ -1247,7 +1261,7 @@ a:focus {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
     padding: 1px 0 0 0;
-    border-top-width: 0;
+    /* /border-top-width: 0; */
     width: 280px
 }
 
@@ -1414,6 +1428,10 @@ a:focus {
     position: absolute;
     right: 0;
     left: auto
+}
+
+.navbar-custom-menu > .navbar-nav > li:hover{
+border-bottom: 3px solid #fff;
 }
 
 @media (max-width:991px) {
@@ -2979,15 +2997,6 @@ a:focus {
     border-top-color: #d2d6de
 }
 
-.pagination > li > a {
-    background: #fafafa;
-    color: #666
-}
-
-.pagination.pagination-flat > li > a {
-    border-radius: 0 !important
-}
-
 .products-list {
     list-style: none;
     margin: 0;
@@ -3248,7 +3257,7 @@ table.text-center th {
     bottom: 0;
     height: 250px;
     width: 100%;
-    background: #444b52;
+    background: #018786;
     color: #fff;
     overflow: auto
 }

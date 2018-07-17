@@ -60,4 +60,6 @@ public interface G_BookDAO {
 	public void dropTeamNode(HashMap<String, String> param) throws ClassNotFoundException, SQLException;
 	// 그룹 페이지 url 수정
 	public int editTeamUrl(HashMap<String, String> param) throws ClassNotFoundException, SQLException;
+	// 그룹 페이지 내 북마크 전체 가져오기
+	public List<U_BookDTO> getMyCategoryList(String uid) throws ClassNotFoundException, SQLException;
 }

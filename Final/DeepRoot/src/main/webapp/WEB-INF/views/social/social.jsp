@@ -198,7 +198,7 @@
 				<div class="panel-body rank-table">
 					<span class="ranktitle"><img src="<%=request.getContextPath()%>/icon/trophy.png"
 						class="rankimg">개인 Top 5</span>
-					<table>
+					<table class="top5-table">
 						<thead>
 							<tr>
 								<th>Rank</th>
@@ -249,7 +249,7 @@
 				<div class="panel-body rank-table">
 					<span class="ranktitle"><img src="../icon/trophy.png"
 						class="rankimg">그룹 Top 5</span>
-					<table>
+					<table class="top5-table">
 						<thead>
 							<tr>
 								<th>Rank</th>
@@ -300,7 +300,7 @@
 
 <!-- Share Bookmark div START -->
 <section class="bookmark-share-div">
-	<img src="../images/social/books.png" class="bg-bottom">
+	<!-- <img src="../images/social/books.png" class="bg-bottom"> -->
 	<div class="container">
 		<div class="row">
 			<!-- Individual Share Bookmark START -->
@@ -323,12 +323,12 @@
 						<!-- 개인 북마크 공유 목록 START -->
 						<tbody>
 							<c:forEach items="${u_list}" var="u_booklist">
-								<tr>
-									<td class="table-site"><a href="${u_booklist.url}" target="_blank">${u_booklist.sname}</a></td>
+								<tr id="social_${u_booklist.ubid}">
+									<td class="table-site"><a onclick="indiViewCount(${u_booklist.ubid})" href="${u_booklist.url}" target="_blank">${u_booklist.sname}</a></td>
 									<td class="table-tag">"${u_booklist.htag}"</td>
 									<td class="table-write"><a onclick="surfing_modal(this)" id="${u_booklist.nname}">${u_booklist.nname}</a></td>
 									<td class="table-date">${u_booklist.sdate}</td>
-									<td class="table-click">${u_booklist.view}</td>
+									<td class="table-click indiCount">${u_booklist.view}</td>
 									<td class="table-icon indi-share getbookmark" data-toggle="modal" data-target="#socialIndiModal" data-title="${u_booklist.url}" data-urlname = "${u_booklist.sname}">
 										<i class="fa fa-share "></i>
 									</td>
@@ -361,14 +361,14 @@
 						<!-- 그룹 북마크 공유 목록 start -->
 						<tbody>
 							<c:forEach items="${g_list}" var="g_booklist">
-								<tr>
+								<tr id="group_${g_booklist.gid}">
 									<td class="table-groupname">${g_booklist.gname}</td>
 									<td class="table-tag">"${g_booklist.htag}"</td>
 									<td class="table-write"><a onclick="surfing_modal(this)" id="${g_booklist.nname}">${g_booklist.nname}</a></td>
 									<td class="table-date">${g_booklist.duedate}</td>
-									<td class="table-click">${g_booklist.view}</td>
+									<td class="table-click groupCount">${g_booklist.view}</td>
 									<td class="table-icon">
-										<a onclick="get_groupbook(this)" id="${g_booklist.gid}" name="${g_booklist.gname}"><i class="fa fa-share get_groupbook"></i></a>
+										<a onclick="socialGetGroup(this, ${g_booklist.gid})" id="${g_booklist.gid}" name="${g_booklist.gname}"><i class="fa fa-share get_groupbook"></i></a>
 									</td>
 								</tr>
 							</c:forEach>

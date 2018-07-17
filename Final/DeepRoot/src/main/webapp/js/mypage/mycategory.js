@@ -4,7 +4,7 @@ var child_data = null;	//오른쪽 url jstree data 담을 변수
 var edit_htag_node_id = null;
 var first_data = null;	//완료 그룹 모달 왼쪽 jstree
 var right_data = null;	//완료 그룹 모달 오른쪽 jstree
-
+var regex =/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/;
 $(document).ready(function(){
 
 	/* mybookmark 가져오기 왼쪽 (폴더만 있는거) */
@@ -28,7 +28,9 @@ $(document).ready(function(){
 							if(op === "move_node"){ // dnd 이벤트 일때 
 								var dragnode = node.id;
 								var dropnode = par.id;
-								
+								if(dropnode == '#'){
+									return false;
+								}
 								form = {dragnode : dragnode , dropnode : dropnode};
 								
 								$.ajax({	
@@ -37,7 +39,7 @@ $(document).ready(function(){
 									type : 'POST',
 									data : form,
 									beforeSend : function(){
-										$('#loading').html(" SAVING<span><img src='../images/throbber.gif' /></span>");
+										$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
 									},
 									success : function(data){
 										$('#loading').html("");
@@ -54,7 +56,7 @@ $(document).ready(function(){
 									type : 'POST',
 									data : {dragnode : node.id, dropnode : par.id},
 									beforeSend : function(){
-										$('#loading').html(" SAVING<span><img src='../images/throbber.gif' /></span>");
+										$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
 									},
 									success : function(){
 										$('#loading').html("");
@@ -70,7 +72,6 @@ $(document).ready(function(){
 					"plugins" : [ "dnd","contextmenu" ], //drag n drop , 과 우클릭시 플러그인 가져옴
 
 					"contextmenu" : { //우클릭시 생성되는 것들 설정
-						"select_node" : false, // 우클릭 했을 경우 왼클릭되는거 막음
 						
 						/*왼쪽 jstree  우클릭시 생성되는 메뉴 구성하기 START*/
 						"items" : function($node){ //우클릭된 node(폴더)의 정보를 가져온다.
@@ -97,7 +98,7 @@ $(document).ready(function(){
 									"separator_before": false,
 									"separator_after": false,
 									"_disabled" : false, 
-									"label": "그룹 추가",
+									"label": "폴더 추가",
 									"action": function (obj) {
 										var inst = $.jstree.reference(obj.reference);
 										var par_node = inst.get_node(obj.reference);
@@ -109,7 +110,7 @@ $(document).ready(function(){
 											type :"POST",
 											data : form,
 											beforeSend : function(){
-												$('#loading').html(" SAVING<span><img src='../images/throbber.gif' /></span>");
+												$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
 							     				},
 							     				success : function(data){
 							     					$('#loading').html("");
@@ -118,6 +119,7 @@ $(document).ready(function(){
 							     					tree.create_node(par_node , {text : "새 폴더" , id : node_id  ,icon : "fa fa-folder"} ,"last",function(new_node){
 							     						new_node.id = node_id;
 							     						tree.edit(new_node);
+							     						$(".jstree-rename-input").attr("maxLength",33);
 						            				 	});
 					              			 	 	}
 						               		  	})
@@ -130,7 +132,8 @@ $(document).ready(function(){
 									"label": "이름 수정",
 									"action" : function (obj) {
 										/*왼쪽 jstree 이름 수정하기 아래에 함수 있음*/
-										tree.edit($node);			
+										tree.edit($node);
+										$(".jstree-rename-input").attr("maxLength",33);
 									}
 								},
 								"remove" : {
@@ -180,7 +183,7 @@ $(document).ready(function(){
 	        			type: 'POST',
 	        			data: {'id' : node_id, 'text' : node_text},
 	        			beforeSend : function(){
-	        				$('#loading').html(" SAVING<span><img src='../images/throbber.gif' /></span>");
+	        				$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
      					},
 	        			success : function(result){
 	        				$('#loading').html("");
@@ -198,7 +201,7 @@ $(document).ready(function(){
 		    			dataType : "json",
 		    			data: form,
 		    			beforeSend : function(){
-		    				$('#loading').html(" SAVING<span><img src='../images/throbber.gif' /></span>");
+		    				$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
      					},
      					success : function(result){
 		    				$('#loading').html("");
@@ -208,7 +211,8 @@ $(document).ready(function(){
 		}
 	})
 			
-	/*왼쪽 위에 new category 버튼 클릭시 실행*/			
+	/*왼쪽 위에 new category 버튼 클릭시 실행*/
+	$('#addroot').on('dblclick', function(){ return });
 	$('#addroot')
 		.on("click",function(){
 		
@@ -219,7 +223,7 @@ $(document).ready(function(){
 				url : "addRoot.do",
 				type : "POST",
 				beforeSend : function(){
-					$('#loading').html(" SAVING<span><img src='../images/throbber.gif' /></span>");
+					$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
 				},
 				success : function(data){
 					$('#loading').html("");
@@ -228,6 +232,8 @@ $(document).ready(function(){
 					tree.create_node( null , {text : "새 카테고리" , id : ubid , icon : "fa fa-folder"} ,"last",function(new_node){
 						new_node = ubid;
 						tree.edit(new_node); //생성과 동시에 이름 수정할 수 있게 함
+						$(".jstree-rename-input").attr("maxLength",33);
+						
 					});
 				}
 			})
@@ -238,11 +244,14 @@ $(document).ready(function(){
 		.on("click",function(){
 			var tree_child = $("#jstree_container_child").jstree(true);
 		
-			//왼쪽 폴더 선택 안하고 클릭한 것을 방지한다.
-			if(urlpid == null){
-				$.alert("URL을 추가할 카테고리를 선택해주세요");
-				return false;
-			}
+			var selected_node_left = $('#jstree_container').jstree("get_selected");
+            
+            //왼쪽 폴더 선택 안하고 클릭한 것을 방지한다.
+            if(selected_node_left.length == "0"){
+                $.alert("URL을 추가할 카테고리를 선택해주세요");
+                return false;
+            }
+            
 			// 모달창 띄우기 전에 reset하기
 			$('#form_btn')[0].reset();// modal input text 창 초기화
 			$('#linkAdd_btn').modal(); // url 추가하는 modal 창이 나온다.
@@ -254,6 +263,9 @@ $(document).ready(function(){
 	$("#jstree_container_child")
 		.jstree({
 			"core" : {
+				'strings' : {
+					 			'Loading ...' : ' Loading'
+					 			},
 				'data' : child_data,
 				'themes' : { 
 					'name' : 'proton',
@@ -267,7 +279,7 @@ $(document).ready(function(){
 					return true;	
 				}
 			},
-			"plugins" : [ "dnd","contextmenu" , "wholerow"],
+			"plugins" : [ "dnd","contextmenu" , "wholerow","sort"],
 		
 			"contextmenu" : {
 				
@@ -294,6 +306,7 @@ $(document).ready(function(){
 										"label" : "이름 수정",
 										"action" : function(obj){
 											tree_child.edit($node);
+											$(".jstree-rename-input").attr("maxLength",33);
 										}
 									},
 									/*오른쪽 jstree url 수정*/						            	  
@@ -311,26 +324,34 @@ $(document).ready(function(){
 											var id = inst.get_node(obj.reference).id;
 											
 											$('#editurlval').val(url);
-											
-											$('#editurlsubmit').on("click",function(){
-												
+											$('#editurlid').val(id);
+											/*
+											$('#editurlsubmit').on('dblclick', function(){ return });
+											$('#editurlsubmit').off("click").on("click",function(){												
 												var newurl = $('#editurlval').val();
 												var form = {ubid : id, url : newurl }
 												
-												$.ajax({
-													
-													url: "editUrl.do",
-													type: "POST",
-													data: form ,
-													beforeSend : function(){
-														$('#loading').html(" SAVING<span><img src='../images/throbber.gif' /></span>");
-													},
-													success: function(data){
-														$('#loading').html("");
-														$('#editurl').modal("toggle");
-													}
-												}) 
-											})
+												var regex =/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/;
+												if(!(regex.test($('#url_btn').val()))){
+													$.alert("URL을 확인해주세요");
+												}else {
+													$.ajax({
+														url: "editUrl.do",
+														type: "POST",
+														data: form ,
+														beforeSend : function(){
+															$('#loading').html(" SAVING<span><img src='../images/throbber.gif' /></span>");
+														},
+														success: function(data){
+															$('#loading').html("");
+															//$('#editurl').modal("toggle");
+															$('.modal.in').modal('hide');
+															$('#jstree_container').jstree().deselect_all(true);											
+															$('#jstree_container').jstree(true).select_node(urlpid);		
+														}
+													})
+												}
+											})*/
 										}
 									}
 								}
@@ -361,7 +382,7 @@ $(document).ready(function(){
 									edit_htag_node_id = id;
 					                			
 									$('#edit_htag_append').empty();	//기존 모달에 있던 htag button 없애기
-									$('#edit_htag_btn').empty();
+									$('#edit_htag_btn').val('');
 									$('#edit_htag').modal();	//htag 수정하기 모달
 									$('#edit_sname_btn').val(sname);	//sname 넣어주기
 							                	
@@ -386,7 +407,7 @@ $(document).ready(function(){
 										type : "POST",
 										data : form,
 										beforeSend : function(){
-											$('#loading').html("<p>   SAVING  </p><img src='../images/throbber.gif' />");
+											$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
 										},
 										success : function(data){
 											$('#loading').html("");
@@ -412,6 +433,7 @@ $(document).ready(function(){
 										"label" : "이름 수정",
 										"action" : function(obj){
 											tree_child.edit($node);
+											$(".jstree-rename-input").attr("maxLength",33);
 										}
 									},
 									/*오른쪽 공유된 jstree url 수정*/							            	  
@@ -427,27 +449,9 @@ $(document).ready(function(){
 											var inst = $.jstree.reference(obj.reference);
 											var url = inst.get_node(obj.reference).a_attr.href;
 											var id = inst.get_node(obj.reference).id;
-											                
+											$('#editurlid').val(id);
 											$('#editurlval').val(url);
-											$('#editurlsubmit').on("click",function(){
-												
-												var newurl = $('#editurlval').val();
-												var form = {ubid : id, url : newurl }
-												
-												$.ajax({
-													
-													url: "editUrl.do",
-													type: "POST",
-													data: form ,
-													beforeSend : function(){
-														$('#loading').html("<p>   SAVING  </p><img src='../images/throbber.gif' />");
-													},
-													success: function(data){
-														$('#loading').html("");
-														$('#editurl').modal("toggle");
-													}
-												}) 
-											})
+
 										}
 									}
 								}
@@ -481,7 +485,7 @@ $(document).ready(function(){
 										type : "POST",
 										data : form,
 										beforeSend : function(){
-											$('#loading').html("<p>   SAVING  </p><img src='../images/throbber.gif' />");
+											$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
 										},
 										success : function(data){
 											$('#loading').html("");
@@ -514,7 +518,7 @@ $(document).ready(function(){
 											edit_htag_node_id = id;
 								                			
 											$('#edit_htag_append').empty();	//기존 모달에 있던 htag button 없애기
-											$('#edit_htag_btn').empty();
+											$('#edit_htag_btn').val('');
 											$('#edit_htag').modal();	//htag 수정하기 모달
 											$('#edit_sname_btn').val(sname);	//sname 넣어주기
 								                			
@@ -522,6 +526,7 @@ $(document).ready(function(){
 												edithashtagList.push("#"+htag_split[i]); //배열에 기존 htag 저장
 												$('#edit_htag_append').append("<input class='btn btn-default btn-hash' id='btnEditHash" + htagStartPoint + "' type='button' value='#" + htag_split[i] + "' onclick='edit_deleteHashtag(this)'>");
 												htagStartPoint +=1;
+												
 											}
 										}
 									},
@@ -539,7 +544,7 @@ $(document).ready(function(){
 												type: 'POST',
 												data: {ubid: id },
 												beforeSend : function(){
-													$('#loading').html("<p>   SAVING  </p><img src='../images/throbber.gif' />");
+													$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
 												},
 												success:function(data){
 													$('#loading').html("");
@@ -575,7 +580,7 @@ $(document).ready(function(){
 				dataType : "json",
 				data: form,
 				beforeSend : function(){
-					$('#loading').html("<p>   SAVING  </p><img src='../images/throbber.gif' />");
+					$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
 				},
 				success:function(result){
 					$('#loading').html("");
@@ -585,16 +590,27 @@ $(document).ready(function(){
 		.bind('rename_node.jstree', function(event, data){
 			var node_id = data.node.id;
 			var node_text = data.text;
+			//console.log(data.node.original.htag);
+			var htag = data.node.original.htag;
+			var selected_node_left = $('#jstree_container').jstree("get_selected",true)[0].id;
+			
+			if(htag !="#"){
+				$('#'+ node_id).append("<i class='shared fas fa-share-alt'></i>");
+			}
 			
 			$.ajax({
 				url : 'updateNodeText.do',
 				type: 'POST',
 				data: {'id' : node_id, 'text' : node_text},
 				beforeSend : function(){
-					$('#loading').html("<p>   SAVING  </p><img src='../images/throbber.gif' />");
+					$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
 				},
 				success : function(result){
 					$('#loading').html("");
+					/*if(htag !="#"){
+						$('#'+ node_id).append("<i class='shared fas fa-share-alt'></i>");
+					}*/
+					
 					if(result.result != 1)
 						alert('수정 실패');
 				}
@@ -609,7 +625,6 @@ $(document).ready(function(){
 				var sname = $('#jstree_container_child').jstree(true).get_node(node_ids[i]).original.sname;
 				if(sname != "#"){
 					$('#'+ node_ids[i]).append("<i class='shared fas fa-share-alt'></i>");
-					
 				}
 			}
 		})
@@ -683,24 +698,52 @@ var check_htag = '';
 /*URL 해시태그 추가*/ 
 function addHashtag() {
 	if (event.keyCode == 13 || event.keyCode == 32 ) {
-		hashtagList.push("#"+$.trim($('#htag_btn').val()));
-		var hashtag = $.trim($('#htag_btn').val());
-		$('#htag_btn').val('');
-		$('#htag_btn').focus();
-		$('#htag_append').append("<input class='btn btn-default btn-hash' id='btnHash" + hashtagStartPoint + "' type='button' value='#" + hashtag + "' onclick='deleteHashtag(this)'>");
-		hashtagStartPoint++;
+		if(jQuery.trim($('#htag_btn').val()) != "" && hashtagList.length < 10){
+			hashtagList.push("#"+$.trim($('#htag_btn').val()));
+			var hashtag = $.trim($('#htag_btn').val());
+			$('#htag_btn').val('');
+			$('#htag_btn').focus();
+			$('#htag_append').append("<input class='btn btn-default btn-hash' id='btnHash" + hashtagStartPoint + "' type='button' value='#" + hashtag + "' onclick='deleteHashtag(this)'>");
+			hashtagStartPoint++;
+		}else {
+			$.alert("해시태그를 입력해주세요 (최대 10개 입력)");
+		}
+	}
+}
+
+
+var hashtagList2 = [];
+var hashtagStartPoint2 = 0;
+
+/*URL 해시태그 추가(그룹완료)*/ 
+function addHashtag2() {
+	if (event.keyCode == 13 || event.keyCode == 32 ) {
+		if(jQuery.trim($('#htag_btn2').val()) != "" && hashtagList2.length < 10){
+			hashtagList2.push("#"+$.trim($('#htag_btn2').val()));
+			var hashtag = $.trim($('#htag_btn2').val());
+			$('#htag_btn2').val('');
+			$('#htag_btn2').focus();
+			$('#htag_append2').append("<input class='btn btn-default btn-hash' id='btnHash2" + hashtagStartPoint2 + "' type='button' value='#" + hashtag + "' onclick='deleteHashtag2(this)'>");
+			hashtagStartPoint2++;
+		}else {
+			$.alert("해시태그를 입력해주세요 (최대 10개 입력)");
+		}
 	}
 }
 
 /*해시태그 수정*/
 function edit_addHashtag() {
 	if (event.keyCode == 13 || event.keyCode == 32 ) {
-		edithashtagList.push("#"+$.trim($('#edit_htag_btn').val()));
-		var hashtag = $.trim($('#edit_htag_btn').val());
-		$('#edit_htag_btn').val('');
-		$('#edit_htag_btn').focus();
-		$('#edit_htag_append').append("<input class='btn btn-default btn-hash' id='btnHash" + hashtagStartPoint + "' type='button' value='#" + hashtag + "' onclick='edit_deleteHashtag(this)'>");
-		hashtagStartPoint++;
+		if(jQuery.trim($('#edit_htag_btn').val()) != "" && edithashtagList.length < 10){
+			edithashtagList.push("#"+$.trim($('#edit_htag_btn').val()));
+			var hashtag = $.trim($('#edit_htag_btn').val());
+			$('#edit_htag_btn').val('');
+			$('#edit_htag_btn').focus();
+			$('#edit_htag_append').append("<input class='btn btn-default btn-hash' id='btnHash" + hashtagStartPoint + "' type='button' value='#" + hashtag + "' onclick='edit_deleteHashtag(this)'>");
+			hashtagStartPoint++;
+		}else {
+			$.alert("해시태그를 입력해주세요 (최대 10개 입력)");
+		}
 	}
 }
 
@@ -710,6 +753,14 @@ function deleteHashtag(data) {
 	$('#' + str).remove();
 	var val = $(data).val();
 	hashtagList.splice($.inArray(val, hashtagList), 1);
+}
+
+/*해시태그 삭제(그룹완료)*/
+function deleteHashtag2(data) {
+	var str = $(data).attr('id');
+	$('#' + str).remove();
+	var val = $(data).val();
+	hashtagList2.splice($.inArray(val, hashtagList2), 1);
 }
 
 /*해시태그 수정에서 삭제*/
@@ -745,6 +796,9 @@ function edit_htag_submit(){
 			data : form,
 			success : function(data){
 				$('#edit_htag').modal("toggle");
+				var selected_node_left = $('#jstree_container').jstree("get_selected",true)[0].id;
+				$('#jstree_container').jstree().deselect_all(true);											
+				$('#jstree_container').jstree(true).select_node(selected_node_left);			
 			}
 		})
 	}
@@ -780,7 +834,7 @@ function openAddUrlLevel2() {
 		$.alert("URL을 확인해주세요");
 	}else {
 		$.ajax({
-    		url: "/bit/admin/preview.do",
+    		url: "/bit/user/preview.do",
 			type: "post",
 			data : {
 				url : url // URL 주소
@@ -876,9 +930,11 @@ function addUrlNotShare() {
 				 $('#linkAdd_btn').modal("toggle"); // 모달 창 닫아주기
 				 //console.log(data);	//id 확인
 				 var node_id = $.trim(data);
-				 tree_child.create_node( null , {text : title , id : node_id , a_attr : {href : url} , icon : "https://www.google.com/s2/favicons?domain="+ url} ,"last",function(new_node){
-					 //console.log(new_node.id);
-				 });
+				/* $('#jstree_container').jstree().deselect_all(true);											
+				 $('#jstree_container').jstree(true).select_node(urlpid);		*/
+				 tree_child.create_node( null , {text : title , id : node_id , a_attr : {href : url} , icon : "https://www.google.com/s2/favicons?domain="+ url,sname: '#',htag: '#'} ,"last",function(new_node){
+						//console.log(new_node.id);
+					});
 			 }
 		 });
 	}
@@ -915,11 +971,11 @@ function addUrlShare() {
 				$('#linkAdd_btn').modal("toggle"); // 모달 창 닫아주기
 				//console.log(data);	//id 확인
 				var node_id = $.trim(data.ubid);
-				$('#jstree_container').jstree().deselect_all(true);											
-				$('#jstree_container').jstree(true).select_node(urlpid);		
-				//tree_child.create_node( null , {text : title , id : node_id , a_attr : {href : url} , icon : "https://www.google.com/s2/favicons?domain="+ url} ,"last",function(new_node){
+			/*	$('#jstree_container').jstree().deselect_all(true);											
+				$('#jstree_container').jstree(true).select_node(urlpid);		*/
+				tree_child.create_node( null , {text : title , id : node_id , a_attr : {href : url} , icon : "https://www.google.com/s2/favicons?domain="+ url,sname:sname,htag:htag} ,"last",function(new_node){
 					//console.log(new_node.id);
-				//});
+				});
 			}
 		});
 	}
@@ -937,6 +993,7 @@ function deleteGroup(gid) {
 	        	btnClass : 'btn-danger',
 	        	keys: ['enter'],
 	        	action : function () {
+	        		
 	        		$("#"+gid).remove(); // 그룹리스트에서 지우기
 	        		$("#headerGroup" + gid).remove();
 	        		
@@ -944,6 +1001,12 @@ function deleteGroup(gid) {
 	        			var groupAddHTML = '<li id="headerGroupAdd" class="groupMenu" onclick="headerAddGroup()"><a href="#"><i class="fa fa-plus-circle" style="color: red;"></i>&nbsp;&nbsp;그룹 추가</a></li>';
 	        			$("#groupDropdownMenu").append(groupAddHTML);
 	    			}
+					
+	        		$.each(headerTeamList, function(index, element){
+	        			if(element == gid){
+	        				delete headerTeamList[index];
+	        			}
+	        		});
 	        		
 	    			$.ajax({
 	    				url: "leaveGroup.do",
@@ -952,7 +1015,7 @@ function deleteGroup(gid) {
 	    					gid : gid // 그룹 ID
 	    				},
 	    				success : function(data){
-	    					console.log(data);
+	    					//console.log(data);
 	    				}
 	    			});
 	        	}
@@ -988,7 +1051,7 @@ function deleteCompletedGroup(gid) {
 	    					gid : gid // 그룹 ID
 	    				},
 	    				success : function(data){
-	    					console.log(data);
+	    					//console.log(data);
 	    				}
 	    			});
 	        	}
@@ -1011,7 +1074,7 @@ function addGroup() {
 	    '<form id="addGroupForm" action="/bit/addGroup.do" class="formName" method="post" onsubmit="return false;">' +
 	    '<div class="form-group">' +
 	    '<label>그룹명</label>' +
-	    '<input type="text" name="gname" placeholder="그룹명" class="name form-control" required />' +
+	    '<input type="text" name="gname" placeholder="그룹명" class="name form-control" required maxlength="12"/>' +
 	    '</div>' +
 	    '</form>',
 	    closeIcon: true,
@@ -1030,7 +1093,7 @@ function addGroup() {
 	                $("#addGroupForm").ajaxForm({
 	                	success: function(data, statusText, xhr, $form){
 	                		var group = '<li id="' + data.newTeam.gid + '" class="list-group-item">';
-	                		group += '<label class="my-group-list">' + data.newTeam.gname + '</label>';
+	                		group += '<label class="my-group-list" onclick="location.href=\'/bit/team/main.do?gid=' + data.newTeam.gid + '&gname=' + data.newTeam.gname + '\'"  >' + data.newTeam.gname + '</label>';
 	                		group += '<div class="pull-right action-buttons">';
 	                		group += '<a class="completed">';
 	                		group += '<span class="glyphicon glyphicon-check" onclick="completedGroup(' + data.newTeam.gid + ')"></span>';
@@ -1045,84 +1108,46 @@ function addGroup() {
     		    			if($(".groupMenu").length > 10){
     		    				$("#groupDropdownMenu").children().last().remove();
     		    			}
+    		    			
+    		    			headerTeamList.push(data.newTeam.gid);
 	                	}
 	                });
-	                
 	                $("#addGroupForm").submit();
-	                
 	            }
 	        },
 	        '취소': {
 	        	btnClass : 'btn-danger',
         		action : function() {
-        		
         		}
 	        },
 	    }
-
 	});
 }
 
-function completedGroup(gid) {
-	$.confirm({
-	    title: '그룹 완료',
-	    content: '' +
-	    '<form id="completedGroupForm" action="/bit/user/completedGroup.do" class="formName" method="post" onsubmit="return false;">' +
-	    '<div class="form-group">' +
-	    '<label>해시태그</label>' +
-	    '<input type="text" name="htag" placeholder="#해쉬태그" class="name form-control" required />' +
-	    '<input type="hidden" class="gid" name="gid" />' + 
-	    '</div>' +
-	    '</form>',
-	    closeIcon: true,
-	    
-	    buttons: {
-	        formSubmit: {
-	            text: '완료',
-	            btnClass: 'btn-success',
-	            action: function () {
-	                var name = this.$content.find('.name').val();
-	                this.$content.find('.gid').val(gid);
-	                if(!name){
-	                    $.alert('해시태그를 적어주세요');
-	                    return false;
-	                }
-	                
-	                $("#completedGroupForm").ajaxForm({
-	                	success: function(data, statusText, xhr, $form){
-	                		$("#"+ data.completedGroup.gid).remove();
-	                		
-	                		var addCompletedGroup = "";
-	                		addCompletedGroup += '<li id="' + data.completedGroup.gid + '" class="list-group-item">';
-	                		addCompletedGroup += '<label class="my-group-list" onclick="open_completed_group_modal(\''+ data.completedGroup.gname + "', " + data.completedGroup.gid + ')">' + data.completedGroup.gname + '</label>';
-	                		addCompletedGroup += '<div class="pull-right action-buttons">';
-	                		addCompletedGroup += '<a class="trash"><span class="glyphicon glyphicon-trash" onclick="deleteCompletedGroup(' + data.completedGroup.gid + ')"></span></a>';
-	                		addCompletedGroup += '</div>';
-	                		addCompletedGroup += '</li>';
-	                		
-	                		$("#completedGroupList").append(addCompletedGroup);
-	                		
-	                		$("#headerGroup" + gid).remove();
-	    	        		
-	    	        		if($(".groupMenu").length < 10 && $("#headerGroupAdd").length == 0){
-	    	        			var groupAddHTML = '<li id="headerGroupAdd" class="groupMenu" onclick="headerAddGroup()"><a href="#"><i class="fa fa-plus-circle" style="color: red;"></i>&nbsp;&nbsp;그룹 추가</a></li>';
-	    	        			$("#groupDropdownMenu").append(groupAddHTML);
-	    	    			}
-	                	}
-	                });
-	                
-	                $("#completedGroupForm").submit();
-	                
-	            }
-	        },
-	        '취소': {
-	        	btnClass : 'btn-danger',
-        		action : function() {
-        		}
-	        },
-	    }
-	    
-	});
+//url 수정 모달 창 onclick function
+function editurlsubmit() {
+	var newurl = $('#editurlval').val();
+	var id = 	$('#editurlid').val();
+	var regex =/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/;
+	form = {ubid : id, url : newurl};
+	if(!(regex.test($('#editurlval').val()))){
+		$.alert("URL을 확인해주세요");
+	}else {
+		$.ajax({
+			url: "editUrl.do",
+			type: "POST",
+			data: form ,
+			beforeSend : function(){
+				$('#loading').html("<p class='loading_p'>SAVING   <img src='../images/throbber.gif' class='loading_img' /></p>");
+			},
+			success: function(data){
+				$('#loading').html("");
+				$('.modal.in').modal('hide');
+				$($('#jstree_container_child').jstree(true).get_node(id).a_attr).attr("href",newurl);
+				$('#jstree_container_child').jstree(true).set_icon($('#jstree_container_child').jstree(true).get_node(id), "https://www.google.com/s2/favicons?domain="+ newurl)
+			}
+		})
+	}
 }
 
 

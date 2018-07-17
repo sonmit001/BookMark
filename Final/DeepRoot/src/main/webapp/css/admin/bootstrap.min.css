@@ -1391,8 +1391,8 @@ body {
     font-family: 'Lato','Spoqa Han Sans', Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
-    color: #333;
-    background-color: #444b52;
+    /* color: #333; */
+    /* background-color: #444b52; */
 }
 
 button,
@@ -3372,12 +3372,15 @@ select.input-lg {
 }
 
 select.input-sm{
-    border : 1px solid #fff;
-    border-radius: 5px;
+	border : 1px solid #eee;
     margin-left: 2px;
     margin-right: 2px;
+    font-size: 14px;
 }
-
+/* select.input-sm:hover,
+select.input-sm:focus,
+select.input-sm:active{ border : 1px solid #eee; }
+ */
 select[multiple].input-lg,
 textarea.input-lg {
     height: auto
@@ -3576,8 +3579,8 @@ textarea.input-lg {
         display: inline-block;
         width: auto;
         vertical-align: middle;
-        color:#fff;
-        background-color: #444b52;
+        color: #000;
+        background-color: #eee;
     }
     .form-inline .form-control-static {
         display: inline-block
@@ -4261,7 +4264,7 @@ tbody.collapse.in {
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 1000;
+    z-index: 500;
     display: none;
     float: left;
     min-width: 160px;
@@ -5645,12 +5648,12 @@ fieldset[disabled] .navbar-inverse .btn-link:hover {
 
 .breadcrumb > li + li:before {
     padding: 0 5px;
-    color: #ccc;
+    color: #555;
     content: "/\00a0"
 }
 
 .breadcrumb > .active {
-    color: #fff
+    color: #000;
 }
 
 .pagination {
@@ -5709,7 +5712,6 @@ fieldset[disabled] .navbar-inverse .btn-link:hover {
     z-index: 3;
     color: #fff;
     cursor: default;
-    background-color: #337ab7;
     border-color: #337ab7
 }
 
@@ -6550,7 +6552,7 @@ button.list-group-item-danger.active:hover {
     border-bottom: 1px solid transparent;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    font-size:17px;
+    font-size:32px;
 }
 
 .panel-heading > .dropdown .dropdown-toggle {

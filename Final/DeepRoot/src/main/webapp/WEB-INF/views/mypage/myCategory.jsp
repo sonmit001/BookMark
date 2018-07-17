@@ -2,6 +2,80 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<script>
+function completedGroup(gid) {
+	$.confirm({
+	    title: '그룹 완료',
+	    content: '' +
+	    '<form id="completedGroupForm" action="/bit/user/completedGroup.do" class="formName" method="post" onsubmit="return false;">' +
+	    '<div class="form-group">' +
+	    '<label>해시태그</label>' +
+	    '<input type="text" id="htag_btn2" name="htag" class="name2 form-control" onkeydown="addHashtag2()" maxlength="15"> ' +
+	    '<div id="htag_append2"></div>' +
+	    '<input type="hidden" class="gid" name="gid" />' + 
+	    '</div>' +
+	    '</form>',
+	    closeIcon: true,
+	    
+	    buttons: {
+	        formSubmit: {
+	            text: '완료',
+	            btnClass: 'btn-success',
+	            action: function () {
+	                this.$content.find('.gid').val(gid);
+	                var htag='';
+	                 
+	                $.each(hashtagList2 , function(index,data){
+	        	    	htag += data;
+	        	    })
+	        	    
+	        	    if(htag == ""){
+	        			$.alert("해시태그를 하나 이상 입력해주세요")
+	        			return false;
+	        		}else if(hashtagList2.length >10){
+	        			$.alert("해시태그는 10개 까지만 입력 가능합니다");
+	        			return false;
+	        		}else{
+		                
+		                this.$content.find('.name2').val(htag);
+		                
+		                $("#completedGroupForm").ajaxForm({
+		                	success: function(data, statusText, xhr, $form){
+		                		var fromid = '${sessionScope.info_usernname}';
+		                		
+		    	        		stompClient.send('/alarm' , {}, 
+		    	        			JSON.stringify({
+		    	        			gid: data.completedGroup.gid,
+		    	        			fromid:  fromid,
+		    	        			gname: data.completedGroup.gname,
+		    	        			gmemo: '완료',
+		    	        			senddate: 'NOW'})
+		    	        		);
+		    	        		
+		    	        		hashtagList2 = [];
+		    	        		
+		    	        		console.log(fromid);
+		                	}
+		                });
+		                
+		                $("#completedGroupForm").submit();
+	        		}
+	            }
+	        },
+	        '취소': {
+	        	btnClass : 'btn-danger',
+        		action : function() {
+        		}
+	        },
+	    }
+	    
+	});
+}
+
+
+</script>
+
+
 <div class="container">
 	<div class="row" style="padding-top: 100px;"></div>
 	<div class="row my-row-bg">
@@ -37,7 +111,7 @@
 				<i class="material-icons md-32 pull-left">view_list</i><span
 					class="mypage-title pull-left">리스트</span> <span
 					class="mypage-title">&nbsp;</span>
-				<span class="pull-left loading_text"><div id="loading"></div></span>
+				<span class="pull-left loading_text" ><div id="loading"></div></span>
 				<button type="button" class="my-boomark-btn" id="addurl">Add
 					URL</button>
 			</div>
@@ -113,7 +187,7 @@
 		<div class="main-modal-controller">
 			<div class="main-modal-center">
 				<div class="modal-dialog" role="document">
-					<div class="modal-content social">
+					<div class="modal-content social completed-group">
 						<div class="modal-header group">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>

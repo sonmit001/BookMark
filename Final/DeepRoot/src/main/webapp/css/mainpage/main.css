@@ -3,17 +3,28 @@
 /* 헤더 로고 폰트 */
 @import url('https://fonts.googleapis.com/css?family=Gugi');
 /* 한글 폰트*/
+@import url('https://fonts.googleapis.com/css?family=Jua');
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 /*************************
 *******Home Page******
 **************************/
-
-html {
-    height: 100%;
+.logo-text-modal{
+	font-family: 'Gugi';
+    font-size: 50px;
+    color: #7bbfa8;
+    font-weight: 600;
 }
 
+.logo-text-modal:hover,
+.logo-text-modal:focus,
+.logo-text-modal:active {
+    font-family: 'Gugi';
+    color:#9d9d9d;
+    text-decoration:none;
+}
 a.login-form {
+	font-family: 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     color: #cb5b35;
 }
 
@@ -71,11 +82,10 @@ h2 {
 }
 .category-div{
     margin-bottom: 10px;
-
 }
 
 .bookmark-category {
-    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
+    font-family: 'Jua', 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     font-size: 25px;
     font-weight: 500;
 }
@@ -89,12 +99,12 @@ h2 {
     margin-left: 10px;
     margin-right:  15px;
     font-size: 15px;
-    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Jua', 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
 }
 
 .main-admin-category {
     margin-top: 25px;
-    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Jua', 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     overflow: hidden;
 }
 
@@ -107,12 +117,13 @@ h2 {
 }
 
 /* 카테고리 영역 */
+span.title {font-family: 'Jua';}
 .category {
-    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
+    font-family: 'Jua', 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     height: 30px;
-    width: 106px;
+    width: 140px;
     margin-bottom: 10px;
-    margin-right: 15px;
+    margin-left: 15px;
     padding: 5px 10px 5px 10px;
     border-radius: 5px;
     text-align: center;
@@ -122,31 +133,25 @@ h2 {
     opacity: 0.8;
     border : 2px solid #415661;
     box-shadow: 2px 2px 5px 1px #8f8f8f;
-    
 }
 .category-title {
 	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
-	font-weight: 900;
+	font-weight: 500;
+	font-size: 15px;
 }
 
 .reddiv:hover,
-.category:hover{
-	box-shadow: 3px 3px 5px 1px #8f8f8f;
-}
+.category:hover{box-shadow: 3px 3px 5px 1px #8f8f8f;}
+.category:active{box-shadow: 4px 4px 6px 2px #8f8f8f;}
 
-.category:active{
-	box-shadow: 4px 4px 6px 2px #8f8f8f;
-	
-}
 .reddiv {
 	border : 2px solid #0000005c;
 	opacity: 1;
 	box-shadow: inset 3px 3px 20px 1px #222d32;
 }
 
-
 .bookmark-title {
-   font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
+   font-family: 'Jua', 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
    margin-right: 30px;
    padding-top: 5px;
    padding-bottom: 5px;
@@ -160,7 +165,7 @@ h2 {
 }
 
 .search-input {
-   font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
+   font-family: 'Jua', 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
    width: 200px;
    box-sizing: border-box;
    border: 1px solid #ccc;
@@ -197,7 +202,7 @@ h2 {
     font-size: 14px;
     color: #0099ae;
     border: 2px solid #0099ae;
-    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     font-weight: 300;
     padding: 10px 25px;
 }
@@ -238,31 +243,43 @@ h2 {
     position: absolute;
     top: 50px;
     left: 0;
-    width: 500px;
+    width: 565px;
     text-align: right;
-    font-family: 'Lato', 'Spoqa Han Sans', 'Noto Sans KR';
-    font-size: 25px;
+    font-family: 'Jua', 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
+    font-size: 22px;
     font-weight: 500;
-    margin-top: 100px;
+    margin-top: 60px;
     margin-bottom: 25px;
     z-index: 1;
 }
 
 #home-slider .slide-text .introduce-text{
-    font-family: 'Lato', 'Spoqa Han Sans', 'Noto Sans KR';
+    font-family: 'Jua', 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     text-align: left;
-    padding-left: 20px;
+    font-size: 25px;
+    padding-left: 50px;
 }
+/* #home-slider .intro-span1{padding-left: 20px}
+#home-slider .intro-span2{padding-left: 40px}
+#home-slider .intro-span3{padding-left: 60px}
+#home-slider .intro-span4{padding-left: 80px} */
+
+#home-slider .intro-text{font-size: 35px;}
+#home-slider .intro-text1{color: #dd4b39; font-size: 30px;}
+#home-slider .intro-text2{color: #5a78ff; font-size: 30px;}
+#home-slider .intro-text3{color: #1eb51e; font-size: 30px;}
+
 #home-slider .slider-hill {
     position: absolute;
     right: 0;
     bottom: 0;
-    z-index: 1;
+    z-index: 0;
 }
 
 #home-slider .btn-common {
-    margin-top: 20px;
+    margin-top: 15px;
     font-weight: 700;
+    font-style: oblique;
 }
 
 #home-slider .preloader {
@@ -288,18 +305,16 @@ h2 {
 }
 
 .ul-table {
-	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
-	min-height: 700px !important;
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
+	min-height: 750px ;
 }
 
-/*********************************
-****** Floating BoX CSS START ******
-***********************************/
+/****** Floating BoX CSS START ******/
 #floatMenu {
   padding-right: 30px;
   position: absolute;
   width: 100%;
-  height: 800px;
+  height: 850px;
   color: #000;
 }
 
@@ -322,18 +337,18 @@ h2 {
 }
 
 #comment {
-  font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
+  font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
   padding: 10px;
   float: left;
   width: 100%;
   height: 40%;
-  background-color: #F8FAFF; 
+  background-color: #FFF; 
   color: #353866;
   border-radius: 0px 0px 10px 10px;
   border : 2px solid #575b5f;
   border-top:none;
   box-shadow: 7px 4px 10px 5px #bbb;
-  overflow-y: auto; 
+  /* overflow-y: auto; */ 
 }
 
 #comment > img {
@@ -341,7 +356,7 @@ h2 {
 	text-align: center;
 }
 #comment-detail {
-	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans';
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
 	width: 100%;
 	margin-bottom: 10px;
 	padding-left: 10px;
@@ -367,7 +382,7 @@ h2 {
 }
 #world-ranking-visitor {
 	padding: 10px;
-	width: 30%;
+	width: 35%;
 	float: left;
 }
 #world-ranking-visitor i {
@@ -387,7 +402,7 @@ h2 {
 }
 #url-sub-domain {
 	padding: 5px;
-	width: 70%;
+	width: 65%;
 	float: left;
 }
 .progress {
@@ -418,11 +433,31 @@ h2 {
 
 #preview_content {
     height: 80%;
-    /* border: 2px solid #575b5f; */
     box-shadow : 0px 0px 20px 5px #E0E3DA;
     border-radius: 5px;
 }
+.preview_video{
+	height: 100%;
+	width: 100%;
+	position: relative;
+	top: -20px;
+}
+.video-container {
+	margin: 0;
+	padding-bottom: 75%;
+	max-width: 100%;
+	height: 0;
+	position: relative;
+	overflow: hidden;
+}
 
-/*********************************
-****** Floating BoX CSS END ******
-***********************************/
+.video-container iframe, .video-container object, .video-container embed
+	{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 70%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}

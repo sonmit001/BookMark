@@ -71,8 +71,8 @@
 				<a href="javascript:;" data-toggle="offcanvas" role="button" class="sidebar-toggle"><span class="sr-only">Toggle navigation</span></a>
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
-						<li class="dropdown messages-menu"><a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle">
-						<i class="fas fa-envelope fa-lg admin-mail"></i> <span class="label label-success">3</span></a> <!-- Message Alarm START -->
+						<!-- <li class="dropdown messages-menu"><a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle">
+						<i class="fas fa-envelope fa-lg admin-mail"></i> <span class="label label-success">3</span></a> Message Alarm START
 							<ul class="dropdown-menu">
 								<li class="header">You have 1 message(s)</li>
 								<li>
@@ -87,7 +87,8 @@
 									</ul>
 								</li>
 								<li class="footer"><a href="javascript:;">See All Messages</a></li>
-							</ul> <!-- Message Alarm END --></li>
+							</ul> Message Alarm END
+						</li> -->
 						<!-- Notice Alarm START -->
 						<li class="dropdown notifications-menu">
 							<a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle">
@@ -107,9 +108,12 @@
 						<!-- Admin Infomation START -->
 						<li class="dropdown user user-menu">
 							<a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle">
-								<img src="https://s3.amazonaws.com/uifaces/faces/twitter/GavicoInd/128.jpg" alt="User Image" class="user-image">
+								<i class="fas fa-user-circle"></i>
 								<span class="hidden-xs">${sessionScope.info_usernname}</span>
 							</a>
+							<ul id="userMenu" class="dropdown-menu">
+								<li class="header"><a href="<%= request.getContextPath() %>/security/logout">로그아웃</a></li>
+							</ul>
 						</li>
 						<!-- Admin Infomation END -->
 					</ul>

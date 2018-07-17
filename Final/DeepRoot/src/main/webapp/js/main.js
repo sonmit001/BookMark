@@ -175,25 +175,54 @@ jQuery(function($) {
 	}
 
 	$(document).ready(function() {
+		var scrollPos = 0;
+		
 		// 기존 css에서 플로팅 배너 위치(top)값을 가져와 저장한다.
 		var floatPosition = parseInt($("#floatMenu").css('top'));
-		var footerPosition = $("#footer").offset();
-		// 250px 이런식으로 가져오므로 여기서 숫자만 가져온다. parseInt( 값 );
-
+		// category-div height
+		var categoryBottomPos = $('#category-div').offset().top + 100;
+		// FloatMecu 절대좌표floatMenu
+		var floatBottomPos = $("#floatMenu").offset().top + 800;
+		// Footer 절대좌표
+		var footerPos = $("#footer").offset().top;
+		
 		$(window).scroll(function() {
+			var curScrollPos = $(this).scrollTop();
+			
+			floatBottomPos = $("#floatMenu").offset().top + 800;
+			footerPos = $("#footer").offset().top;
+			//console.log(floatBottomPos + "/" + footerPos);
+			
 			// 현재 스크롤 위치를 가져온다.
-			var scrollTop = $(window).scrollTop();
-			var newPosition = scrollTop + floatPosition - 627 + "px";
-			var fixedpositon = floatPosition + "px";
-			//console.log(scrollTop);
-			// 애니메이션 없이 바로 따라감
-			if ($(this).scrollTop() <= 500)
-				//scrollTop.toFixed();
-				$("#floatMenu").css("top","0px");
-			else
-				$("#floatMenu").css('top', newPosition);
+			var newPosition = curScrollPos + floatPosition - 635 + "px";
+			
+			if (curScrollPos > scrollPos) { //Scrolling Down
+	        	//console.log("donw");
+	        	if (curScrollPos <= categoryBottomPos) {
+					$("#floatMenu").css("top","0px");
+				}
+				else if (floatBottomPos >=  footerPos) {
+					$("#floatMenu").css("top", (footerPos - 1480) + "px");
+				}
+				else{
+					$("#floatMenu").css('top', newPosition);
+				}
+	            
+	        } else { //Scrolling Up
+	        	//console.log("up");
+	        	if (curScrollPos <= categoryBottomPos) {
+					$("#floatMenu").css("top","0px");
+				}
+				else if (floatBottomPos >=  footerPos) {
+					$("#floatMenu").css('top', newPosition);
+				}
+				else{
+					$("#floatMenu").css('top', newPosition);
+				}
+	        }
 
-		}).scroll();
+			scrollPos = curScrollPos;
+		});
 	});
 });
 
@@ -206,7 +235,7 @@ function preview(abid){
 		type: "post",
 		data : { abid : abid },// 북마크 ID
 		beforeSend: function() {
-			$('#layout').html('<img src="/bit/images/loading/preview.gif" style="margin-top: 0;"/>');
+			$('#layout').html('<img src="/bit/images/loading/preview.gif" style="margin-top: 60px;"/>');
 		},
 		complete: function() {
 			$('#layout').html('');
@@ -221,13 +250,14 @@ function preview(abid){
 				if(data.title != "" && data.title != null){
 					comment = "<b>" + data.title + "</b>";
 				}
-				if(data.url != "" && data.url != null){
+				/*if(data.url != "" && data.url != null){
 					comment += "&nbsp;-&nbsp;<a href='" + data.url + "' target='_blank'>" + data.url + "</a>";
-				}
+				}*/
 				if(data.description != "" && data.description != null){
 					comment += "<br> <p>&nbsp;&nbsp;" + data.description + "</p>";
 				}
 				$("#comment-detail").html(comment);
+				$("#comment").css("overflow-y","auto");
 				$('#comment').fadeIn(1000);
 				
 				previewDetail(abid);
@@ -243,7 +273,7 @@ function previewDetail(abid) {
 		type: "post",
 		data : { abid : abid },// 북마크 ID
 		beforeSend: function() {
-			$('#ajax-loading-div').html('<img id="loading-img" src="/bit/images/loading/loading.gif" style="width:35%;"/>');
+			$('#ajax-loading-div').html('<img id="loading-img" src="/bit/images/loading/writer.gif" style="width:35%;"/>');
 		},
 		complete: function() {
 			$('#ajax-loading-div').html('');
@@ -281,7 +311,7 @@ function previewDetail(abid) {
 			}else {
 				sub_domain += "Not supported</span>";
 			}
-			console.log(sub_domain);
+			//console.log(sub_domain);
 			$("#world-ranking-visitor").append(ranking);
 			$("#world-ranking-visitor").append(visitors);
 			$("#url-sub-domain").html(sub_domain);

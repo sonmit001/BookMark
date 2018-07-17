@@ -16,6 +16,10 @@
 	<context:component-scan base-package="site.book.*" />
 	<context:annotation-config />
 	<mvc:annotation-driven />
+	<!--
+		web.xml에서 url-pattern을 /로 바꿔서 *.do 뿐만 아니라 image, js 파일까지 다 받게 되어서 에러가 나기 때문에
+		그런 것은  default-servlet이 받도록 설정하는 코드
+	-->
 	<mvc:default-servlet-handler/>
 	
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
@@ -41,7 +45,6 @@
 	<!-- jsonview -->
 	<bean name="jsonview" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
 	
-	
 	<!-- Transaction -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="driverManagerDataSource" /> 
@@ -53,14 +56,6 @@
 	<task:annotation-driven executor="executor" scheduler="scheduler"/>
 	<task:scheduler id="scheduler"/>
 	<task:executor id="executor" />
-	
-	<!-- WebSocket -->
-	<!-- <websocket:message-broker application-destination-prefix="/socket">
-		<websocket:stomp-endpoint path="/endpoint">
-			<websocket:sockjs />
-		</websocket:stomp-endpoint>
-		<websocket:simple-broker prefix="/subscribe"/>
-	</websocket:message-broker> -->
 	
 	<bean id="visitorService" class="site.book.admin.service.VisitorService" />
 	
@@ -75,16 +70,21 @@
 		</property>
 	</bean>
 
-	<!-- VelocityViewResolver -->
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
-		<property name="contentType" value="text/html; charset=UTF-8" />
-		<property name="cache" value="true" />
-		<property name="prefix" value="/" />
-		<property name="suffix" value=".vm" />
-		<property name="order" value="0" />
-	</bean>
-
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="resourceLoaderPath" value="/WEB-INF/views/vm/" />
 	</bean>
+	
+	<!-- google Class Bean설정 추가 -->
+	<!-- 클라이언트ID와 보안비밀 세팅 -->
+	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+	  <constructor-arg value="210756981146-6oqli9olf8knckhsl1b621ituia83ovq.apps.googleusercontent.com" />
+	  <constructor-arg value="egii2KSp4R_DoapOBaOmM5je" />
+	</bean>
+	
+	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
+	<bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+		<property name="scope" value="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email" />
+	 	<property name="redirectUri" value="http://localhost:8090/bit/joinus/googleSignInCallback" />
+	</bean>
+	
 </beans>

@@ -41,15 +41,6 @@ public class TopService {
 			e.printStackTrace();
 		}
 
-		// 반복문 돌면서 가장 urlname 넣어주기
-		/*for (int i = 0; i < list.size(); i++) {
-			try {
-				list.get(i).setUrlname(top_dao.selectUTop5Urlname(list.get(i).getUrl()));
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
-			}
-		}*/
-
 		return list;
 	}
 
@@ -64,38 +55,6 @@ public class TopService {
 			e.printStackTrace();
 		}
 
-		// 반복문 돌면서 가장 urlname 넣어주기
-		/*for (int i = 0; i < list.size(); i++) {
-			try {
-				list.get(i).setUrlname(top_dao.selectGTop5Urlname(list.get(i).getUrl()));
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
-			}
-		}*/
-
-		return list;
-	}
-
-	// 전체 Top5 가져오기
-	public List<TopDTO> getATop5() {
-		TopDAO top_dao = sqlsession.getMapper(TopDAO.class);
-		List<TopDTO> list = null;
-
-		try {
-			list = top_dao.selectATop5();
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-
-		// 반복문 돌면서 가장 urlname 넣어주기
-		/*for (int i = 0; i < list.size(); i++) {
-			try {
-				list.get(i).setUrlname(top_dao.selectATop5Urlname(list.get(i).getUrl()));
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
-			}
-		}*/
-		
 		return list;
 	}
 	

@@ -14,6 +14,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import site.book.team.dao.G_MemberDAO;
 import site.book.team.dto.G_AlarmDTO;
@@ -71,6 +72,7 @@ public class G_MemberService {
 	}
 	
 	//그룹원 강퇴하기 + 강퇴 쪽지 보내기
+	@Transactional
 	public int banMember(G_MemberDTO member_ban) {
 		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
 		int result = 0;
@@ -93,9 +95,39 @@ public class G_MemberService {
 		try {
 			member = g_MemberDAO.getToUid(nname);
 		} catch (Exception e) {
-			e.printStackTrace();
+			/*e.printStackTrace();*/
 		}
 		
 		return member.getUid();
+	}
+	
+	// 그룹원 매니저 권한 주기
+	public int giveManager(G_MemberDTO member_auth) {
+		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
+		int result = 0;
+		
+		try {
+			member_auth.setGrid(2);
+			result = g_MemberDAO.giveManager(member_auth);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// 그룹원 매니저 권한 뺏기
+	public int giveMember(G_MemberDTO member_auth) {
+		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
+		int result = 0;
+		
+		try {
+			member_auth.setGrid(3);
+			result = g_MemberDAO.giveManager(member_auth);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

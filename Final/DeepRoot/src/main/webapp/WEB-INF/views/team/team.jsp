@@ -18,9 +18,14 @@
 	</c:forEach>
 	var grid = '<c:out value="${grid}"/>';
 	var gname ='<c:out value="${gname}"/>';
-
+	
+	/* 그룹에서의 나의 권한 */
+	var myRole = '<c:out value="${requestScope.group_auth}"/>';
+	//console.log(myRole);
 </script>
-
+	<!-- 그룹에서의 나의 권한 -->
+	<c:set var="myRole" value="${requestScope.group_auth}"/>
+	
 	<!-- 전체 Body Div START -->
     <div class="container-fluid team-container">
         <div id="main-row" class="row">
@@ -37,8 +42,14 @@
 			                        <div class="zoom">
 									    <a class="zoom-fab zoom-btn-large" id="zoomBtn"><i class="fa fa-bars"></i></a>
 									    <ul class="zoom-menu">
-									      	<li><a class="zoom-fab zoom-btn-sm zoom-btn-person scale-transition scale-out" onclick="group_leave();"><i class="fas fa-sign-out-alt"></i></a></li>
-									      	<li><a class="zoom-fab zoom-btn-sm zoom-btn-feedback scale-transition scale-out" onclick="group_complete();"><i class="fas fa-check"></i></a></li>
+									    <c:choose>
+								    	<c:when test="${myRole == '그룹장'}">
+								    		<li><a class="zoom-fab zoom-btn-sm zoom-btn-feedback scale-transition scale-out" onclick="group_complete();"><i class="fas fa-check"></i></a></li>
+								    	</c:when>
+								    	<c:otherwise>
+								    		<li><a class="zoom-fab zoom-btn-sm zoom-btn-person scale-transition scale-out" onclick="group_leave();"><i class="fas fa-sign-out-alt"></i></a></li>
+								    	</c:otherwise>
+									    </c:choose>
 									    </ul>
 							  		</div>
 			                    </div>
@@ -109,7 +120,11 @@
 			                <div class="group-member-content">
 			                    <div>
 			                        <div class="group-member-header">
-			                            <p><i class="far fa-address-card"></i> Member <i class="member_insert_ico fas fa-user-plus" onclick="member_insert();"></i></p>
+			                            <p>	<i class="far fa-address-card"></i> Member 
+		                            	<c:if test="${myRole != '그룹원'}">
+		                            		<i class="member_insert_ico fas fa-user-plus" onclick="member_insert();"></i>
+		                            	</c:if>
+			                            </p>
 			                        </div>
 			                    </div>
 			                    <div class="onoffline-content">
@@ -130,37 +145,47 @@
 			                            </div>
 			                        </div>
 			                    </div> 
-			                    
-			                    
 			                    <script type="text/javascript">
 			                    $(document).ready(function() {
 			                    	var onlinelist = JSON.parse('${onlinelist}');
-                            		//console.log(onlinelist.hasOwnProperty("민재"));
-                            		//console.log('${gmemberlist}');
                             		
-                            		var memberNnameList = new Array(); // 전체 카테고리 리스트 비동기로 받아오기
-                            		var memberUidList = new Array(); // 전체 카테고리 리스트 비동기로 받아오기
+                            		var memberList = new Array(); 		// 전체 카테고리 리스트 비동기로 받아오기
                             		<c:forEach items="${gmemberlist}" var="member">
-                            			memberNnameList.push("${member.nname}");
-                            			memberUidList.push("${member.uid}");
+                            			var memberInfo = new Array();
+                            			memberInfo.push("${member.nname}");
+                            			memberInfo.push("${member.profile}");
+                            			memberInfo.push("${member.grid}");
+                            			memberList.push(memberInfo);
 	                            	</c:forEach>
 	                            	
-	                            	$.each(memberNnameList, function(index, element) {
+	                            	$.each(memberList, function(index, element) {
 	                            		var member = element;
-	                            		//console.log(member);
-	                            		if(onlinelist.hasOwnProperty(member)) {
-                            				var insertOnline = '<p id="' + member + '"' + ' class="member">' 
-				                								+ '<img class="member-ico" src="/bit/images/profile.png" '
-				                								+ 'onerror="this.src=' + "'/bit/images/profile.png'\">" + member
-				                							  + '</p>';
-				                			$('#online-member').prepend(insertOnline);
-	                            			
-	                            		}else {
-	                            			var insertOffline = '<p id="' + member + '"' + ' class="member">' 
-					            								+ '<img class="member-ico" src="/bit/images/profile.png" '
-					            								+ 'onerror="this.src=' + "'/bit/images/profile.png'\">" + member
-					            							  +'</p>';
+	                            		if(onlinelist.hasOwnProperty(member[0])) {
+	                            			var insertOnline = '<p id="' + member[0] + '"' + ' class="member" data-grid="'+member[2]+'">' 
+            												 	+ '<i class="fas fa-circle online-ico"></i>'
+            												 	+ member[0]
+            												 
+            							  					+ '</p>';
+            								$('#online-member').prepend(insertOnline);
+            								
+            								if(member[2] == 1) {
+            									$("#" + member[0]).append('<i class="fas fa-crown group-master"></i>');
+            								}else if(member[2] == 2) {
+            									$("#" + member[0]).append('<i class="fas fa-chess-knight group-manager"></i>');
+            								}
+            			
+            							}else {
+            								var insertOffline = '<p id="' + member[0] + '"' + ' class="member" data-grid="'+member[2]+'">' 
+					            								+ '<i class="fas fa-circle offline-ico"></i>'
+					            								+ member[0]
+					            							  + '</p>';
 					            			$('#offline-member').prepend(insertOffline);
+					            			
+					            			if(member[2] == 1) {
+            									$("#" + member[0]).append('<i class="fas fa-crown group-master"></i>');
+            								}else if(member[2] == 2) {
+            									$("#" + member[0]).append('<i class="fas fa-chess-knight group-manager"></i>');
+            								}
 	                            		}
 	                            	});
 			                    });
@@ -179,70 +204,115 @@
     
 <!-- 그룹 북마크 마이카테고리로 가져가기 div START -->
 <div id="fromGroupToMy" class="modal fade" tabindex="-1" role="dialog">
-	<div class="main-modal-controller">
-		<div class="main-modal-center">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title" id="gridSystemModalLabel">북마크 가져가기</h4>
-					</div>
-					<div class="modal-body">
-						<div class="completed-modal-left">
-							<h4 class="completed-modal-from"><b>URL :</b>
-							<input type="text" id="modalurl"class="indishare-url" readonly></h4>
-			            </div>
-			            <hr>
-			            <div class="completed-modal-left abc123">
-			                <h4 class="completed-modal-to"><b>가져가기 :  My Bookmark</b></h4>
-			                <!-- <div class="completed-modal-dropdown">
-			                       My Bookmark
-			                </div> -->
-			                <div id="jstree-to-mybookmark" style="clear: both;"></div>
-			            </div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default indishare" data-dismiss="modal">취소</button>
-						<button id="into-my-bookmark" type="button" class="btn btn-primary">확인</button>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div>
+	<div class="jstree-modal-fromgrouptomy">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="gridSystemModalLabel">북마크 가져가기</h4>
+				</div>
+				<div class="modal-body">
+					<div class="completed-modal-left">
+						<h4 class="completed-modal-from"><b>URL :</b>
+						<input type="text" id="modalurl"class="indishare-url" readonly></h4>
+		            </div>
+		            <hr>
+		            <div class="completed-modal-left abc123">
+		                <h4 class="completed-modal-to"><b>가져가기&nbsp;&nbsp;&nbsp; :
+		                							&nbsp;&nbsp;&nbsp;&nbsp;My Bookmark</b></h4>
+		                <div id="jstree-to-mybookmark" style="clear: both;"></div>
+		            </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default indishare" data-dismiss="modal">취소</button>
+					<button id="into-my-bookmark" type="button" class="btn btn-primary">확인</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
 	</div>
 </div><!-- /.modal -->
 
 <!--마이북마크 가져오기 -->
 <div id="fromMytoGroup" class="modal fade" tabindex="-1" role="dialog">
-	<div class="main-modal-controller">
-		<div class="main-modal-center">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title" id="gridSystemModalLabel">북마크 가져오기</h4>
-					</div>
-					<div class="modal-body">
-						<div class="completed-modal-left">
-							<h4 class="completed-modal-from"><b>폴더 :</b>
-							<input type="text" id="addUrlFolder"class="indishare-url" readonly></h4>
-			            </div>
-			            <hr>
-			            <div class="completed-modal-left abc123">
-			                <h4 class="completed-modal-to"><b>가져오기 : </b></h4>
-			                <div id="jstree-from-mybook" style="clear: both;"></div>
-			            </div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default indishare" data-dismiss="modal">취소</button>
-						<button id="from-my-bookmark" type="button" class="btn btn-primary">확인</button>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div>
+	<div class="jstree-modal-fromgrouptomy">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="gridSystemModalLabel">북마크 가져오기</h4>
+				</div>
+				<div class="modal-body">
+					<div class="completed-modal-left">
+						<h4 class="completed-modal-from"><b>폴더 :</b>
+						<input type="text" id="addUrlFolder"class="indishare-url" readonly></h4>
+		            </div>
+		            <hr>
+		            <div class="completed-modal-left abc123">
+		                <h4 class="completed-modal-to"><b>가져오기 : </b></h4>
+		                <div id="jstree-from-mybook" style="clear: both;"></div>
+		            </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default indishare" data-dismiss="modal">취소</button>
+					<button id="from-my-bookmark" type="button" class="btn btn-primary">확인</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
 	</div>
 </div><!-- /.modal -->
+
+   
+    	<!-- URL 추가 모달 -->
+	<div id="linkAdd_btn" class="modal fade" role="dialog">
+		<div class="jstree-modal-center">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">
+							<b>URL 추가</b>
+						</h4>
+					</div>
+	
+					<div class="modal-body">
+						<form id="form_btn">
+							<table class="table">
+								<colgroup>
+									<col width="30%">
+									<col width="70%">
+								</colgroup>
+								<tr class="addUrlLevel1">
+									<td class="info" style="vertical-align: middle;">URL :</td>
+									<td><input type="text" id="url_btn" name="url_btn"
+										class="form-control" maxlength="150"></td>
+								</tr>
+								<tr class="addUrlLevel2">
+									<td class="info" style="vertical-align: middle;">제목 :</td>
+									<td><input type="text" id="title_btn" name="title_btn"
+										class="form-control" maxlength="33" placeholder="최대 33자"></td>
+								</tr>
+								<tr class="addUrlLevel2">
+									<td class="info" style="vertical-align: middle;">카테고리 :</td>
+									<td><input type="text" id="category_btn" name="category_btn"
+										class="form-control" readonly="readonly"></td>
+								</tr>
+							</table>
+						</form>
+						<div class="modal-footer">
+							<!-- type="submit" value="Submit" -->
+							<button type="button" class="btn btn-default btn-sm addUrlLevel1" onclick="openAddUrlLevel2()">다음</button>
+							<button type="button" class="btn btn-default btn-sm addUrlLevel2" onclick="addUrlLevel1()">이전</button>
+							<button id="addurlbtn" class="btn btn-default btn-sm addUrlLevel2" >추가하기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- onclick="addUrl()" -->
     

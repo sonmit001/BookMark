@@ -7,12 +7,15 @@
 <!-- adminTable CSS END -->
 
 <script type="text/javascript">
+	var socialUserTable = null;
+	var socialGroupTable = null;
+	
 	$(function() {
-		$('#socialUserBookmarkTable').DataTable({
+		socialUserTable = $('#socialUserBookmarkTable').DataTable({
 			responsive : true,
 			"order" : [ [ 3, "desc" ] ]
 		});
-		$('#socialGroupBookmarkTable').DataTable({
+		socialGroupTable = $('#socialGroupBookmarkTable').DataTable({
 			responsive : true,
 			"order" : [ [ 3, "desc" ] ]
 		});
@@ -31,7 +34,8 @@
 		        	btnClass : 'btn-danger',
 		        	keys: ['enter'],
 		        	action : function () {
-		        		$("#ubid" + ubid).remove(); // dataTable에서 지우기
+		        		socialUserTable.row($('tr[id=ubid' + ubid + ']')).remove().draw(); // dataTable에서 지우기
+		        		
 						$.ajax({
 							url: "deleteSUBook.do",
 							type: "post",
@@ -69,7 +73,7 @@
 		        	btnClass : 'btn-danger',
 		        	keys: ['enter'],
 		        	action : function () {
-		        		$("#gid" + gid).remove(); // dataTable에서 지우기
+		        		socialGroupTable.row($('tr[id=gid' + gid + ']')).remove().draw(); // dataTable에서 지우기
 						$.ajax({
 							url: "deleteGroup.do",
 							type: "post",
@@ -99,11 +103,11 @@
 
 
 <!-- Main Content START -->
-<div class="content-wrapper" style="min-height: 913px;">
+<div class="content-wrapper adminSocial" style="min-height: 913px;">
 	<section class="content-header">
-		<h1>Social Bookmark List</h1>
+		<h1><i class="fas fa-clipboard-list content-header-ico"></i>Social Bookmark List</h1>
 		<ol class="breadcrumb">
-			<li><a><i class="fa fa-home"></i>Home</a></li>
+			<li><i class="fa fa-home"></i>Home</li>
 			<li class="active">social bookmark list</li>
 		</ol>
 	</section>
@@ -173,7 +177,7 @@
 									<!-- 그룹 공유   -->
 									<c:forEach items="${g_list}" var="g_booklist">
 										<tr id="gid${g_booklist.gid}">
-											<td><a>${g_booklist.gname}</a></td>
+											<td>${g_booklist.gname}</td>
 											<td class="table-tag">"${g_booklist.htag}"</td>
 											<td>${g_booklist.nname}</td>
 											<td class="table-date">${g_booklist.duedate}</td>

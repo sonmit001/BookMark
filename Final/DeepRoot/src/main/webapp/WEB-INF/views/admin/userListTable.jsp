@@ -56,9 +56,9 @@
 <!-- Main Content START -->
 <div class="content-wrapper" style="min-height: 913px;">
 	<section class="content-header">
-		<h1>User List</h1>
+		<h1><i class="fas fa-clipboard-list content-header-ico"></i>User List</h1>
 		<ol class="breadcrumb">
-			<li><a><i class="fa fa-home"></i>Home</a></li>
+			<li><i class="fa fa-home"></i>Home</li>
 			<li class="active">user list</li>
 		</ol>
 	</section>
@@ -68,9 +68,9 @@
 		<div id="page-wrapper">
 			<br>
 			<div class="row">
-				<div class="col-lg-8">
+				<div class="col-lg-12">
 					<div class="panel">
-						<div class="panel-heading">회원 목록</div>
+						<div class="panel-heading"><i class="fa fa-arrow-right content-head"></i>회원 목록</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
 							<table width="100%" class="table table-hover" id="userListTable">

@@ -2,6 +2,7 @@
 /* 헤더 로고 폰트 */
 @import url('https://fonts.googleapis.com/css?family=Gugi');
 /* 한글 폰트*/
+@import url('https://fonts.googleapis.com/css?family=Jua');
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 /* Social Page CSS START */
@@ -49,11 +50,11 @@
 }
 
 .slideimg{
-    background: url(../../images/social/1196.png) 0 85% repeat-x;
+    /* background: url(../../images/social/1196.png) 0 85% repeat-x; */
     height: 85px;
 }
 
-.slideimg::after {
+/* .slideimg::after {
   display: block;
   position: relative;
   background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #fff 100%);
@@ -61,7 +62,7 @@
   width: 100%;
   content: '';
 }
-
+ */
 .bg-bottom{
     position: absolute;
     float: left;
@@ -99,7 +100,9 @@ table thead tr td.table-write{
 
 table thead tr th.table-date,
 table tbody tr td.table-date{
-    width:100px;
+    width: 17%;
+    overflow: hidden;
+    text-overflow: clip !important;
 }
 
 table thead tr th.table-click,
@@ -214,7 +217,12 @@ h1,h2,h3,h4,h5,h6 {
     font-family: 'Lato','Noto Sans KR', 'Spoqa Han Sans';
     font-weight: 300;
 }
-
+.container .top5-table>tbody>tr>td {
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
 /* 소셜 사이트명 길이 넘어가면 ... 표시 */
 .container .table>tbody>tr>td {
 	white-space: nowrap;
@@ -246,17 +254,43 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .pagination li a:hover {
-    color: #666;
+    color: #fff;
     background: #999;
 }
 
-.pagination li.active a {
+.pagination li.active a,
+.pagination li.active a:active,
+.pagination li.active a:focus,
+.pagination li.active a:visited,
+.pagination li.active a:visited:hover {
     background: #7bab94;
 }
 
-.pagination li.active a:visited {
-    background: #7bab94;
+/* Modal scrolling */
+.jstree-container-ul {
+	overflow: auto;
+    max-height: 300px;
+    min-height: 300px;
+}
+
+.jstree-container-ul::-webkit-scrollbar{width: 5px; height: 10px;}
+.jstree-container-ul::-webkit-scrollbar-track {background-color:#fff0;}
+.jstree-container-ul::-webkit-scrollbar-thumb {background-color:#ccc; border-radius: 10px;}
+.jstree-container-ul::-webkit-scrollbar-thumb:hover {background: #b9b9b9;}
+.jstree-container-ul::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment {
+    width: 5px;
+    height: 5px;
+    background-color: #fff0;
 }
 
 
+/* ellipsis
+.jstree-anchor{
+    overflow:hidden;
+	white-space:nowrap;
+	max-width: 80%;
+}
+ */
+ 
+ 
 /* Social Page CSS END */

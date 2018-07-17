@@ -14,13 +14,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="insertNewUser" statementType="CALLABLE" parameterType="HashMap">
-		<!-- INSERT INTO USER(UID, NNAME, PWD, REGDATE, PROFILE) 
-		VALUES(#{uid}, #{nname}, #{pwd}, sysdate(), #{profile}) -->
+	<!-- INSERT INTO USER(UID, NNAME, PWD, REGDATE, PROFILE) 
+	VALUES(#{uid}, #{nname}, #{pwd}, sysdate(), #{profile}) -->
 		{  call insert_user_and_role
 			(
                 #{uid},
                 #{nname},
-                #{pwd}
+                #{pwd},
+                #{oauth_code}
             )
         }
 	</insert>
@@ -49,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     
     <delete id="deleteUser">
-        DELETE FROM USER WHERE UID=#{uid}
+        DELETE FROM `USER` WHERE UID=#{uid}
     </delete>
     
     <update id="updatePwd">

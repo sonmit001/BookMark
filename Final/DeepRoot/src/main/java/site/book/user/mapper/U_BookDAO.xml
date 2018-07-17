@@ -16,7 +16,7 @@
 	</select>
 	
 	<select id="socialBookmarkList" resultType="site.book.user.dto.S_U_BookDTO">
-		SELECT ub.UBID, ub.URL, ub.UID, u.NNAME, ub.SNAME, ub.VIEW, ub.HTAG, DATE_FORMAT(ub.SDATE,'%Y-%m-%d') as SDATE FROM U_BOOK ub JOIN USER u ON ub.HTAG is not null and ub.UID = u.UID
+		SELECT ub.UBID, ub.URL, ub.UID, u.NNAME, ub.SNAME, ub.VIEW, ub.HTAG, ub.SDATE as SDATE FROM U_BOOK ub JOIN USER u ON ub.HTAG is not null and ub.UID = u.UID
 	</select>
 	
 	<delete id="deleteSocialBookmark">
@@ -80,7 +80,7 @@
 	<update id="shareUrlEdit" parameterType="site.book.user.dto.U_BookDTO">
 		<choose>
 			<when test="htag !=null">
-				UPDATE U_BOOK SET HTAG= #{htag} , SNAME =#{sname} WHERE UBID = #{ubid}
+				UPDATE U_BOOK SET HTAG= #{htag} , SNAME =#{sname} , SDATE = SYSDATE() WHERE UBID = #{ubid}
 			</when>
 			<otherwise>
 				UPDATE U_BOOK SET HTAG = NULL , SNAME = NULL , SDATE = NULL WHERE UBID = #{ubid}
@@ -95,5 +95,9 @@
 			(#{item.url},#{item.urlname},SYSDATE(),0,#{item.uid},#{item.pid})
 			</foreach>
 	</insert>
+	
+	<update id="updateViewCount">
+		update U_BOOK set view = view + 1 where UBID = #{ubid}
+	</update>
 	
 </mapper>

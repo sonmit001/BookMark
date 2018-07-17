@@ -1,3 +1,18 @@
+/* 영어 폰트 */
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+/* 한글 폰트*/
+@import url('https://fonts.googleapis.com/css?family=Gugi|Jua');
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+.loading_img{
+	vertical-align: baseline;
+}
+.loading_p{
+	margin-bottom: 0px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
 /* jsTree default theme */
 .jstree-node,
 .jstree-children,
@@ -7,11 +22,17 @@
   padding: 0;
   list-style-type: none;
   list-style-image: none;
-  width: 100%;
 }
 .jstree-node {
   white-space: nowrap;
-  
+}
+.jstree-anchor {
+  display: inline-block;
+  color: #333;
+  white-space: nowrap;
+  padding: 0 4px 0 1px;
+  margin: 0;
+  vertical-align: top;
 }
 
 .jstree-anchor:focus {
@@ -109,26 +130,16 @@
 .vakata-context {
   display: none;
 }
-@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding');
-/* 'Nanum Gothic Coding', monospace , 
-font-family: 'Jua', sans-serif; **
-font-family: 'Song Myung', serif;
-font-family: 'Stylish', sans-serif; ***
-font-family: 'Cute Font', cursive;
-font-family: 'Gamja Flower', cursive;
 
-*/
-@import url('https://fonts.googleapis.com/css?family=Gugi|Jua');
-@import url('https://fonts.googleapis.com/css?family=Cute+Font|Gamja+Flower|Jua|Song+Myung|Stylish');
 .jstree {
-	font-family:   'Stylish', sans-serif; /* 폰트 */
-    font-size: 15px;
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
+    font-size: 14px;
     font-weight:800;
     width: 100%;
     display: block;
     }
 #jstree_container{ /* jstree padding 패딩 */
-	padding: 10px;
+	padding: 10px 10px 0px 10px;
 }
 .vakata-context,
 .vakata-context ul {
@@ -145,7 +156,7 @@ font-family: 'Gamja Flower', cursive;
     background-color: #ffffff;
     border: 1px solid #ccc;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    font-family:   'Stylish', sans-serif; /* 폰트 */
+    font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
     font-size: 16px;
     font-weight:500;
     *border-right-width: 2px;
@@ -169,7 +180,7 @@ font-family: 'Gamja Flower', cursive;
 }
 
 .jstree-proton {
-  font-family:  'Stylish', sans-serif;
+  font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
 }
 .vakata-context ul {
   list-style: none;
@@ -357,17 +368,17 @@ font-family: 'Gamja Flower', cursive;
  .jstree-proton-responsive .jstree-wholerow-clicked { /* 전체 클릭*/
     background: #FFFF7E;
   }
- .shared{ /*공유 된거*/
+ .shared{ /*공유 된거 아이콘 파비콘*/
  color : #353866;
  float : right; 
  font-size : 13px;
  margin-right: 15px;
  margin-top: 3px;
  text-align:center;
+ position : relative;
  }
  /*   */
-
-
+ 
  .jstree-anchor {
   display : inline-block;
   color: #333;
@@ -378,7 +389,6 @@ font-family: 'Gamja Flower', cursive;
   overflow :  hidden;
   text-overflow: ellipsis;
   width: auto;
- 
 }
 
 .jstree-proton .jstree-clicked { /* 그냥 클릭 됨 */
@@ -616,7 +626,10 @@ filter: gray;
   background-position: 0 0;
 }
 .jstree-proton > .jstree-container-ul .jstree-loading > .jstree-ocl {
-  background: url("../images/throbber.gif") center center no-repeat;
+  background-image : url("../images/throbber.gif") ;
+  background-repeat: no-repeat;
+  background-position: 300px 0px;
+  
 }
 .jstree-proton .jstree-file {
   background: url("../images/32px.png") -101px -69px no-repeat;
@@ -786,7 +799,9 @@ filter: gray;
   background-position: 0 0;
 }
 .jstree-proton-small > .jstree-container-ul .jstree-loading > .jstree-ocl {
-  background: url("../images/throbber.gif") center center no-repeat;
+  background-image : url("../images/throbber.gif") ;
+  background-repeat: no-repeat;
+  background-position: 300px 0px;
 }
 .jstree-proton-small .jstree-file {
   background: url("../images/32px.png") -103px -71px no-repeat;
@@ -956,7 +971,9 @@ filter: gray;
   background-position: 0 0;
 }
 .jstree-proton-large > .jstree-container-ul .jstree-loading > .jstree-ocl {
-  background: url("../images/throbber.gif") center center no-repeat;
+  background-image : url("../images/throbber.gif") ;
+  background-repeat: no-repeat;
+  background-position: 300px 0px;
 }
 .jstree-proton-large .jstree-file {
   background: url("../images/32px.png") -96px -64px no-repeat;
@@ -1176,51 +1193,53 @@ filter: gray;
     margin-right: 0;
   }
 }
-/* 
 
-@font-face{
-font-family: ng;
-src:url(NanumGothic.eot);
-src:local(※), url(NanumGothic.woff) format(‘woff’);
-}
-@font-face {
-  font-family: 'Jeju Gothic';
-  src: url('//fonts.googleapis.com/earlyaccess/jejugothic.css');
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Titillium Web';
-  src: url('fonts/titillium/titilliumweb-regular-webfont.eot');
-  src: url('fonts/titillium/titilliumweb-regular-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/titillium/titilliumweb-regular-webfont.woff') format('woff'), url('fonts/titillium/titilliumweb-regular-webfont.ttf') format('truetype'), url('fonts/titillium/titilliumweb-regular-webfont.svg#titillium_webregular') format('svg');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Titillium Web';
-  src: url('fonts/titillium/titilliumweb-bold-webfont.eot');
-  src: url('fonts/titillium/titilliumweb-bold-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/titillium/titilliumweb-bold-webfont.woff') format('woff'), url('fonts/titillium/titilliumweb-bold-webfont.ttf') format('truetype'), url('fonts/titillium/titilliumweb-bold-webfont.svg#titillium_webbold') format('svg');
-  font-weight: 700;
-  font-style: normal;
-} */
-/* @media screen and (-webkit-min-device-pixel-ratio: 0) {
-  @font-face {
-    font-family: 'Titillium Web';
-    src: url('fonts/titillium/titilliumweb-extralight-webfont.svg#titillium_webthin') format('svg');
-    font-weight: 300;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Titillium Web';
-    src: url('fonts/titillium/titilliumweb-regular-webfont.svg#titillium_webregular') format('svg');
-    font-weight: 400;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Titillium Web';
-    src: url('fonts/titillium/titilliumweb-bold-webfont.svg#titillium_webbold') format('svg');
-    font-weight: 700;
-    font-style: normal;
-  }
-} */
 
+.jconfirm-box{
+	border-top: 10px solid #2ecc71;
+}
+
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default, 
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default{
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, 
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:hover,
+.jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:active, 
+.jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:active{
+	background-color: #2ecc71;
+	opacity: 0.7;
+	color: #fff;
+}
+
+
+.btn.btn-default.btn-sm{
+	background-color: #2ecc71;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 5px;
+}
+.btn.btn-default.btn-sm:hover,
+.btn.btn-default.btn-sm:active{
+	background-color: #2ecc71;
+    color: #fff;
+    opacity: 0.7;
+}
+
+#editurlsubmit{
+    background-color: #2ecc71;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+#editurlsubmit:hover,
+#editurlsubmit:active{
+	background-color: #2ecc71;
+    color: #fff;
+    opacity: 0.7;
+}

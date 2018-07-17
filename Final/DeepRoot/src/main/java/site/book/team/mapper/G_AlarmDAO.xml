@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="getAlarmList" resultType="site.book.team.dto.G_MyAlarmDTO">
-		SELECT TOID, you.NNAME as FROMID, team.GID, team.GNAME, kind.GANAME, SENDDATE 
+		SELECT TOID, you.NNAME as FROMID, team.GID, team.GNAME, kind.GANAME, date_format(SENDDATE, '%Y-%m-%d %H:%i') as SENDDATE 
 		FROM `G_ALARM` msg 
 		JOIN `TEAM` team ON msg.GID= team.GID
 		JOIN `G_ALARM_KIND` kind ON msg.GAID= kind.GAID

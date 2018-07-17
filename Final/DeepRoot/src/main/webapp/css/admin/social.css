@@ -10,16 +10,22 @@ table tbody tr td.table-tag {
     margin-right: 10px;
     font-size: 20px;
     cursor: pointer;
-    color:#8aa4af;
+    /* color:#8aa4af; */
 }
-
+/* 
 .url-action:hover,
 .url-action:focus,
 .url-action:active{
     cursor: pointer;
     color:#fff;
 }
-
+ */
+ .panel-body table tr>th{
+    color: #da2929;
+    font-size:15px;
+    font-weight: 400;
+}
+ 
 .panel .panel-heading .fa.fa-arrow-right.social-content-head{
 	margin-right: 5px;
 }
@@ -31,4 +37,6 @@ table tbody tr td.table-tag {
 div.dataTables_info {
     display: none;
 }
+
+
 /* category CSS END */

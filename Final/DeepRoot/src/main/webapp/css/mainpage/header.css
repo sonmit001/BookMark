@@ -2,6 +2,7 @@
 /* 헤더 로고 폰트 */
 @import url('https://fonts.googleapis.com/css?family=Gugi');
 /* 한글 폰트*/
+@import url('https://fonts.googleapis.com/css?family=Jua');
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 /*************************
@@ -11,7 +12,7 @@ html { overflow-y:scroll; }
 
 .logo-text {
     font-family: 'Gugi';
-    font-size: 45px;
+    font-size: 50px;
     color: #7bbfa8;
     font-weight: 600;
 }
@@ -20,7 +21,6 @@ html { overflow-y:scroll; }
 .logo-text:focus,
 .logo-text:active {
     font-family: 'Gugi';
-    font-size: 45px;
     color:#9d9d9d;
     text-decoration:none;
 }
@@ -34,7 +34,7 @@ html { overflow-y:scroll; }
 }
 
 #header .navbar-nav.navbar-right > li a.username{
-	font-size: 14px;
+	font-size: 15px;
 	padding-top:13px;
 	
 }
@@ -48,7 +48,7 @@ html { overflow-y:scroll; }
 #header {
     margin-bottom: 0;
     width: 100%;
-    padding: 15px 0 15px 0;
+    padding: 15px 0 0 0;
     position: fixed;
     z-index: 2;
     background-color: #fff;
@@ -127,9 +127,10 @@ ul.sub-menu {
 .user.sub-menu { padding-left: 3px; padding-top: 3px; padding-bottom: 3px;}
 
 #header .navbar-nav li ul.sub-menu li a {
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
+	font-size: 14px;
     color: #818285;
     padding: 5px 0;
-    font-size: 14px;
     display: block;
     text-transform: capitalize;
 }
@@ -255,7 +256,7 @@ ul.sub-menu {
 }
 
 .g_alarm_head{
-	font-family: 'Lato', 'Spoqa Han Sans', sans-serif;
+	font-family: 'Lato', 'Noto Sans KR', 'Spoqa Han Sans', sans-serif;
 	font-size: 16px;
 	font-weight: 500;
 	color: #000;
@@ -335,5 +336,49 @@ ul.sub-menu {
     height: 5px;
     background: #fff0;
 }
+/* Text shake ani */
+#alarm_menu {
+	animation-duration: 1.5s;
+	animation-delay: 1s;
+	animation-iteration-count: infinite;
+}
+/* icon shake */
+/* @-webkit-keyframes spaceboots {
+	0% { -webkit-transform: translate(2px, 1px) rotate(0deg); }
+	10% { -webkit-transform: translate(-1px, -2px) rotate(-1deg); }
+	20% { -webkit-transform: translate(-3px, 0px) rotate(1deg); }
+	30% { -webkit-transform: translate(0px, 2px) rotate(0deg); }
+	40% { -webkit-transform: translate(1px, -1px) rotate(1deg); }
+	50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); }
+	60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); }
+	70% { -webkit-transform: translate(2px, 1px) rotate(-1deg); }
+	80% { -webkit-transform: translate(-1px, -1px) rotate(1deg); }
+	90% { -webkit-transform: translate(2px, 2px) rotate(0deg); }
+	100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }
+} */
 
+#counter {
+	-webkit-animation-name: spaceboots;
+	-webkit-animation-duration: 0.2s;
+	-webkit-transform-origin:50% 50%;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+
+
+.alarm-count-div {
+	position: absolute;
+    top: 5px;
+    left: 2px;
+    height: 15px;
+    width: 15px;
+    color: rgb(255, 131, 0);
+    font-weight: 900;
+    font-size: 12px;
+    font-family: sans-serif;
+    
+    animation-duration: 1.5s;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+}
 /* Alarm icon css END */

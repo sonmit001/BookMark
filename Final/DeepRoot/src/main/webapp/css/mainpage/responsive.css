@@ -20,6 +20,18 @@
     padding-left: 20px;
   }
 }
+/* 
+@media only screen and (max-width : 962px) {
+	#home-slider{ height: 365px}
+	.slide-hill{ 
+		top: 45%; 
+		height: 100%; 
+		left: 60%
+	}
+	#header{
+		top: 0;
+	}	
+} */
 /* sm */
 @media only screen and (max-width : 992px) {
   h1{
@@ -31,15 +43,19 @@
   #header .navbar-nav.navbar-right >li a {
     padding: 20px 10px;
   }
-  #home-slider {
-    margin-top: 30px;
-  }
-  #home-slider .main-slider {
+ /*  #home-slider {
+    margin-top: 140px;
+  } */
+ /*  #home-slider .main-slider {
     height: 250px;
-  }
+  } */
+  
   #home-slider .slide-text {
-    top: 0;
-    width: 50%;
+    width: 60%;
+    padding-left: 0px;
+    font-size: 22px;
+    top: 32px;
+    position: absolute
   }
   #home-slider h1 {
     margin-top: 0;
@@ -62,6 +78,7 @@
   #header {
     padding-bottom: 40px;
     padding-top: 10px;
+    top: 0px;
   }
   #header .navbar-inverse .navbar-toggle,
   #header .navbar-inverse .navbar-toggle:focus {
@@ -119,3 +136,12 @@
     text-align: center;
   }
 /* 메인 페이지 이미지 END */
+
+}
+@media only screen and (max-width: 1198px){
+	#home-slider .slider-hill{
+      /* 	width: 50%;
+    	height: 70%; */
+    	left: 60%;
+	}	
+}

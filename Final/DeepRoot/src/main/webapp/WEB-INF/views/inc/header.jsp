@@ -3,10 +3,12 @@
 <%@ taglib prefix="se" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
-
-
 <script type="text/javascript">
+	var headerTeamList = new Array(); // 팀 리스트 가져오기
+	
+	<c:forEach items="${headerTeamList}" var="team">
+		headerTeamList.push("${team.gid}");
+	</c:forEach>
 
 	// header에 있는 그룹 추가 버튼 클릭 이벤트
 	function headerAddGroup(gid) {
@@ -16,7 +18,7 @@
 		    '<form id="addGroupForm" action="${pageContext.request.contextPath}/addGroup.do" class="formName" method="post" onsubmit="return false;">' +
 		    '<div class="form-group">' +
 		    '<label>그룹명</label>' +
-		    '<input type="text" name="gname" placeholder="그룹명" class="name form-control" required />' +
+		    '<input type="text" name="gname" placeholder="그룹명" class="name form-control" maxlength="12" required />' +
 		    '</div>' +
 		    '</form>',
 		    type: 'green',
@@ -47,7 +49,7 @@
 		    	var jc = this;
 		    	$("#addGroupForm").ajaxForm({
 		    		success: function(data, statusText, xhr, $form){
-		    			var group = '<li id="headerGroup${headerTeam.gid}" class="groupMenu"><a href="/bit/team/main.do?gid=' + data.newTeam.gid + '&gname=' + data.newTeam.gname + '">' + data.newTeam.gname + '</a></li>';
+		    			var group = '<li id="headerGroup' + data.newTeam.gid + '" class="groupMenu"><a href="/bit/team/main.do?gid=' + data.newTeam.gid + '&gname=' + data.newTeam.gname + '">' + data.newTeam.gname + '</a></li>';
 		    			$("#groupDropdownMenu").children().last().before(group);
 		    			if($(".groupMenu").length > 10){
 		    				$("#groupDropdownMenu").children().last().remove();
@@ -65,6 +67,8 @@
 		    				groupListAdd += '</li>';
 		    				$("#participatingGroupList").children().last().before(groupListAdd);
 		    			}
+		    			
+		    			headerTeamList.push(data.newTeam.gid);
 		    		}
 		    	});
 		    }
@@ -89,7 +93,8 @@
 			
 			<div class="collapse navbar-collapse">
 			
-				<se:authorize access="isAuthenticated()">
+				<%-- <se:authorize access="isAuthenticated()"> --%>
+				<c:if test="${sessionScope.info_userid != null}">
 				<ul class="nav navbar-nav navbar-right">
 					<li>
 						<a href="<%= request.getContextPath() %>/user/mybookmark.do">MyBookmark</a>
@@ -127,15 +132,13 @@
 					
 					<!-- Alarm START -->
 					<li id="alarm_menu_li" class="dropdown">
-						<a href="#" id="alarm_menu" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Notice <i class="fa fa-angle-down"></i>
-							<c:if test="${ 0!=1 }">
-								<span id="counter">10</span>
-							</c:if>
+						<a href="#" id="alarm_menu" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							Notice <i class="fa fa-angle-down"></i>
 						</a>
-						<!-- headerAlarmList -->
+						<!-- headerAlarmList --> 
 						<c:if test="${(headerAlarmList ne null) && (!empty headerAlarmList)}">
 						<ul role="menu" class="g_alarm_ul dropdown-menu">
-							<c:forEach items="${headerAlarmList}" var="alarmList">
+							<c:forEach items="${headerAlarmList}" var="alarmList" varStatus="status">
 								<li id="alarmlist${alarmList.gid}" class="g_alarm_li">
 									<span class="g_alarm_head">Group&nbsp;: <span class="g_alarm_name">${alarmList.gname}</span></span> 
 									<i class="fas fa-times g_notice" onclick="deleteMemo('${alarmList.gid}','${alarmList.fromid}','${alarmList.ganame}');"></i>
@@ -160,14 +163,15 @@
 											<span class="g_alarm_head">
 												From&nbsp;&nbsp;&nbsp;: <span class="g_alarm_name">${alarmList.fromid}</span>
 												<span class="g_alarm_date">${alarmList.senddate}</span>
-												<i class="fas fa-check g_notice_ok" onclick="deleteMemo('${alarmList.gid}','${alarmList.fromid}','${alarmList.ganame}');"></i>
 											</span>
 											<br>
-											<span>해당 그룹이 완료되었습니다!</span>
+											<span class="g_alarm_content">해당 그룹이 완료되었습니다!
+											<i class="fas fa-check g_notice_ok" onclick="deleteMemo('${alarmList.gid}','${alarmList.fromid}','${alarmList.ganame}');"></i>
+											</span>
 										</c:when>
 											
 										<c:otherwise>
-											<span>해당 그룹에서 회원님을 강퇴했습니다!</span>
+											<span class="g_alarm_content">해당 그룹에서 회원님을 강퇴했습니다!</span>
 											<i class="fas fa-ban g_notice_no" onclick="deleteMemo('${alarmList.gid}','${alarmList.fromid}','${alarmList.ganame}');"></i>
 										</c:otherwise>
 										
@@ -176,7 +180,18 @@
 							</c:forEach>
 						</ul>
 						</c:if>
+						<div id="alarm-count-text" class="alarm-count-div animated flash"></div>
 					</li>
+					<script type="text/javascript">
+						var alarm_count = $('.g_alarm_li').length;
+						if( alarm_count <= 3 && alarm_count > 0 ) {
+							$('#alarm-count-text').html("<i class='fas fa-bullhorn'>&nbsp;" + alarm_count + "&nbsp;</i>");
+						}else if( alarm_count == 0 ){
+							$('#alarm-count-text').html('');
+						}else {
+							$('#alarm-count-text').html("<i class='fas fa-bullhorn'>&nbsp;3+&nbsp;</i>");
+						}
+					</script>
 					<!-- Alarm START END -->
 					
 					<!-- Notice Alarm START -->
@@ -197,17 +212,27 @@
 					<!-- USER INFO START -->
 					<li>
 						<a class="username" href="#">
-							<img class="dropdown header-ico" src="<%= request.getContextPath() %>/images/profile/${sessionScope.info_userprofile}" onerror="this.src='<%= request.getContextPath() %>/images/profile.png'"> 
-							${sessionScope.info_usernname}
+						<c:choose>
+							<c:when test="${sessionScope.info_oauth != null}">
+								<img class="dropdown header-ico" src="${sessionScope.info_userprofile}" onerror="this.src='<%= request.getContextPath() %>/images/profile.png'">
+							</c:when>
+							<c:otherwise>
+								<img class="dropdown header-ico" src="<%= request.getContextPath() %>/images/profile/${sessionScope.info_userprofile}" onerror="this.src='<%= request.getContextPath() %>/images/profile.png'">
+							</c:otherwise>
+						</c:choose>
+							&nbsp;${sessionScope.info_usernname}
 						</a>
 						<ul role="menu" class="user sub-menu">
+							<c:if test="${sessionScope.info_oauth == null}">
 							<li><a href="<%= request.getContextPath() %>/myInfo.do">회원정보수정</a></li>
+							</c:if>
 							<li><a href='<%= request.getContextPath() %>/security/logout'>Logout</a></li>
 						</ul>
 					</li>
 					<!-- USER INFO END -->
 				</ul>
-				</se:authorize>
+				</c:if>
+				<%-- </se:authorize> --%>
 				<script type="text/javascript">var userid = '<c:out value="${sessionScope.info_userid}"/>';</script>
 			</div>
 		</div>

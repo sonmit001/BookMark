@@ -74,5 +74,7 @@ public interface U_BookDAO {
 	// 완료된 그룹 URL 추가
 	public int insertUrlFromCompletedGroup(Map<String,Object> map)  throws ClassNotFoundException, SQLException;
 
+	// 소셜 리스트 조회수 증가
+	public int updateViewCount(int ubid) throws ClassNotFoundException, SQLException;
 
 }

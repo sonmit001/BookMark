@@ -8,12 +8,14 @@
 
 package site.book.main.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +26,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.google.api.Google;
+import org.springframework.social.google.api.impl.GoogleTemplate;
+import org.springframework.social.google.api.plus.Person;
+import org.springframework.social.google.api.plus.PlusOperations;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +50,6 @@ import site.book.admin.dto.NoticeDTO;
 import site.book.admin.service.A_BookService;
 import site.book.admin.service.A_CategoryService;
 import site.book.admin.service.NoticeService;
-import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.G_MemberDTO;
 import site.book.team.dto.G_MyAlarmDTO;
 import site.book.team.dto.TeamDTO;
@@ -61,6 +72,13 @@ public class MainController {
 	// 태웅
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	/* GoogleLogin */
+	@Autowired
+	private GoogleConnectionFactory googleConnectionFactory;
+	
+	@Autowired
+	private OAuth2Parameters googleOAuth2Parameters;
 	
 	@Autowired
 	private A_CategoryService a_category_service;
@@ -126,7 +144,7 @@ public class MainController {
 	@RequestMapping(value="/clickurl.do")
 	public View clickURL(HttpServletRequest req, Model model, String abid) {
 		
-		System.out.println(abid);
+		//System.out.println(abid);
 		int result = a_book_service.clickURL(abid);
 		
 		if(result > 0) {
@@ -144,31 +162,100 @@ public class MainController {
 			HttpSession session, Model model, UserDTO user) {
 		
 		// process message from Handler and JSON data response
-		if(request.getAttribute("msg").equals("fail")) {
-			model.addAttribute("login", "fail");
-		}else {
-			String userid = (String)request.getAttribute("userid");
-			user.setUid(userid);
-			user = user_service.getMember(user.getUid());
-			model.addAttribute("login", "success");
+		// 로그인 실패: 아이디 또는 비밀번호 잘못 입력
+		try {
+			if(request.getAttribute("msg").equals("fail")) {
+				model.addAttribute("login", "fail");
 			
-			String role = (String)request.getAttribute("ROLE");
-			if(role.equals("ADMIN")) {
-				model.addAttribute("path", "admin/main.do");
+			// 중복 로그인 처리
+			}else if(request.getAttribute("msg").equals("duplicate")) {
+				model.addAttribute("login", "duplicate");
+				
 			}else {
-				model.addAttribute("path", "index.do");
+				String userid = (String)request.getAttribute("userid");
+				user.setUid(userid);
+				user = user_service.getMember(user.getUid());
+				model.addAttribute("login", "success");
+				
+				String role = (String)request.getAttribute("ROLE");
+				if(role.equals("ADMIN")) {
+					model.addAttribute("path", "admin/main.do");
+				}else {
+					model.addAttribute("path", "index.do");
+				}
+				
+				// set info session userid
+				session.setAttribute("info_userid", user.getUid());
+				session.setAttribute("info_usernname", user.getNname());
+				session.setAttribute("info_userprofile", user.getProfile());
 			}
-			
-			// set info session userid
-			session.setAttribute("info_userid", user.getUid());
-			session.setAttribute("info_usernname", user.getNname());
-			session.setAttribute("info_userprofile", user.getProfile());
+		} catch (Exception e) {
+			/*e.printStackTrace();*/
 		}
 		
 		return jsonview;
 	}
 	
-	/* Roll in */
+	/* Google Login API START */
+	/* 구글 로그인 버튼 클릭시 Google+ API 실행 */
+	@RequestMapping(value="/joinus/googleLogin", method= { RequestMethod.GET, RequestMethod.POST })
+	public View doGoogleSignInActionPage(HttpServletRequest request, Model model) throws Exception{
+		
+		/* 구글code 발행 */
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		  String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
+		
+		// System.out.println("/joinus/googleLogin, url : " + url);
+		model.addAttribute("url",url);
+		
+		return jsonview;
+	}
+	
+	/* 사용자가 인증 처리시 redirect 되는 함수. 따라서, 여기서 가입 처리와 로그인을 담당 */
+	@RequestMapping(value="/joinus/googleSignInCallback", method= { RequestMethod.GET, RequestMethod.POST })
+	public String googleRollin(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+								Model model, @RequestParam String code) throws ServletException, IOException {
+		
+		//System.out.println(code);
+		
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		AccessGrant accessGrant = oauthOperations.exchangeForAccess(code , googleOAuth2Parameters.getRedirectUri(), null);
+		
+		String accessToken = accessGrant.getAccessToken();
+		Long expireTime = accessGrant.getExpireTime();
+		
+		if (expireTime != null && expireTime < System.currentTimeMillis()) {
+			accessToken = accessGrant.getRefreshToken();
+		    System.out.printf("accessToken is expired. refresh token = {}", accessToken);
+		}
+		
+		Connection<Google> connection = googleConnectionFactory.createConnection(accessGrant);
+		Google google = connection == null ? new GoogleTemplate(accessToken) : connection.getApi();
+		
+		PlusOperations plusOperations = google.plusOperations();
+		Person profile = plusOperations.getGoogleProfile();
+		
+		//System.out.println(profile.getDisplayName() + "/" + profile.getId() + "/" + profile.getImageUrl());
+		//System.out.println(profile.getAccountEmail() + "/" + profile);
+		
+		//Save into DB
+		UserDTO user = new UserDTO();
+		user.setUid(profile.getAccountEmail());
+		user.setNname(profile.getDisplayName());
+		user.setOauth_code(profile.getId());
+		
+		user_service.rollinUser(user);
+		
+		// set info session userid
+		session.setAttribute("info_userid", profile.getAccountEmail());
+		session.setAttribute("info_usernname", profile.getDisplayName());
+		session.setAttribute("info_userprofile", profile.getImageUrl());
+		session.setAttribute("info_oauth", "google");
+		
+		return "redirect:/";
+	}
+	
+	/* 회원가입  */
 	@RequestMapping(value="/joinus/rollin.do", method=RequestMethod.POST)
 	public View rollin(HttpServletRequest request, HttpServletResponse response, 
 			UserDTO user, Model model) {
@@ -177,7 +264,7 @@ public class MainController {
 		//System.out.println(user);
 		
 		int result = user_service.rollinUser(user);
-		if(result > 0) {
+		if(result >= 0) {
 			model.addAttribute("rollin", "pass");
 		}else {
 			model.addAttribute("rollin", "fail");
@@ -186,12 +273,12 @@ public class MainController {
 		return jsonview;
 	}
 	
-	/* Send email & Save email, authcode */
+	/* 회원가입 유저에게 이메일 전송과 DB에 해당 유저의 email과 authcode 저장 */
 	@RequestMapping(value="/joinus/emailsend.do", method=RequestMethod.POST)
 	public View emailConfirm(HttpServletRequest request, HttpServletResponse response, 
 			EmailAuthDTO auth, Model model) {
 		
-		System.out.println(auth);
+		//System.out.println(auth);
 		int result = user_service.confirmEmail(auth);
 		if(result > 0) {
 			model.addAttribute("email", "pass");
@@ -206,7 +293,7 @@ public class MainController {
 	public View checkAuthcode(HttpServletRequest request, HttpServletResponse response, 
 			EmailAuthDTO auth, Model model) {
 		
-		System.out.println(auth);
+		//System.out.println(auth);
 		int result = user_service.checkAuthcode(auth);
 		if(result > 0) {
 			model.addAttribute("auth", "pass");
@@ -260,6 +347,10 @@ public class MainController {
 			model.addAttribute("headerTeamList", headerTeamList);
 		}
 		
+		// 그룹 초대/강퇴/완료 알람  쪽지 리스트
+		List<G_MyAlarmDTO> headerAlarmList = galarmservice.getAlarmList(uid);
+		model.addAttribute("headerAlarmList", headerAlarmList);
+		
 		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
 		model.addAttribute("headerNoticeList", headerNoticeList);
 		
@@ -304,17 +395,11 @@ public class MainController {
 	
 	/* 회원 탈퇴 */
 	@RequestMapping(value="/rollout.do", method=RequestMethod.GET)
-	public String rolloutMember(HttpServletRequest request, Model model) {
-		
-		String uid = (String)request.getParameter("uid");
+	public String rolloutMember(HttpServletRequest request, HttpSession session, Model model) {
+		String uid = (String)session.getAttribute("info_userid");
 		//System.out.println(uid);
-		int result = user_service.deleteMember(uid);
+		user_service.deleteMember(uid);
 
-		if(result > 0) {
-			model.addAttribute("result", "pass");
-		}else {
-			model.addAttribute("result", "fail");
-		}
 		return "member.logout";
 	}
 	
@@ -323,7 +408,7 @@ public class MainController {
 	@RequestMapping(value="/confirmuser.do", method=RequestMethod.POST)
 	public View confirmUser(HttpServletRequest request, Model model, EmailAuthDTO user) {
 
-		System.out.println(user);
+		//System.out.println(user);
 		int result = user_service.confirmUser(user);
 
 		if(result > 0) {
@@ -360,7 +445,7 @@ public class MainController {
 	@RequestMapping("previewdetail.do")
 	public View WebCrawling2(String abid, Model model) {
 		A_BookDTO book = a_book_service.getBook(Integer.parseInt(abid));
-		String url = book.getUrl();
+		String url = book.getUrl().replace("http://", "").replace("https://", "");
 	
 		try {
 			/* <Woong> Web Crawling - SubURL & Daily Visitor & World Rank */
@@ -385,8 +470,9 @@ public class MainController {
 					url_percent.add(temp);
 				}
 			}catch (Exception e) {
-				
+				// TODO: handle exception
 			}
+			
 			model.addAttribute("suburl", url_percent);
 			
 			// Daily Visitor & World Rank Top5 START
@@ -402,7 +488,7 @@ public class MainController {
 			model.addAttribute("rank", rank);
 			
 		} catch (Exception e) {
-			/*e.printStackTrace();*/
+			e.printStackTrace();
 		}
 		return jsonview;
 	}

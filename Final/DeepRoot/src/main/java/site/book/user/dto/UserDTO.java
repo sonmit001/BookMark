@@ -14,16 +14,18 @@ public class UserDTO {
 	private int enabled;
 	private String regdate;
 	private String profile;
+	private String oauth_code;
 	
 	public UserDTO() {}
 	
-	public UserDTO(String uid, String nname, String pwd, int enabled, String regdate, String profile) {
+	public UserDTO(String uid, String nname, String pwd, int enabled, String regdate, String profile, String oauth_code) {
 		this.uid = uid;
 		this.nname = nname;
 		this.pwd = pwd;
 		this.enabled = enabled;
 		this.regdate = regdate;
 		this.profile = profile;
+		this.oauth_code = oauth_code;
 	}
 	
 	public String getUid() {
@@ -62,11 +64,17 @@ public class UserDTO {
 	public void setProfile(String profile) {
 		this.profile = profile;
 	}
+	public String getOauth_code() {
+		return oauth_code;
+	}
+	public void setOauth_code(String oauth_code) {
+		this.oauth_code = oauth_code;
+	}
 
 	@Override
 	public String toString() {
 		return "UserDTO [uid=" + uid + ", nname=" + nname + ", pwd=" + pwd + ", enabled=" + enabled + ", regdate="
-				+ regdate + ", profile=" + profile + "]";
+				+ regdate + ", profile=" + profile + ", oauth_code=" + oauth_code + "]";
 	}
 	
 }

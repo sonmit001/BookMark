@@ -5,7 +5,7 @@ $('#zoomBtn').click(function() {
 	if (!$('.zoom-card').hasClass('scale-out')) {
 		$('.zoom-card').toggleClass('scale-out');
 	}
-	console.log("glgllg");
+	//console.log("glgllg");
 });
 
 $('.zoom-btn-sm').click(function() {
@@ -26,5 +26,5 @@ $('.zoom-btn-sm').click(function() {
 	} else {
 		card.css('background-color', '#7b1fa2');
 	}
-	console.log("glgllg");
+	//console.log("glgllg");
 });

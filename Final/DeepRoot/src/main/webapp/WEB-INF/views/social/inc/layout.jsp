@@ -11,6 +11,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>뿌리깊은마크</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/icon/book_favicon.ico">
+	<meta property="og:url" content="">
+    <meta property="og:title" content="뿌리깊은마크">
+    <!-- <meta property="og:image" content="https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png"> -->
+    <meta property="og:description" content="개발자가 사용하기 좋은 사이트들을 제공해줍니다.자신만의 북마크를 꾸미세요">
 	
 	<!-- Latest compiled Bootstrap Common CSS -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
@@ -61,8 +66,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
 	<!-- jQuery Ajax Form START -->
 
-	<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
-    <script  src="${pageContext.request.contextPath}/js/jstree.min.js"></script> --%>
     <script>
         /*****************  Table Start **********************/
         $(function() {

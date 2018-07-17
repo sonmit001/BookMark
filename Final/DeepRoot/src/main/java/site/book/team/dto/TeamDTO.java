@@ -21,10 +21,11 @@ public class TeamDTO {
 	private String duedate;
 	private int ccount;
 	private int grid;
+	private int view;
 	
 	public TeamDTO() {}
 
-	public TeamDTO(int gid, String gname, String htag, String regdate, String duedate, int ccount, int grid) {
+	public TeamDTO(int gid, String gname, String htag, String regdate, String duedate, int ccount, int grid, int view) {
 		this.gid = gid;
 		this.gname = gname;
 		this.htag = htag;
@@ -32,6 +33,7 @@ public class TeamDTO {
 		this.duedate = duedate;
 		this.ccount = ccount;
 		this.grid = grid;
+		this.view = view;
 	}
 	
 	public int getGid() {return gid;}
@@ -48,11 +50,13 @@ public class TeamDTO {
 	public void setCcount(int ccount) {this.ccount = ccount;}
 	public int getGrid() {return grid;}
 	public void setGrid(int grid) {this.grid = grid;}
+	public int getView() {return view;}
+	public void setView(int view) {this.view = view;}
 
 	@Override
 	public String toString() {
 		return "TeamDTO [gid=" + gid + ", gname=" + gname + ", htag=" + htag + ", regdate=" + regdate + ", duedate="
-				+ duedate + ", ccount=" + ccount + ", grid=" + grid + "]";
+				+ duedate + ", ccount=" + ccount + ", grid=" + grid + ", view=" + view +"]";
 	}
 
 }

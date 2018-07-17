@@ -11,6 +11,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>뿌리깊은마크</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/icon/book_favicon.ico">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="뿌리깊은마크">
+    <!-- <meta property="og:image" content="https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png"> -->
+    <meta property="og:description" content="개발자가 사용하기 좋은 사이트들을 제공해줍니다.자신만의 북마크를 꾸미세요">
     
     <!-- Latest compiled Bootstrap Common CSS -->
     <script type="text/javascript" src="js/jquery.js"></script>
@@ -39,6 +44,10 @@
     <link href="css/addBookmarkStepModal-register.css" rel="stylesheet" />
     <link href="css/animate.min.css" rel="stylesheet">
     <!-- Main Page CSS END -->
+    
+    <!-- Text Effect(Alarm) -->
+    <link href="${pageContext.request.contextPath}/css/text-effect.css" rel="stylesheet">
+    <!-- Text Effect(Alarm) END -->
     
     <!-- User Info Page CSS -->
     <link href="css/userinfo/userinfo.css?ver=2" rel="stylesheet">
@@ -96,6 +105,7 @@
 	    	
 	    	$(document).on("click", ".category", function() {
 	    		var id = $(this).text().trim();
+	    		$(this).removeClass("animated jello").addClass("animated rubberBand");
 	    		/* 
 	    			category class를 클릭한 text가 Show All일 경우, 전체 카테고리 리스트를 slideDown!! 
 	    			선택된 카테고리 리스트는 배경색 기존색으로 변경(removeClass)
@@ -119,6 +129,7 @@
 	    			/* 선택된 카테고리를 다시 클릭시 해당 카테고리만 SelectCategory에서 지우기 */
 	    			if($(this).hasClass("reddiv") == true) {
 	    				$(this).removeClass("reddiv");
+	    				$(this).removeClass("animated rubberBand").addClass("animated jello");
 	    				
 	    				const idx = selectedCategory.indexOf(id);
 	    				selectedCategory.splice(idx, 1);
@@ -142,7 +153,7 @@
 	    					$("#showall").addClass("reddiv");
 	    				}
 	    				
-	    			}else { 
+	    			}else {
 	    				/* 
 	    					카테고리를 선택한 경우 
 	    					전체 카테고리 리스트 SlideUp, 선택된 카테고리 리스트는 SlideDown

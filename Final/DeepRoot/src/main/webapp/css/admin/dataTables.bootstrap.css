@@ -9,11 +9,11 @@ div.dataTables_length select {
 	display: inline-block;
 }
 
-div.dataTables_length select:focus,
 div.dataTables_length select:hover{
-	border-color: #fff;
+	border-bottom: 1px solid #222d32;
 	cursor: pointer;
 }
+div.dataTables_length select:focus{	border-radius: 5px;}
 
 div.dataTables_filter {
 	text-align: right;
@@ -77,11 +77,12 @@ table.dataTable thead .sorting_desc,
 table.dataTable thead .sorting_asc_disabled,
 table.dataTable thead .sorting_desc_disabled {
 	cursor: pointer;
+	border-bottom: 2px solid #222d32;
 }
 
-table.dataTable thead .sorting { background: url('../css/images/sort_both.png') no-repeat center right; }
-table.dataTable thead .sorting_asc { background: url('../css/images/sort_asc.png') no-repeat center right; }
-table.dataTable thead .sorting_desc { background: url('../css/images/sort_desc.png') no-repeat center right; }
+table.dataTable thead .sorting { background: url('/bit/css/images/sort_both.png') no-repeat center right; }
+table.dataTable thead .sorting_asc { background: url('/bit/css/images/sort_asc.png') no-repeat center right; }
+table.dataTable thead .sorting_desc { background: url('/bit/css/images/sort_desc.png') no-repeat center right; }
 
 table.dataTable thead .sorting_asc_disabled { background: url('../images/sort_asc_disabled.png') no-repeat center right; }
 table.dataTable thead .sorting_desc_disabled { background: url('../images/sort_desc_disabled.png') no-repeat center right; }

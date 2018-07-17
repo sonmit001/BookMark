@@ -246,4 +246,18 @@ public class G_BookService {
 		return result;
 	}
 	
+	//그룹 페이지에서 마이 북마크 전체 가져오기
+	public List<U_BookDTO> getMyCategoryList(String uid) {
+	
+		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
+		List<U_BookDTO> list = null;
+		try {
+			list = g_bookDAO.getMyCategoryList(uid);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} 
+		
+		return list;
+	}
+	
 }

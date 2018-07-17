@@ -81,8 +81,7 @@
 <!-- Main Content START -->
 <div class="content-wrapper" style="min-height: 913px;">
 	<section class="content-header">
-		<h1>
-			Main Bookmark List
+		<h1><i class="fas fa-clipboard-list content-header-ico"></i>Main Bookmark List
 			<!-- Category insert / Delete START -->
 			<span class="span-category">
 				<span class="btn-category" data-toggle="dropdown"><i
@@ -125,8 +124,8 @@
 				<!-- Category List Table START -->
 				<c:forEach items="${url_by_category}" var="list">
 					<c:forEach items="${list}" var="hashmap">
-						<div id="panel${hashmap.key.acid}" class="col-sm-6">
-						<div class="panel">
+						<div class="col-sm-6">
+						<div class="panel" id="panel${hashmap.key.acid}" >
 							<!-- Category Name & edit & insert START -->
 
 							<div class="panel-heading">
@@ -143,8 +142,7 @@
 
 							<!-- Category Name & edit & insert END -->
 							<div class="panel-body">
-								<table width="100%" class="table table-hover"
-									id= "table${hashmap.key.acid}">
+								<table width="100%" class="table table-hover" id= "table${hashmap.key.acid}">
 									<thead>
 										<tr>
 											<th>사이트명</th>
@@ -194,7 +192,7 @@
 								<div class="form addCategoryBox">
 									<label class="control-label" for="acname">추가할 카테고리명을
 										입력하세요</label> <input id="acname1" class="form-control" type="text"
-										placeholder="카테고리명" name="acname" /><br>
+										placeholder="카테고리명" name="acname" maxlength="15"/><br>
 								</div>
 							</div>
 						</div>
@@ -228,7 +226,7 @@
 								<div class="form editCategoryBox">
 									<input type="hidden" id="editCategoryID" name="acid">
 									<label class="control-label" for="acname">카테고리명을 입력하세요</label>
-									<input id="acname2" class="form-control" type="text" placeholder="acname" name="acname"><br>
+									<input id="acname2" class="form-control" type="text" placeholder="acname" name="acname" maxlength="15"><br>
 								</div>
 							</div>
 						</div>
@@ -297,7 +295,7 @@
 								<!--1단계 URL 입력-->
 								<div class="form addUrlBox">
 									<label class="control-label" for="url">URL을 입력하세요</label>
-									<input id="url" class="form-control" type="text" placeholder="URL" name="url"><br>
+									<input id="url" class="form-control" type="text" placeholder="URL" name="url" maxlength="150"><br>
 									<input type="hidden" id="adminCategoryID" name="acid">
 								</div>
 							</div>
@@ -310,7 +308,7 @@
 										<span class="bookmark-loader">
 											<span>loading title</span>&nbsp;&nbsp;<i class="fas fa-spinner fa-spin"></i>
 										</span>
-										<input id="addUrlname" class="form-control" type="text" placeholder="URL명" name="urlname">
+										<input id="addUrlname" class="form-control" type="text" placeholder="URL명" name="urlname" maxlength="33">
 										<br> <label class="control-label" for="acname4">선택된 카테고리</label>&nbsp;
 										<input id="acname4" class="form-control" type="text" placeholder="선택된 카테고리 (readonly)" name="acname" readonly><br>
 									</div>
@@ -349,7 +347,7 @@
 								<!--1단계 URL 입력-->
 								<div class="form editUrlBox">
 									<label class="control-label" for="editurl">URL을 입력하세요</label>
-									<input id="editurl" class="form-control" type="text" placeholder="URL" name="url"><br>
+									<input id="editurl" class="form-control" type="text" placeholder="URL" name="url" maxlength="150"><br>
 									<input type="hidden" id="editAdminCategoryID" name="acid">
 									<input type="hidden" id="editUrlID" name="abid">
 								</div>
@@ -363,7 +361,7 @@
 										<span class="bookmark-loader">
 											<span>loading title</span>&nbsp;&nbsp;<i class="fas fa-spinner fa-spin"></i>
 										</span>
-										<input id="editUrlname" class="form-control" type="text" placeholder="URL명" name="urlname"><br> 
+										<input id="editUrlname" class="form-control" type="text" placeholder="URL명" name="urlname" maxlength="33"><br> 
 										<label class="control-label" for="acname5">선택된 카테고리</label>&nbsp; 
 										<input id="acname5" class="form-control" type="text" placeholder="선택된 카테고리 (readonly)" name="acname" readonly><br>
 									</div>

@@ -7,7 +7,7 @@
     	<welcome-file>index.do</welcome-file>
   	</welcome-file-list>
   	
-  	<!-- spring-security filter -->
+  	<!-- Spring Security Filter 적용 -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -40,7 +40,8 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 	</servlet>
-		
+	
+	<!-- WebSocket 사용을 위해 url-pattern을 /로 바꿈 -->
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
@@ -59,12 +60,29 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
-	<listener>
-		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-	</listener>
-	
+	<!-- 방문자 Listener -->
 	<listener>
 		<listener-class>site.book.utils.VisitorCounter</listener-class>
 	</listener>
 	
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	
+	<!-- 중복로그인을 방지 -->
+	<listener>
+	    <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+	
+	<!-- 에러 페이지 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error/error-404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/views/error/error-500.jsp</location>
+	</error-page>
+
+
 </web-app>

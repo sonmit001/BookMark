@@ -39,6 +39,14 @@ function deleteMemo(gid, fromid, alarm_kind){
 				if($('.g_alarm_ul').children().length == 0) {
 					$('.g_alarm_ul').remove();
 				}
+				
+				alarm_count = $('.g_alarm_li').length;
+				if(alarm_count != 0) {
+					$('#alarm-count-text').html("&nbsp;" + alarm_count + "&nbsp;");
+				}else {
+					$('#alarm-count-text').html("");
+				}
+				
 			}else {
 				/*$.alert("잠시후 다시 시도해주세요!");*/
 			}
@@ -47,21 +55,19 @@ function deleteMemo(gid, fromid, alarm_kind){
 	return
 }
 
-
-$(function() {
-	/* 그룹 완료 쪽지 확인 */
-	
-	
-	/* 그룹 강퇴 쪽지 확인 */
-})
-
-
 /*Alarm icon script START*/
 
 $(function() {
-	$('#alarm_menu').click(function(){
-		$("#counter").fadeOut("slow");
+	
+	$('#alarm_menu_li').click(function(){
+		$('#alarm_menu').removeClass("animated flash");
+		$('#alarm_menu').css('color', '#000');
+		$('#alarm_menu').css('font-weight', '400');
 	})
+	
+	$('.g_alarm_ul').on('click', function(event){ //알림창 내의 목록 클릭시 알림창이 꺼지지 않도록 이벤트 멈춤
+	    event.stopPropagation();
+	});
 })
 
 /*Alarm icon script END*/

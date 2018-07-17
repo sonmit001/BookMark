@@ -18,12 +18,21 @@
    						 authentication-success-handler-ref="loginSuccessHandler"
    						 authentication-failure-handler-ref="loginFailureHandler" /><!-- default-target-url="/index.do" -->
    						 
-	<security:logout logout-url="/security/logout"
-					 invalidate-session="true"
+	<security:logout logout-url="/security/logout" 
+					 invalidate-session="true" 
 					 logout-success-url="/index.do" />
 	
-	<security:intercept-url pattern="/member/**" access="hasRole('ROLE_USER')" />
-	<security:intercept-url pattern="/ad/**" access="hasRole('ROLE_ADMIN')" />
+	
+	<security:intercept-url pattern="/social/**" access="!hasRole('ROLE_ADMIN') and request.session.getAttribute('info_userid') != null" />
+	<security:intercept-url pattern="/team/**" access="!hasRole('ROLE_ADMIN') and request.session.getAttribute('info_userid') != null" />
+	<security:intercept-url pattern="/user/**" access="!hasRole('ROLE_ADMIN') and request.session.getAttribute('info_userid') != null" />
+	<security:intercept-url pattern="/myinfo.do" access="hasRole('ROLE_USER')" />
+	<security:intercept-url pattern="/index.do" access="!hasRole('ROLE_ADMIN')" />
+	<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+	
+	<security:session-management invalid-session-url="/index.do" session-fixation-protection="migrateSession">
+		<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
+	</security:session-management>
 </security:http>
 
 <security:authentication-manager>

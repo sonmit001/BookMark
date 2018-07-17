@@ -14,6 +14,10 @@ package site.book.team.dto;
  * @Author : 김희준
  */
 public class G_MemberDTO {
+	// Alarm의 경우 자신의  GRID
+	private int mygrid;
+	
+	// Alarm의 경우 대상  GRID 
 	private String uid;
 	private int gid;
 	private int ccount;
@@ -25,8 +29,9 @@ public class G_MemberDTO {
 	public G_MemberDTO() {}
 
 	
-	public G_MemberDTO(String uid, int gid, int ccount, int grid, String nname, String profile) {
+	public G_MemberDTO(int mygrid, String uid, int gid, int ccount, int grid, String nname, String profile) {
 		super();
+		this.mygrid = mygrid;
 		this.uid = uid;
 		this.gid = gid;
 		this.ccount = ccount;
@@ -41,6 +46,8 @@ public class G_MemberDTO {
 	}
 
 	//Getters and Setters
+	public int getMygrid() {return mygrid;}
+	public void setMygrid(int mygrid) {this.mygrid = mygrid;}
 	public String getUid() {return uid;}
 	public void setUid(String uid) {this.uid = uid;}
 	public int getGid() {return gid;}

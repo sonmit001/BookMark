@@ -100,10 +100,12 @@ public class UserService {
 		
 		try {
 			Map<String, String> convert_user = oMapper.convertValue(user, Map.class);
+			System.out.println(convert_user);
 			row = userDAO.insertNewUser(convert_user);
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+			row = -1;
 		}
 		
 		return row;
@@ -124,7 +126,7 @@ public class UserService {
 			Calendar cal = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분");
 			String dateTime = sdf.format(cal.getTime());
-			System.out.println("dateTime : " + dateTime);
+			//System.out.println("dateTime : " + dateTime);
 			
 			Map<String, Object> vmmodel = new HashMap<>();
 			vmmodel.put("key", key);
@@ -290,7 +292,7 @@ public class UserService {
 				Calendar cal = Calendar.getInstance();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분");
 				String dateTime = sdf.format(cal.getTime());
-				System.out.println("dateTime : " + dateTime);
+				//System.out.println("dateTime : " + dateTime);
 				
 				Map<String, Object> vmmodel = new HashMap<>();
 				vmmodel.put("key", key);
@@ -308,7 +310,7 @@ public class UserService {
 				// save user's authcode
 				user.setAuthcode(key);
 				result = userDAO.insertAuthCode(user);
-				System.out.println("전송 & insert 완료");
+				//System.out.println("전송 & insert 완료");
 			}
 		}catch (Exception e) {
 			

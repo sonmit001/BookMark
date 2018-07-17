@@ -50,7 +50,9 @@ function jstreetable(){
 												
 							if(op=='move_node'){
 							// dnd 일경우 more.core =ture 일 경우에만 메세지 보내기
-								
+								if(par.id == '#'){
+									return false;
+								}
 								if(par.a_attr.href != "#"){ // 최상단(root)와 동급 불가										
 									return false;	
 								}
@@ -90,8 +92,10 @@ function jstreetable(){
 							return true;	
 						}
 					},
-					"plugins" : [ "dnd","contextmenu" ], //drag n drop , 과 우클릭시 플러그인 가져옴
-
+					"plugins" : [ "dnd","contextmenu" ,"sort"], //drag n drop , 과 우클릭시 플러그인 가져옴
+					"sort" : function(a,b){
+						return this.get_node(a).a_attr.href.length > this.get_node(b).a_attr.href.length ? 1: -1;
+					} ,
 					/*우클릭 메뉴 설정*/
 					"contextmenu" : { 
 						"select_node" : false, // 우클릭 했을 경우 왼클릭되는거 막음
@@ -184,9 +188,8 @@ function jstreetable(){
 	
 	/*모달창 마이카테고리 전체 jstree*/
 	$.ajax({
-		url : "/bit/social/getCategoryList.do",
+		url : "getMyCategoryList.do",
 		type : "POST",
-		data : {nname : nname},
 		dataType :"json",
 		success : function(obj){
 			
@@ -223,12 +226,12 @@ function addUrlLevel1() {
 function openAddUrlLevel2() {
 	
 	var url = $("#url_btn").val().trim();
-	
-	if(url == ""){
-		$.alert("URL을 입력해주세요");
+	var regex =/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/;
+	if(!(regex.test($('#url_btn').val()))){
+		$.alert("URL을 확인해주세요");
 	}else {
 		$.ajax({
-    		url: "/bit/admin/preview.do",
+    		url: "/bit/user/preview.do",
 			type: "post",
 			data : {
 				url : url // URL 주소
@@ -261,8 +264,9 @@ function addUrlLevel2() {
 	$(".addUrlLevel1").hide();
 }
 
-//url 추가
-function addUrl(){
+//url 추가 
+$('#addurlbtn').on('dblclick', function(){ return });
+$('#addurlbtn').on("click",function(){
 	var url = $('#url_btn').val(); //추가 url 값
 	var title = $('#title_btn').val(); // 추가 url 명값
 	var tree = $("#jstree_container").jstree(true);
@@ -283,12 +287,12 @@ function addUrl(){
 				});
 			}
 		})
-	 }
-	
-}
+	 }	
+})
 
 function customMenu($node){
 	var node_uid = $node.original.uid;
+	var node_root = $node.parent;
 	var href = $node.a_attr.href;
 	var tree = $("#jstree_container").jstree(true);	
 	urlpid = $node.id;
@@ -334,7 +338,7 @@ function customMenu($node){
 				"separator_before": false,
 				"separator_after": false,
 				"_disabled" : false, 
-				"label": "그룹 추가",
+				"label": "폴더 추가",
 				"action": function (obj) {
 					var inst = $.jstree.reference(obj.reference);
 					var par_node = inst.get_node(obj.reference);
@@ -354,6 +358,7 @@ function customMenu($node){
 		     				tree.create_node(par_node , {text : "새 폴더" , id : node_id  ,icon : "fa fa-folder",uid: uid ,a_attr : {href: '#'}} ,"last",function(new_node){
 		     					new_node.id = node_id;
 		     					tree.edit(new_node);
+		     					$(".jstree-rename-input").attr("maxLength",33);
 	            			});
 	          			}
 	               	})
@@ -367,6 +372,7 @@ function customMenu($node){
 				"action" : function (obj) {
 					/*왼쪽 jstree 이름 수정하기 아래에 함수 있음*/
 					tree.edit($node);			
+					$(".jstree-rename-input").attr("maxLength",33);
 				}
 			},			
 			"editurl" : {
@@ -383,30 +389,36 @@ function customMenu($node){
 					var id = inst.get_node(obj.reference).id;
 					
 					$('#editurlval').val(url);
-					
-					$('#editurlsubmit').on("click",function(){
+					$('#editurlsubmit').on('dblclick', function(){ return });
+					$('#editurlsubmit').off("click").on("click",function(){
 						
 						var newurl = $('#editurlval').val();
 						var form = {gbid : id, url : newurl }
+						var regex =/^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/;
 						
-						$.ajax({
-							
-							url: "editTeamUrl.do",
-							type: "POST",
-							data: form ,
-							beforeSend : function(){
-							},
-							success: function(data){
-								$('#editurl').modal("toggle");
-								//href 가 반드시 http 로 시작해야한다.
-								$(inst.get_node(obj.reference).a_attr).attr("href", newurl);
-								$.jstree.reference('#jstree_container').set_icon(inst.get_node(obj.reference), "https://www.google.com/s2/favicons?domain="+ newurl);
-								doing = "1"; //url 수정 메세지
-								new_name = newurl;
-								sendmessagejstree()
+						if(!(regex.test(newurl))){
+							$.alert("URL을 확인해주세요");
+						}else{
+							$.ajax({
 								
-							}
-						}) 
+								url: "editTeamUrl.do",
+								type: "POST",
+								data: form ,
+								beforeSend : function(){
+								},
+								success: function(data){
+									//$('#editurl').modal("toggle");
+									//$('.modal-backdrop').remove()
+									$('.modal.in').modal('hide');
+									//href 가 반드시 http 로 시작해야한다.
+									$(inst.get_node(obj.reference).a_attr).attr("href", newurl);
+									$.jstree.reference('#jstree_container').set_icon(inst.get_node(obj.reference), "https://www.google.com/s2/favicons?domain="+ newurl);
+									doing = "1"; //url 수정 메세지
+									new_name = newurl;
+									sendmessagejstree()
+								}
+							}) 
+						}
 					})
 				}
 			},
@@ -421,7 +433,6 @@ function customMenu($node){
 					var inst = $.jstree.reference(obj.reference);
 					modal_url = inst.get_node(obj.reference).a_attr.href;
 					modal_urlname =  inst.get_node(obj.reference).text;
-					checked_id = '#';
 					
 					$('#modalurl').val(modal_url);
 					$('#fromGroupToMy').modal();
@@ -466,11 +477,14 @@ function customMenu($node){
 		if(href == '#'){// 폴더
 			delete items.editurl;
 			delete items.geturl;
+			if(node_root == '#')
+				delete items.remove;
 		}else{ //url
 			delete items.folder_create;
 			delete items.link_create;
 		}
 	}
+	
 	return items;
 }
 //jstree 수정된거 메세지 폼 만들어서 보내기
@@ -478,28 +492,33 @@ function sendmessagejstree() {
 	var op_msg = "";
 	
 	if(doing == "1"){ //url 수정 메세지
-		op_msg = location1 + "폴더에서 "+target+ "의 URL을 "+new_name+"으로 수정하였습니다.";    
+		op_msg = nname + "님이 " + location1 + "폴더에서 "+target+ "의 URL을 "+new_name+"으로 수정하였습니다.";    
 	}else if(doing == "2"){ // 내북마크에서 다중 urㅣ 가져오기
-		op_msg ="내북마크에서 "+ location1 +" 폴더 아래에 " +counturl+ " 개의 URL을 추가하였습니다.";
+		op_msg = nname + "님의  " +"북마크에서 "+ location1 +" 폴더 아래에 " +counturl+ " 개의 URL을 추가하였습니다.";
 	}else if(new_name == "#" || new_name == null){
-    	op_msg =  location1 + "폴더에서 "+target+"("+type+")를 "+doing+"하였습니다.";             
+    	op_msg =  nname + "님이 " + location1 + "폴더에서 "+target+"("+type+")를 "+doing+"하였습니다.";             
      }else if(new_name == "1"){
-    	op_msg = target + "("+type+")를 " + location1 +"으로 이동하였습니다.";
+    	op_msg =  nname + "님이 " +target + "("+type+")를 " + location1 +"으로 이동하였습니다.";
      }else{
-     	op_msg =  location1 + "폴더에서 "+target+"("+type+")를 "+new_name+"으로 "+doing+"하였습니다.";    
+     	op_msg =  nname + "님이 " +location1 + "폴더에서 "+target+"("+type+")를 "+new_name+"으로 "+doing+"하였습니다.";    
      }
 	stompClient.send("/JSTREE/" + gid, {}, JSON.stringify({
        	nname: nname
     }));
-	//희준이 message 틀
+	
 	stompClient.send("/chat/" + gid, {}, JSON.stringify({
 		content: op_msg,
-       	nname: nname,
-       	profile: profile
+       	nname:  "시스템",
+       	profile: "system.png"
     }));
+	
+	new_name = '#';
+	doing = '';
+	
 }
 
 //그룹에서 내 북마크로 가져가기 확인 버튼 누를시
+$('#into-my-bookmark').on('dblclick', function(){ return });
 $('#into-my-bookmark').on("click",function(){
 	var submit_obj = [];
 	
@@ -527,13 +546,12 @@ $('#into-my-bookmark').on("click",function(){
 		success : function(data){
 			if(data.result == "success") {
 				swal("Thank you!", "북마크에 추가되었습니다!", "success");
-				$('#modalurl').modal("toggle");
+				$('#fromGroupToMy').modal("toggle");
 			}else {
                 swal({
                     title: "목적지 폴더를 확인하셨나요?",
                     text: "잠시후 다시 시도해주세요!",
                     icon: "warning",
-                    buttons: true,
                     dangerMode: true
 				});
 			}
@@ -543,7 +561,6 @@ $('#into-my-bookmark').on("click",function(){
                 title: "목적지 폴더를 확인하셨나요?",
                 text: "잠시후 다시 시도해주세요!",
                 icon: "warning",
-                buttons: true,
                 dangerMode: true
 			});
 	    }
@@ -551,12 +568,12 @@ $('#into-my-bookmark').on("click",function(){
 })
 
 //내 북마크에서 그룹으로 url 보내기 확인 버튼 누를시
+$('#from-my-bookmark').on('dblclick', function(){ return });
 $('#from-my-bookmark').on("click",function(){
 	var checked_ids = [];
 	var submit_obj = [];
 	
 	checked_ids = $('#jstree-from-mybook').jstree("get_checked",null,true);
-	
 	if(checked_ids == null){
 		alert("선택한 URL이 없습니다.")
 		return false
@@ -577,18 +594,18 @@ $('#from-my-bookmark').on("click",function(){
 	});
     counturl = submit_obj.length;
     var submit_obj_json = JSON.stringify(submit_obj);
-    
     $.ajax({
 		url : "/bit/social/getGroupBookList.do",
 		type: "post",
 		data: {obj : submit_obj_json},
 		success : function(data){
+			//console.log(data);
 			if(data.result == "success") {
 				swal("Thank you!", "북마크에 추가되었습니다!", "success");
 				$('#fromMytoGroup').modal("toggle");
 				doing = "2";//다중의 url 내북마크에서 가져오기
 				sendmessagejstree();
-				
+				//전체 refresh
 				form = {gid : gid}
 	            $.ajax({
 	             
@@ -606,7 +623,6 @@ $('#from-my-bookmark').on("click",function(){
                     title: "목적지 폴더를 확인하셨나요?",
                     text: "잠시후 다시 시도해주세요!",
                     icon: "warning",
-                    buttons: true,
                     dangerMode: true
 				});
 			}
@@ -616,7 +632,6 @@ $('#from-my-bookmark').on("click",function(){
                 title: "목적지 폴더를 확인하셨나요?",
                 text: "잠시후 다시 시도해주세요!",
                 icon: "warning",
-                buttons: true,
                 dangerMode: true
 			});
 	    }

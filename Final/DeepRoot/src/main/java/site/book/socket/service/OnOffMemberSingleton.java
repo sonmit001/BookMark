@@ -11,15 +11,15 @@ import com.google.gson.Gson;
  * @Author : 김태웅
  */
 public class OnOffMemberSingleton {
-	
+	//Map<GID, Map<UID, "ON">>
 	private static Map<String, Map<String, String>> online = new HashMap<>();
 	
 	public OnOffMemberSingleton() {}
-	//Map<GID, Map<UID, "ON">>
+	//최초 한번만 메모리를 할당하고 Static 자원으로 인스턴스를 생성하여 사용
 	public static Map<String, Map<String, String>> getInstance () {
 		return online;
 	}
-	
+	//Map to Json으로 변경해주는 함수
 	public static String returnConvertJson(String nname, String gid){
 		Gson gson = new Gson();
 		

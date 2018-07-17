@@ -14,11 +14,12 @@
                 	<div class="error"></div>
                 	<form id="re-confirm-form">
                 		<label class="control-label" for="pwd_check">Password check</label>
-                        <input id="pwd_check" class="form-control" type="password" placeholder="Password check" name="pwd" required>
+                        <input id="pwd_check" class="form-control" type="password" placeholder="Password check" name="pwd" maxlength="15" required>
                 		<center>
                             <input id="re-confirm-password-btn" type="button" class="btn btn-default confirm" value="확인">
                             <input type="button" class="btn btn-default cancel" value="취소" onclick="location.href='index.do'">
                         </center>
+                        <div class="to-footer-space"></div>
                 	</form>
                 
                     <form id="edit-info-form" action="myInfo.do" method="post" enctype="multipart/form-data" style="display: none;">   
@@ -36,17 +37,17 @@
                         <input id="nname_edit" class="form-control" type="text" name="nname" value="${sessionScope.info_usernname}" readonly><br>
 
                         <label class="control-label" for="pwd_edit">Password</label>
-                        <input id="pwd_edit" class="form-control" type="password" placeholder="Enter Password" name="pwd" required><br>
+                        <input id="pwd_edit" class="form-control" type="password" placeholder="Enter Password" name="pwd" maxlength="15"><br>
 
                         <label class="control-label" for="pwd_confirmation">Repeat Password</label>
-                        <input id="pwd_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="pwd_confirmation" required><br>
+                        <input id="pwd_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="pwd_confirmation" maxlength="15"><br>
 
                         <center>
                             <input id="edit-who-info-btn" type="submit" class="btn btn-default confirm" value="수정">
                             <input type="button" class="btn btn-default cancel" value="취소" onclick="location.href='index.do'">
                         </center>
                         
-                        <a id="rollout-member" href="rollout.do?uid=${sessionScope.info_userid}" style="float: right;">회원탈퇴를 하시겠습니까?</a>
+                        <a id="rollout-member" href="#" style="float: right;">회원탈퇴를 하시겠습니까?</a>
                     </form>
                 </div>
             </div>
@@ -59,6 +60,34 @@
     
         
     $(function() {
+    	// 회원 탈퇴
+    	$('#rollout-member').dblclick(function(){});
+    	$('#rollout-member').click(function(){
+    		$.confirm({
+    			title : '회원 탈퇴',
+    			content : '회원 탈퇴 하시겠습니까?',
+    			theme: 'light',
+    			backgroundDismiss: true,
+    			closeIcon: true,
+    			buttons: {
+    		        '회원탈퇴': {
+    		        	btnClass : 'btn-danger',
+    		        	keys: ['enter'],
+    		        	action : function () {
+    		        		location.href= "rollout.do";
+    		        	}
+    		        },
+    		        '취소': {
+    		        	btnClass : 'btn-success',
+    		        	action : function() { return }
+    		        }
+    		    }
+    		});
+    		
+    		loaction.href= "rollout.do";
+    	});
+    	
+    	
 	    $('#re-confirm-password-btn').dblclick(function(){});
 		$('#re-confirm-password-btn').click(function(){
 			$.ajax({ 
@@ -70,9 +99,15 @@
 	            	if(data.result == 'pass') {
 	            		$('#re-confirm-form').css('display', 'none');
 	            		$('#edit-info-form').css('display', 'block');
+	            		$('#pwd_edit').val($('#pwd_check').val());
+	            		$('#pwd_confirmation').val($('#pwd_check').val());
 	            	}
 	            	else {
-	            		alert('비밀번호를 재확인 해주세요');
+	            		swal({title: "비밀번호를 다시 확인해주세요!",
+	                        text: "잠시후 다시 시도해주세요!",
+	                        icon: "warning",
+	                        dangerMode: true
+	        			});
 	            		$('#pwd_check').val('');
 	            	}
 	            },
