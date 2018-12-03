@@ -44,9 +44,9 @@
 	</bean>
 	
 	<!-- 파일 업로드 지원 LIB -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+<!-- 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="52428800"></property>
-	</bean>
+	</bean> -->
 	
 	<!-- 암호화 빈객체 -->
 	<bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">

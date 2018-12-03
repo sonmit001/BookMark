@@ -516,14 +516,6 @@ public class TeamController {
 		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
 		model.addAttribute("headerNoticeList", headerNoticeList);
         
-        List<String> filecontentlist = null;
-        try {
-			filecontentlist = fileRead(gid);
-			Collections.reverse(filecontentlist);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        model.addAttribute("filecontentlist", filecontentlist);
 		model.addAttribute("enabled", user.getEnabled());
 		model.addAttribute("uid",user.getUid());
 		for(G_MemberDTO dto : gmemberlist) {

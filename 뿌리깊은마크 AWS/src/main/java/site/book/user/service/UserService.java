@@ -115,12 +115,15 @@ public class UserService {
 	}
 	
 	// Send authcode to User's email
+	// 인증번호 이메일로 보내기
 	public int confirmEmail(EmailAuthDTO authcode) {
 		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		String key = new RollinTempKey().getKey(10, false);
 		int row = 0;
+		System.out.println("userservice 회원가입 이메일 들어오는거 확인");
+		System.out.println(authcode.getUid());
 		
-		// Auth Mail Form $ Send email
+		// Auth Mail Form $ Send email 
 		try {
 			RollinMailHandler sendMail = new RollinMailHandler(mailSender);
 			

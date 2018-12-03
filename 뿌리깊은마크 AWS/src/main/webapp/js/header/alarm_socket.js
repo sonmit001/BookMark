@@ -1,4 +1,4 @@
-
+/*
 
 
 $(function() {
@@ -176,4 +176,4 @@ function alarmConnect(userid) {
 //Header Alarm socket disconnect
 function alarmDisconnect() {
     stompClient.disconnect();
-}
+}*/

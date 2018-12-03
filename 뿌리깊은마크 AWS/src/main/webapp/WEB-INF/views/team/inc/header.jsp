@@ -14,7 +14,7 @@
 	// 헤더 이동시 socket disconnect & href 
 	function disconnectLocation(link) {
 		location.href = link;
-		disconnect();
+		//disconnect();
 	}
 	
 	// header에 있는 그룹 추가 버튼 클릭 이벤트

@@ -17,94 +17,86 @@ $('#chat-textbox-text').keydown(function (e) {
         $('#chat-textbox-text').html('');
     }
 });
+var messages; //새로운 메시지
 
 $(function() {
-    
-	connect();
+	'use strict';
+
+	// Initialize Firebase
+	//firebase 초기화
+	var config = {
+		apiKey: "AIzaSyB7n03dwp9enZJNNxckocDrMAoYj1RhmKU",
+	    authDomain: "rootmark-chat.firebaseapp.com",
+	    databaseURL: "https://rootmark-chat.firebaseio.com",
+	    projectId: "rootmark-chat",
+	    storageBucket: "rootmark-chat.appspot.com",
+	    messagingSenderId: "843207578967"
+	  };
+	
+	firebase.initializeApp(config);
+	  
+	var db = firebase.database().ref();
+	//초기화 끝
+	
+	//변수 , 상수 설정
+	
+	$(".chatting-contents").empty();//대화창 초기화
+	
+	startChat();
+	//connect();
 	jstreetable();
 	myContextMenu();
 	
 	var lastDate = null;
 	
-	$.each(chatList, function(index, value){
-		position = index;
-		if(index < 50){
-			chatList[index] = chatList[index].split('▣');
-			// <div id="2018-06-27" class="divider"><hr class="left"/><span>2018-06-27</span><hr class="right"/></div>
-			//console.log(chatList[index]);
-			var chatListIndex = chatList[index];
-			
-			var time =  chatListIndex[2].split("T");
-			
-			if(lastDate == null){
-				lastDate = time[0];
-				var Now = new Date();
-				var NowTime = Now.getFullYear();
-				if(Now.getMonth() < 10){
-					NowTime += '-0' + (Now.getMonth() + 1) ;
-				}else {
-					NowTime += '-' + (Now.getMonth() + 1) ;
-				}
-				
-				if(Now.getDate() < 10){
-					NowTime += '-0' + Now.getDate();
-				}else {
-					NowTime += '-' + Now.getDate();
-				}
-				
-				var today = time[0];
-				//console.log("today" + NowTime);
-				if(NowTime == time[0]){
-					today = "Today";
-				}
-				
-				var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + today + '</span><hr class="right"/></div>';
-				$(".chatting-contents").prepend(date);
-			}else if(lastDate != time[0]){
-				console.log("lastdate: " + lastDate);
-				console.log("time[0] :" + time[0])
-				
-				var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + time[0] + '</span><hr class="right"/></div>';
-				$(".chatting-contents").prepend(date);
-				lastDate = time[0];
-			}
-			
-			time[1] = time[1].split(":");
-        	var hour = time[1][0];
-        	var min = time[1][1];
-        	var ampm = "";
-        	if(hour > 12) {
-        		ampm = "PM";
-        		hour -= 12;
-        	}else {
-        		ampm = "AM";
-        	}
-			
-			var chat_list_div = "";
-			chat_list_div += '<img class="chatting-profile-img" onerror="this.src=\'/images/profile.png\'" src="/images/profile/' + chatListIndex[0] + '">';
-			chat_list_div += '<div class="chatting-text-div">';
-			chat_list_div += '<p class="chatting-userid">';
-			chat_list_div += chatListIndex[1] + '<span class="chatting-time">' + hour + "시&nbsp;" + min + '분&nbsp;' + ampm + '</span>';
-			chat_list_div += '</p>';
-			chat_list_div += '<span class="chatting-text">';
-			chat_list_div += chatListIndex[3];
-			chat_list_div += '</span>';
-			chat_list_div += '</div>';  	
-			
-            //console.log(chat_list_div);
-            $("#" + time[0]).after(chat_list_div);
-            $(".chat-element").scrollTop($(".chatting-contents").height());
-		}else {
-			position = 50;
-			return false;
-		}
+	//firebase message 가져오기
+	function startChat(){
 		
-		if(index == chatList.length -1){
-			position = -1;
-		}
-		
-	});
+		messages = db.child('messages/' + gid);
+		showMessage(); //기존 채팅 메시지 출력
+	}
+	
+	function showMessage(){
+		$(".chatting-contents").empty();//대화창 초기화
+		messages.on('child_added', makeMessage);
+	};
+	
+	function makeMessage(snapshot){
+		var message = snapshot.val();
+		showTxMessage(message);
+		$(".chat-element").scrollTop($(".chatting-contents").height());
+	};
 
+	function showTxMessage(message){
+		var time = new Date(message.timestamp);
+		var hour = time.getHours();
+		var min = time.getMinutes();
+		var ampm ;
+		var ampm ;
+		if(time>12){
+			time -= 12;
+			ampm ="pm";
+		}else{
+			ampm = "am"
+		}
+		
+		var chat_div = "";
+    	chat_div += '<img class="chatting-profile-img" onerror="this.src=\'/images/profile.png\'" src="/images/profile/' + message.profile + '">';
+    	chat_div += '<div class="chatting-text-div">';
+    	chat_div += '<p class="chatting-userid">';
+    	chat_div += message.nname + '&nbsp;<span class="chatting-time">' + hour + "시&nbsp;" + min + '분&nbsp;' + ampm + '</span>';
+    	chat_div += '</p>';
+    	chat_div += '<span class="chatting-text">';
+        chat_div += message.text;
+        chat_div += '</span>';
+        chat_div += '</div>';
+        
+        $(".chatting-contents").append(chat_div);
+        $(".chat-element").scrollTop($(".chatting-contents").height());
+		
+	};
+	
+	
 	var scrollTop = $('.chat-element').scrollTop();
 	
 	var scrollPos = $('.chat-element').scrollTop();
@@ -135,12 +127,11 @@ $(function() {
         }
         
         scrollPos = curScrollPos;
-        
+      /*  
         if($(this).scrollTop() == 0){
         	//console.log("scroll TOP");
         	
         	if(position > 0){
-        		
         		
         		
         		if(chatList.length - position > 50){
@@ -270,79 +261,44 @@ $(function() {
         			position = -1;
         		}
         	}
-        }
+        }*/
 	});
-});
+	
+	
 
-//채팅방 연결
+});
+// 채팅 메세지 전달
+function sendMessage() {
+	
+    var str = $("#chat-textbox-text").html().trim();
+    str = str.replace(/ /gi, '&nbsp;')
+    str = str.replace(/\n|\r/g, '<br>');
+    str = str.replace(/"/gi, '&uml;');
+    if(str.length > 0) {
+    	
+    	messages.push({
+    		'userid' : uid,
+    		'nname' : nname,
+    		'text' : str,
+    		'timestamp': firebase.database.ServerValue.TIMESTAMP,
+    		'profile' : profile
+    		
+    	})
+    }
+}
+/*//채팅방 연결
 function connect() {
     //console.log("connect");
     // WebSocketMessageBrokerConfigurer의 registerStompEndpoints() 메소드에서 설정한 endpoint("/endpoint")를 파라미터로 전달
     var ws = new SockJS("/endpoint");
     stompClient = Stomp.over(ws);
     stompClient.connect({}, function(frame) {
-        // 메세지 구독
-        // WebSocketMessageBrokerConfigurer의 configureMessageBroker() 메소드에서 설정한 subscribe prefix("/subscribe")를 사용해야 함
-        stompClient.subscribe('/subscribe/chat/' + gid, function(message) {
-        	//console.log(message.body);
-        	
-        	var new_chat = JSON.parse(message.body);
-        	
-        	var time =  new_chat.datetime.split("T");
-        	
-			if(!$("#" + time[0]).length){
-				var Now = new Date();
-				var NowTime = Now.getFullYear();
-				if(Now.getMonth() < 10){
-					NowTime += '-0' + (Now.getMonth() + 1) ;
-				}else {
-					NowTime += '-' + (Now.getMonth() + 1) ;
-				}
-				if(Now.getDate() < 10){
-					NowTime += '-0' + Now.getDate();
-				}else {
-					NowTime += '-' + Now.getDate();
-				}
-				
-				var today = time[0];
-				if(NowTime == time[0]){
-					today = "Today";
-				}
-				
-				var date = '<div id="' + time[0]+ '" class="divider"><hr class="left"/><span>' + today + '</span><hr class="right"/></div>';
-				$(".chatting-contents").append(date);
-        	}
-        	
-        	time[1] = time[1].split(":");
-        	var hour = time[1][0];
-        	var min = time[1][1];
-        	var ampm = "";
-        	if(hour > 12) {
-        		ampm = "PM";
-        		hour -= 12;
-        	}else {
-        		ampm = "AM";
-        	}
-        	//console.log(new_chat.nname);
-        	var chat_div = "";
-        	chat_div += '<img class="chatting-profile-img" onerror="this.src=\'/images/profile.png\'" src="/images/profile/' + new_chat.profile + '">';
-        	chat_div += '<div class="chatting-text-div">';
-        	chat_div += '<p class="chatting-userid">';
-        	chat_div += new_chat.nname + '&nbsp;<span class="chatting-time">' + hour + "시&nbsp;" + min + '분&nbsp;' + ampm + '</span>';
-        	chat_div += '</p>';
-        	chat_div += '<span class="chatting-text">';
-            chat_div += new_chat.content;
-            chat_div += '</span>';
-            chat_div += '</div>';
-            
-            $(".chatting-contents").append(chat_div);
-            $(".chat-element").scrollTop($(".chatting-contents").height());
-        });
-        
         //JSTREE 알림 메시지 ex) 누구님이 무엇을 수정했습니다
  		stompClient.subscribe('/subscribe/JSTREE/' + gid,function(message){
  			var body = JSON.parse(message.body);
             var whosend = body.nname;
+            var content = body.content;
+            
             if(nname == whosend){
             	
             }else{
@@ -359,6 +315,8 @@ function connect() {
 						$("#jstree_container").jstree(true).refresh();
 	         		}
 	             })
+	             
+	             ohSnap(content, {color: 'red'});
             }
         });
  		
@@ -422,24 +380,7 @@ function connect() {
     };
 }
  
-// 채팅 메세지 전달
-function sendMessage() {
-	//console.log("click");
-	
-    var str = $("#chat-textbox-text").html().trim();
-    str = str.replace(/ /gi, '&nbsp;')
-    str = str.replace(/\n|\r/g, '<br>');
-    str = str.replace(/"/gi, '&uml;');
-    //console.log(str);
-    if(str.length > 0) {
-        // WebSocketMessageBrokerConfigurer의 configureMessageBroker() 메소드에서 설정한 send prefix("/")를 사용해야 함
-        stompClient.send("/chat/" + gid, {}, JSON.stringify({
-           	content: str,
-           	nname: nname,
-           	profile: profile
-        }));
-    }
-}
+
  
 // 채팅방 연결 끊기
 function disconnect() {
@@ -450,7 +391,7 @@ function disconnect() {
 	
     stompClient.disconnect();
 }
-
+*/
 /* Chatting End */
 
 

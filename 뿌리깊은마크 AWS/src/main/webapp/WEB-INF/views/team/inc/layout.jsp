@@ -52,7 +52,14 @@
     <script src="${pageContext.request.contextPath}/js/team/jquery.contextMenu.js?ver=2"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/team/team_alarm.js?ver=2"></script>
     <!-- Script END -->
-    
+    <!-- firebase -->
+
+  
+    <!-- Firebase App is always required and must be first -->
+
+<!-- Add additional services you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+   
     <!-- Text Effect(Alarm) -->
     <link href="${pageContext.request.contextPath}/css/text-effect.css" rel="stylesheet">
     <!-- Text Effect(Alarm) END -->
@@ -64,6 +71,9 @@
     <!-- jQuery Ajax Form START -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
 	<!-- jQuery Ajax Form START -->
+	
+	<!-- ohsnap jstree 알림창 -->
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/team/ohsnap.js"></script>
 	
 </head>
 <body>

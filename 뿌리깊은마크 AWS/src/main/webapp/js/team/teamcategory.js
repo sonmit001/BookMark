@@ -302,13 +302,13 @@ function customMenu($node){
 				"icon" : "fa fa-plus",
 				"separator_before": false,
 				"separator_after": false,
-				"label": "URL 추가",
+				"label": "북마크 추가",
 				"action": false,
 				"submenu" : {
 					"addurl":{
 						"separator_before": false,
 						"separator_after": false,
-						"label": "URL 추가",
+						"label": "직접 추가",
 						"action": function (obj) {
 							$('#form_btn')[0].reset();// form 내부 값 reset
 							$('#linkAdd_btn').modal(); //url 추가 모달 창 띄우기
@@ -502,15 +502,16 @@ function sendmessagejstree() {
      }else{
      	op_msg =  nname + "님이 " +location1 + "폴더에서 "+target+"("+type+")를 "+new_name+"으로 "+doing+"하였습니다.";    
      }
-	stompClient.send("/JSTREE/" + gid, {}, JSON.stringify({
-       	nname: nname
-    }));
+	/*stompClient.send("/JSTREE/" + gid, {}, JSON.stringify({
+       	nname: nname,
+       	content: op_msg
+    }));*/
 	
-	stompClient.send("/chat/" + gid, {}, JSON.stringify({
+/*	stompClient.send("/chat/" + gid, {}, JSON.stringify({
 		content: op_msg,
        	nname:  "시스템",
        	profile: "system.png"
-    }));
+    }));*/
 	
 	new_name = '#';
 	doing = '';

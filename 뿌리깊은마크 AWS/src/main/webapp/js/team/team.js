@@ -40,7 +40,7 @@ function member_insert(){
             			success : function(data){
             				var msg = data.result.trim().toUpperCase();
             				if(msg == "SUCCESS") {
-            					stompClient.send('/alarm/' + toid , {}, 
+            					/*stompClient.send('/alarm/' + toid , {}, 
             									 	JSON.stringify({
             									 		gid: gid,
             									 		toid: toid,
@@ -51,7 +51,7 @@ function member_insert(){
             										})
             									);
             					$.alert("초대 쪽지가 전달되었습니다!" + "\n(" + toid + ")");
-            					
+            					*/
             				} else if(msg == "FAIL") {
             					$.alert("존재하지 않는 이메일입니다!");
             					
@@ -183,7 +183,7 @@ function group_complete(){
         				var member_nname = $('.member').eq(i).text();
         				console.log(member_nname);
         				
-        				stompClient.send('/alarm' + member_nname, {}, 
+        				/*stompClient.send('/alarm' + member_nname, {}, 
 						 	JSON.stringify({
 						 		gid: gid,
 						 		fromid: nname,
@@ -191,7 +191,7 @@ function group_complete(){
 						 		gmemo: '완료',
 						 		senddate: 'NOW'
 							})
-						);
+						);*/
         			}
         			
         			$.alert("현재 그룹이 완료되었습니다!");
@@ -270,7 +270,7 @@ function member_auth(key, targetNname, hisGrid){
     				$("#" + targetNname).children().last().remove();
     			}
 				
-				stompClient.send('/alarm/' + targetNname, {}, 
+				/*stompClient.send('/alarm/' + targetNname, {}, 
 					 	JSON.stringify({
 					 		gid: gid,
 					 		toid: targetNname,
@@ -279,15 +279,15 @@ function member_auth(key, targetNname, hisGrid){
 					 		gmemo: key,
 					 		senddate: 'NOW'
 						})
-				);
-				
-				stompClient.send('/chat/' + gid, {}, 
+				);*/
+				//수정 요
+				/*stompClient.send('/chat/' + gid, {}, 
 					 	JSON.stringify({
 					 		nname: "시스템",
 					 		content: "'" + targetNname + "'님이 " + (key=="manager" ? "매니저" : "그룹원") + "이(가) 되셨습니다!",
 					 		profile: "system.png"
 						})
-				);
+				);*/
 			}
 			else {
 				$.alert("잠시후 다시 시도해주세요!");
@@ -343,7 +343,7 @@ function member_ban(targetNname, hisGrid){
         			else {
         				var toid = recv_data;
         				
-        				stompClient.send('/alarm/' + toid , {}, 
+        				/*stompClient.send('/alarm/' + toid , {}, 
 						 	JSON.stringify({
 						 		gid: gid,
 						 		toid: toid,
@@ -351,7 +351,7 @@ function member_ban(targetNname, hisGrid){
 						 		gmemo: '강퇴',
 						 		senddate: 'NOW'
 							})
-						);
+						);*/
         				
         				$("#" + targetNname).remove();
         				$.alert('해당 그룹원이 강퇴되었습니다!');

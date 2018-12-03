@@ -85,7 +85,7 @@ $(document).ready(function(){
 									"icon" : "fa fa-plus",
 									"separator_before": false,
 									"separator_after": false,
-									"label": "URL 추가",
+									"label": "북마크 추가",
 									"action": function (obj) { 
 										$('#form_btn')[0].reset();// modal input text 창 초기화
 										var inst = $.jstree.reference(obj.reference); // 내가 우 클릭한 node의 정보

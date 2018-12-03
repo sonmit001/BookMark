@@ -13,9 +13,6 @@
 	var enable = '<c:out value="${enabled}"/>';
 	var uid = '<c:out value="${uid}"/>';
 	var position = 0;
-	<c:forEach items="${filecontentlist}" var="filecontent">
-		chatList.push("${filecontent}");
-	</c:forEach>
 	var grid = '<c:out value="${grid}"/>';
 	var gname ='<c:out value="${gname}"/>';
 	
@@ -23,6 +20,9 @@
 	var myRole = '<c:out value="${requestScope.group_auth}"/>';
 	//console.log(myRole);
 </script>
+
+<!-- Firebase js -->
+<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
 	<!-- 그룹에서의 나의 권한 -->
 	<c:set var="myRole" value="${requestScope.group_auth}"/>
 	
@@ -100,12 +100,10 @@
 			                        <div class="chat-inputbox-bg">
 			                            <div class="chat-textbox">
 			                                <div id="chat-textbox-text">
-			
 			                                </div>
 			                            </div>
 			                            <div id="chat-textbox-icon">
 			                            	<div class="flexbox">
-			
 			                            	</div>
 			                            	<i class="fas fa-share-square"></i>
 			                            </div>

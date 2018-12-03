@@ -16,6 +16,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 
 /**
+ * 
  * @Class : WebSocketConfig.java
  * @Date : 2018. 6. 27.
  * @Author : 김희준
@@ -23,7 +24,8 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
-	
+
+		
 	@Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/subscribe");
@@ -35,7 +37,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 		registry.addEndpoint("/endpoint").setAllowedOrigins("*").withSockJS();
 	}
 
-	
 	
 	
 }

@@ -296,10 +296,12 @@
                                 	<c:choose>
                                 		<c:when test="${cList.acid == bList.acid}">
                                			<li>
-                               				<se:authorize access="isAuthenticated()">
+                               				<%-- <se:authorize access="isAuthenticated()"> --%>
+                               				<c:if test="${sessionScope.info_userid != null}">
 	                                        <button class="url_hover_btn" type="button" data-toggle="modal" data-target="#mainIndiModal">
 	                                        	<img class="zoom_img" src="icon/url_save.png"></button>
-	                                       	</se:authorize>
+	                                        </c:if>
+	                                       	<%-- </se:authorize> --%>
 	                                        <button class="url_hover_btn" type="button">
 	                                        <img class="zoom_img" src="icon/open_preview.png" onclick="preview(${bList.abid})"></button>
 	                                        <img class="favicon" src="https://www.google.com/s2/favicons?domain=${bList.url}">

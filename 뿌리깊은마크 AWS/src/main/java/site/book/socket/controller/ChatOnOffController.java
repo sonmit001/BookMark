@@ -21,7 +21,7 @@ import site.book.socket.service.OnOffMemberSingleton;
  */
 @Controller
 public class ChatOnOffController {
-	
+	/*
 	// 접속시, 온라인 상태 소켓 전송
     @MessageMapping("/online/{room}")
     @SendTo("/subscribe/online/{room}")
@@ -77,7 +77,7 @@ public class ChatOnOffController {
     	//System.out.println(online_list);
     	
         return member;
-    }
+    }*/
     
     
 }

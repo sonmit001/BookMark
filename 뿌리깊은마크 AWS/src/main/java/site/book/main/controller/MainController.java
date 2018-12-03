@@ -257,6 +257,9 @@ public class MainController {
 		return "redirect:/";
 	}
 	
+	/* 네이버 로그인 */
+	/*@RequestMapping(value="/joinus/naverLogin")
+	*/
 	/* 회원가입  */
 	@RequestMapping(value="/joinus/rollin.do", method=RequestMethod.POST)
 	public View rollin(HttpServletRequest request, HttpServletResponse response, 

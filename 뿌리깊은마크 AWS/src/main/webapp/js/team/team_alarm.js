@@ -2,7 +2,7 @@
 
 
 //Header Alarm socket connect
-function alarmConnect(stompClient, userid) {
+function alarmConnect(stompClient, userid) {/*
 
     // 메세지 구독
     // WebSocketMessageBrokerConfigurer의 configureMessageBroker() 메소드에서 설정한 subscribe prefix("/subscribe")를 사용해야 함
@@ -157,7 +157,7 @@ function alarmConnect(stompClient, userid) {
 			$('#alarm-count-text').html("<i class='fas fa-bullhorn'>&nbsp;3+&nbsp;</i>");
 		}
     });
-}
+*/}
 
 //Header Alarm socket disconnect
 function alarmDisconnect() {

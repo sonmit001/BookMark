@@ -77,14 +77,14 @@
 	<!-- google Class Bean설정 추가 -->
 	<!-- 클라이언트ID와 보안비밀 세팅 -->
 	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
-	  <constructor-arg value="210756981146-6oqli9olf8knckhsl1b621ituia83ovq.apps.googleusercontent.com" />
-	  <constructor-arg value="egii2KSp4R_DoapOBaOmM5je" />
+	  <constructor-arg value="1070288904979-nva8sh7afqq9um1era7g2eagd21ohjev.apps.googleusercontent.com" />
+	  <constructor-arg value="2s_boAlqsbdSE5_nNXYUqHIx" />
 	</bean>
 	
 	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
 	<bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
 		<property name="scope" value="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email" />
-	 	<property name="redirectUri" value="http://뿌리깊은마크.site/joinus/googleSignInCallback" />
+	 	<property name="redirectUri" value="http://rootmark.site/joinus/googleSignInCallback" />
 	</bean>
 	
 </beans>
