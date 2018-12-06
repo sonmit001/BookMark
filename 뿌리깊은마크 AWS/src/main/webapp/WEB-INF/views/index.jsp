@@ -316,9 +316,9 @@
 	                                        			   		<c:set var="index" value="${index + 1}"></c:set>
 	                                        			   		
 	                                        			   </c:if>
-	                                        			   <script type="text/javascript">
+	                                        			   <!-- <script type="text/javascript">
 	                                        			   		isNewURL("${bList.abid}", "${bList.regdate}");
-	                                        			   </script>
+	                                        			   </script> -->
 	                                        </p>
 	                                    </li>
                                 		</c:when>
