@@ -86,5 +86,5 @@
 		<property name="scope" value="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email" />
 	 	<property name="redirectUri" value="http://rootmark.site/joinus/googleSignInCallback" />
 	</bean>
-	
+	<bean id="initialization" class="site.book.utils.CustomApplicationListener"/>
 </beans>

@@ -182,7 +182,6 @@
     </script>
 </head>
 <body>
-
 	<div id="main-header">
 		<tiles:insertAttribute name="header" />
 	</div>

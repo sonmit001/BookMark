@@ -12,7 +12,7 @@
 	</appender>
 
 	<appender name="member" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${catalina.base}/logs/member.log</file>
+		<file>${catalina.home}/logs/member.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${catalina.home}/logs/member.%d{yyyy-MM-dd}.out</fileNamePattern>
 		</rollingPolicy>
@@ -22,7 +22,7 @@
 	</appender>
 	
 	<appender name="userbook" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${catalina.base}/logs/order.log</file>
+		<file>${catalina.home}/logs/order.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${catalina.home}/logs/order.%d{yyyy-MM-dd}.out</fileNamePattern>
 		</rollingPolicy>

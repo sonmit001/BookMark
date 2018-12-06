@@ -70,6 +70,7 @@ import site.book.user.service.UserService;
 public class MainController {
 	
 	private static final Logger logger = LoggerFactory.getLogger("member");
+	private static final Logger catalina = LoggerFactory.getLogger("catalina");
 	// 태웅
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -114,13 +115,13 @@ public class MainController {
 	/*메인 화면 데이터 출력*/
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String initMain(HttpServletRequest req, Model model) {
-		//System.out.println("홈: 메인 페이지");
+		catalina.info("main page");
+		System.out.println("/////////////////////");
+		/*List<A_CategoryDTO> categoryList = a_category_service.getCategorys();
+		model.addAttribute("categoryList", categoryList);*/
 		
-		List<A_CategoryDTO> categoryList = a_category_service.getCategorys();
-		model.addAttribute("categoryList", categoryList);
-		
-		List<A_BookDTO> bookList = a_book_service.getMainBooks();
-		model.addAttribute("bookList", bookList);
+		/*List<A_BookDTO> bookList = a_book_service.getMainBooks();
+		model.addAttribute("bookList", bookList);*/
 		
 		HttpSession session = req.getSession();
 		String uid = (String)session.getAttribute("info_userid");
