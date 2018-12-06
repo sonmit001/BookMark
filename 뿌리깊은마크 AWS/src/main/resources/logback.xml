@@ -4,17 +4,17 @@
 <configuration scan="true" scanperiod="30 seconds">
 
 	<!-- <property file="${catalina.home}/conf/x1.properties" /> -->
-
+	<property name="logs_absolute_path" value="/var/log/tomcat8"></property>
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>%5p [%d] \(%F[%M]:%L\) - %msg%n</pattern>
 		</encoder>
 	</appender>
-
+	
 	<appender name="member" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${catalina.home}/logs/member.log</file>
+		<file>${catalina.base}/logs/member.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${catalina.home}/logs/member.%d{yyyy-MM-dd}.out</fileNamePattern>
+			<fileNamePattern>${catalina.base}/logs/member.%d{yyyy-MM-dd}.out</fileNamePattern>
 		</rollingPolicy>
 		<encoder>
 			<pattern>%5p [%d] \(%F[%M]:%L\) - %msg%n</pattern>
@@ -22,9 +22,9 @@
 	</appender>
 	
 	<appender name="userbook" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${catalina.home}/logs/order.log</file>
+		<file>${catalina.base}/logs/userbook.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${catalina.home}/logs/order.%d{yyyy-MM-dd}.out</fileNamePattern>
+			<fileNamePattern>${catalina.base}/logs/userbook.%d{yyyy-MM-dd}.out</fileNamePattern>
 		</rollingPolicy>
 		<encoder>
 			<pattern>%5p [%d] \(%F[%M]:%L\) - %msg%n</pattern>
@@ -52,7 +52,6 @@
 	
 	<logger name="org.springframework" level="error" />
 	<logger name="org.mybatis" level="error" />
-	<logger name="com.oracle" level="error" />
 	
 	<!-- login log -->
 	<logger name="member" additivity="false">

@@ -70,7 +70,7 @@ import site.book.user.service.UserService;
 public class MainController {
 	
 	private static final Logger logger = LoggerFactory.getLogger("member");
-	private static final Logger catalina = LoggerFactory.getLogger("catalina");
+	private static final Logger logger2 = LoggerFactory.getLogger(MainController.class);
 	// 태웅
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -115,8 +115,7 @@ public class MainController {
 	/*메인 화면 데이터 출력*/
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String initMain(HttpServletRequest req, Model model) {
-		catalina.info("main page");
-		System.out.println("/////////////////////");
+		logger2.info("main");
 		/*List<A_CategoryDTO> categoryList = a_category_service.getCategorys();
 		model.addAttribute("categoryList", categoryList);*/
 		
@@ -165,6 +164,7 @@ public class MainController {
 		logger.info("login success or fail : " + request.getAttribute("msg") );
 		// process message from Handler and JSON data response
 		// 로그인 실패: 아이디 또는 비밀번호 잘못 입력
+		
 		try {
 			if(request.getAttribute("msg").equals("fail")) {
 				model.addAttribute("login", "fail");
