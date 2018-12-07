@@ -16,6 +16,8 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,14 +33,8 @@ import site.book.user.dto.U_BookDTO;
  */
 @Service
 public class U_BookService {
-	
-	// 변수 Start
-	
-	// 태웅
-	
-	
-	// 희준
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(U_BookService.class);
 	
 	// 명수
 	@Autowired
@@ -143,8 +139,8 @@ public class U_BookService {
 			dao.insertRootFolder(uid);
 			maxid = dao.getMaxId();
 			
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
 		}
 		
 		return maxid;

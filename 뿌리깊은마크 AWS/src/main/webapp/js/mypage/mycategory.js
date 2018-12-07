@@ -227,14 +227,22 @@ $(document).ready(function(){
 				},
 				success : function(data){
 					$('#loading').html("");
-					var ubid = $.trim(data.ubid);
-					//root 카테로기 생성
-					tree.create_node( null , {text : "새 카테고리" , id : ubid , icon : "fa fa-folder"} ,"last",function(new_node){
-						new_node = ubid;
-						tree.edit(new_node); //생성과 동시에 이름 수정할 수 있게 함
-						$(".jstree-rename-input").attr("maxLength",33);
-						
-					});
+					var result = data.result;
+					if(result = 0){
+						alert("로그인 후 이용해 주세요");
+					}else{
+						var ubid = $.trim(data.ubid);
+						//root 카테로기 생성
+						tree.create_node( null , {text : "새 카테고리" , id : ubid , icon : "fa fa-folder"} ,"last",function(new_node){
+							new_node = ubid;
+							tree.edit(new_node); //생성과 동시에 이름 수정할 수 있게 함
+							$(".jstree-rename-input").attr("maxLength",33);
+							
+						});
+					}
+				},
+				error: function(request,status,error){
+					alert("code ="+ request.status + "message" + request.responseText)
 				}
 			})
 		})

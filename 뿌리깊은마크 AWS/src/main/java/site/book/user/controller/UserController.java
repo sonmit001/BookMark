@@ -463,10 +463,14 @@ public class UserController {
 		logger.info("addroot");
 		HttpSession session = req.getSession();
         String uid = (String)session.getAttribute("info_userid");
-		int ubid = u_bookservice.insertRootFolder(uid);
-		
-		model.addAttribute("ubid",ubid);
-		
+        if(uid != null) {
+        	int ubid = u_bookservice.insertRootFolder(uid);
+        	model.addAttribute("result",1);
+    		model.addAttribute("ubid",ubid);
+        }else {
+        	model.addAttribute("result",0);
+        }
+        	
 		return jsonview;
 	}
 	
