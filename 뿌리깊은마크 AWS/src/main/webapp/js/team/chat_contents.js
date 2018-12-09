@@ -18,6 +18,7 @@ $('#chat-textbox-text').keydown(function (e) {
     }
 });
 var messages; //새로운 메시지
+var jstreeFirebase;
 
 $(function() {
 	'use strict';
@@ -43,6 +44,7 @@ $(function() {
 	$(".chatting-contents").empty();//대화창 초기화
 	
 	startChat();
+	startJstree();
 	//connect();
 	jstreetable();
 	myContextMenu();
@@ -51,17 +53,16 @@ $(function() {
 	
 	//firebase message 가져오기
 	function startChat(){
-		
-		messages = db.child('messages/' + gid);
+		messages = db.child('messages/' + gid);//messages/gid로 접속
 		showMessage(); //기존 채팅 메시지 출력
 	}
 	
 	function showMessage(){
 		$(".chatting-contents").empty();//대화창 초기화
-		messages.on('child_added', makeMessage);
+		messages.on('child_added', makeMessage);// message/gid 아래에 있는 요소들 변화가 있을 때마다 접근 makemessage 함수 호출 
 	};
 	
-	function makeMessage(snapshot){
+	function makeMessage(snapshot){//snapshot은 변화된 내용을 잡는다.
 		var message = snapshot.val();
 		showTxMessage(message);
 		$(".chat-element").scrollTop($(".chatting-contents").height());
@@ -269,7 +270,6 @@ $(function() {
 });
 // 채팅 메세지 전달
 function sendMessage() {
-	
     var str = $("#chat-textbox-text").html().trim();
     str = str.replace(/ /gi, '&nbsp;')
     str = str.replace(/\n|\r/g, '<br>');
@@ -286,6 +286,20 @@ function sendMessage() {
     	})
     }
 }
+
+function startJstree(){
+	jstreeFirebase = db.child(gid + 'jstree');//messages/gid로 접속
+	showChanged(); //기존 채팅 메시지 출력
+}
+
+function showChanged(){
+	jstreeFirebase.on('child_added', makeJstreeMessage);// message/gid 아래에 있는 요소들 변화가 있을 때마다 접근 makemessage 함수 호출 
+};
+
+function makeJstreeMessage(snapshot){//snapshot은 변화된 내용을 잡는다.
+	var jstreeMessage = snapshot.val();
+	jstreeFirebase.remove();
+};
 /*//채팅방 연결
 function connect() {
     //console.log("connect");
