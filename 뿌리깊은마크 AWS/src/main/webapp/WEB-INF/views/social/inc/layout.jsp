@@ -135,6 +135,11 @@
 	<div id="main-footer">
 		<tiles:insertAttribute name="footer" />
 	</div>
+	
+	
+	<!-- Common Script START -->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/wow.min.js"></script>
+    <!-- Common Script END -->
 
     <!-- Custom Script START -->
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/social/social.js"></script>

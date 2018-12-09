@@ -330,7 +330,6 @@ function connect() {
 	         		}
 	             })
 	             
-	             ohSnap(content, {color: 'red'});
             }
         });
  		
