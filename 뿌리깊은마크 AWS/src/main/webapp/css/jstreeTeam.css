@@ -8,25 +8,6 @@
   list-style-type: none;
   list-style-image: none;
 }
-/* ohsnap notification */
-.alert {
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid #eed3d7;
-  border-radius: 4px;
-  position: absolute;
-  bottom: 0px;
-  right: 21px;
-  /* Each alert has its own width */
-  float: left;
-  clear: right;
-  background-color: white;
-}
-
-.alert-red {
-  color: white;
-  background-color: #DA4453;
-}
 
 .jstree-node {
   white-space: nowrap;

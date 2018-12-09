@@ -21,8 +21,6 @@
 	//console.log(myRole);
 </script>
 
-<!-- Firebase js -->
-<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
 	<!-- 그룹에서의 나의 권한 -->
 	<c:set var="myRole" value="${requestScope.group_auth}"/>
 	
@@ -73,7 +71,6 @@
 			                        </div>
 			                    </div>
 			                    <div class="group-category-footer">
-								<div id="ohsnap"></div>
 			                    </div>
 			                </div>
 			            </section>
