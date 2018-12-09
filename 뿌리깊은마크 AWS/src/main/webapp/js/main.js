@@ -79,9 +79,6 @@ jQuery(function($) {
 		$("#video-container").fitVids();
 	}
 
-	//Initiat WOW JS
-	new WOW().init();
-
 	// portfolio filter
 	$(window).load(function() {
 

@@ -72,7 +72,6 @@
 	
 	<!-- Custom Script START -->
     <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/wow.min.js"></script>
     <script type="text/javascript" src="js/login.js?ver=2"></script>
     <!-- Custom Script END -->
     
