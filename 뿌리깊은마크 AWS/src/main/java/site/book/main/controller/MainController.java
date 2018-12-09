@@ -200,6 +200,20 @@ public class MainController {
 		return jsonview;
 	}
 	
+	/* 테스트 용 로그인 */
+	@RequestMapping(value="/joinus/loginTest.do")
+	public String loginTest(HttpServletRequest request, HttpServletResponse response, 
+			HttpSession session) {
+		// process message from Handler and JSON data response
+		// 로그인 실패: 아이디 또는 비밀번호 잘못 입력
+			// set info session userid
+		session.setAttribute("info_userid", "sonmit001@naver.com");
+		session.setAttribute("info_usernname", "coding");
+		session.setAttribute("info_userprofile", "profile.png");
+
+		return "home.index";
+	}
+	
 	/* Google Login API START */
 	/* 구글 로그인 버튼 클릭시 Google+ API 실행 */
 	@RequestMapping(value="/joinus/googleLogin", method= { RequestMethod.GET, RequestMethod.POST })
