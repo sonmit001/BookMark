@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 태웅 -->
 	<select id="isGroupMember" resultType="site.book.team.dto.G_RoleDTO">
-		SELECT r.GRNAME as GRNAME
+		SELECT r.GRNAME as GRNAME , m.GRID as grid
 		FROM `G_MEMBER` m JOIN `G_ROLE` r 
 		ON m.GRID = r.GRID
 		WHERE UID=#{uid} AND GID=#{gid}

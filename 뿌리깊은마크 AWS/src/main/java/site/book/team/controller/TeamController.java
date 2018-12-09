@@ -478,14 +478,15 @@ public class TeamController {
 
         // 태웅: 사용자가 주소창으로 장난친다면?
         G_MemberDTO temp_member = new G_MemberDTO(uid, Integer.parseInt(gid));
-        G_RoleDTO roll_name = teamservice.isGroupMember(temp_member);
-        if(roll_name == null) {
+        G_RoleDTO group_roll = teamservice.isGroupMember(temp_member);//grid & grname
+        if(group_roll == null) {
         	// 마이 페이지로 이동
         	return "redirect:/user/mybookmark.do";
         }else {
         	// 그룹원이라면, 해당 유저의 그룹 권한 명을 model
-        	req.setAttribute("group_auth", roll_name.getGrname());
-        	model.addAttribute("gmemberrole", roll_name.getGrname());
+        	req.setAttribute("group_auth", group_roll.getGrname());
+        	//model.addAttribute("gmemberrole", roll_name.getGrname());
+        	model.addAttribute("grid", group_roll.getGrid());
         }
         
 		List<G_MemberDTO> gmemberlist = g_memberservice.selectGMemberlist(gid);
@@ -501,12 +502,9 @@ public class TeamController {
         model.addAttribute("nname", user.getNname());
         model.addAttribute("profile", user.getProfile());
         
-        // 희준
-		if(uid != null) {
-			List<TeamDTO> headerTeamList = teamservice.getTeamList(uid);
-			model.addAttribute("headerTeamList", headerTeamList);
-		}
-		
+        // 상단 start
+		List<TeamDTO> headerTeamList = teamservice.getTeamList(uid);
+		model.addAttribute("headerTeamList", headerTeamList);
 		model.addAttribute("gname", gname);
 		
 		// 그룹 초대/강퇴/완료 알람  쪽지 리스트
@@ -515,15 +513,9 @@ public class TeamController {
 		
 		List<NoticeDTO> headerNoticeList = notice_service.getNotices();
 		model.addAttribute("headerNoticeList", headerNoticeList);
-        
+        // 상당 end
 		model.addAttribute("enabled", user.getEnabled());
 		model.addAttribute("uid",user.getUid());
-		for(G_MemberDTO dto : gmemberlist) {
-			if(uid.equals(dto.getUid())) {
-				model.addAttribute("grid", dto.getGrid());
-			}
-		}
-	
 		
 		return "team.team";
 	}

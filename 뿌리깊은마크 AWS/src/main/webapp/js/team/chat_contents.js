@@ -329,7 +329,6 @@ function connect() {
 						$("#jstree_container").jstree(true).refresh();
 	         		}
 	             })
-	             
             }
         });
  		
