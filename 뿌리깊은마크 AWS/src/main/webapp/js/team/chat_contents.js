@@ -72,8 +72,9 @@ $(function() {
 		var min = time.getMinutes();
 		var ampm ;
 		var ampm ;
-		if(time>12){
-			time -= 12;
+		
+		if(hour>12){
+			hour -= 12;
 			ampm ="pm";
 		}else{
 			ampm = "am"
