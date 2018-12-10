@@ -52,20 +52,18 @@
     <script src="${pageContext.request.contextPath}/js/team/jquery.contextMenu.js?ver=2"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/team/team_alarm.js?ver=2"></script>
     <!-- Script END -->
+    
     <!-- firebase -->
-
-  
     <!-- Firebase App is always required and must be first -->
-
-<!-- Add additional services you want to use -->
-  <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
-  <!-- Firebase App is always required and must be first -->
-	<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-app.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-messaging.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-functions.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js"></script>
+	
+	<!-- Add additional services you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-messaging.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-functions.js"></script>
+		
     <!-- Text Effect(Alarm) -->
     <link href="${pageContext.request.contextPath}/css/text-effect.css" rel="stylesheet">
     <!-- Text Effect(Alarm) END -->
