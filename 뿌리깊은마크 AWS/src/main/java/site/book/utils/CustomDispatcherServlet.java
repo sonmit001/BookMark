@@ -46,8 +46,13 @@ public class CustomDispatcherServlet extends DispatcherServlet{
 	
 	@Override
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if( checkAccessTime(request) ) {
-		super.doDispatch(request, response);			
+		//static resource는 checkAccessTime에서 걸러낸다 (예 : js/css/image 파일 등)
+		if(request.getRequestURI().indexOf(".do") != -1) {
+			if(checkAccessTime(request)){
+				super.doDispatch(request, response);			
+			}
+		}else {
+			super.doDispatch(request, response);		
 		}
 	}
 }

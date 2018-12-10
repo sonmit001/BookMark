@@ -26,6 +26,8 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,7 +71,7 @@ import site.book.user.service.UserService;
 @Controller
 @RequestMapping("/team/")
 public class TeamController {
-
+	private static final Logger logger = LoggerFactory.getLogger(TeamController.class);
 	
 	//변수 STRAT
 	
@@ -475,7 +477,9 @@ public class TeamController {
 		HttpSession session = req.getSession();
         String uid = (String)session.getAttribute("info_userid");
         String nname = (String)session.getAttribute("info_usernname");
-
+        
+        long start = System.currentTimeMillis(); //시작하는 시점 계산
+        
         // 태웅: 사용자가 주소창으로 장난친다면?
         G_MemberDTO temp_member = new G_MemberDTO(uid, Integer.parseInt(gid));
         G_RoleDTO group_roll = teamservice.isGroupMember(temp_member);//grid & grname
@@ -489,15 +493,14 @@ public class TeamController {
         	model.addAttribute("grid", group_roll.getGrid());
         }
         
-		List<G_MemberDTO> gmemberlist = g_memberservice.selectGMemberlist(gid);
-		
+		List<G_MemberDTO> gmemberlist = g_memberservice.selectGMemberlist(gid);		
 		model.addAttribute("gmemberlist",gmemberlist);
 		
 		// 현재 접속중인 유저 SEND (Map -> JSON)
 		model.addAttribute("onlinelist", OnOffMemberSingleton.returnConvertJson(nname, gid));
 		
 		model.addAttribute("gid", gid);
-        
+		
         UserDTO user = userservice.getMember(uid);
         model.addAttribute("nname", user.getNname());
         model.addAttribute("profile", user.getProfile());
@@ -516,6 +519,9 @@ public class TeamController {
         // 상당 end
 		model.addAttribute("enabled", user.getEnabled());
 		model.addAttribute("uid",user.getUid());
+		
+		long end = System.currentTimeMillis(); //프로그램이 끝나는 시점 계산
+	    logger.info( "team(main.do) 실행 시간 : " + ( end - start )/1000.0 +"초"); //실행 시간 계산 및 출력
 		
 		return "team.team";
 	}
