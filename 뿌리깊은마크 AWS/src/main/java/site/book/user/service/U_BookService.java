@@ -36,17 +36,10 @@ public class U_BookService {
 
 	private static final Logger logger = LoggerFactory.getLogger(U_BookService.class);
 	
-	// 명수
 	@Autowired
-	private SqlSession sqlsession;
-
-	// 변수 End
-	
-	// 함수 Start
-	
+	private U_BookDAO bookDAO;
 	// 태웅
 	public int addToMyBookmark(U_BookDTO book) {
-		U_BookDAO bookDAO = sqlsession.getMapper(U_BookDAO.class);
 		int result = 0;
 		
 		try {
@@ -62,7 +55,6 @@ public class U_BookService {
 	
 	// 개인이 추가한 북마크 수
 	public List<HashMap<String, String>> numOfBookByDate() {
-		U_BookDAO bookDAO = sqlsession.getMapper(U_BookDAO.class);
 		List<HashMap<String, String>> map = null;
 		
 		try {
@@ -75,7 +67,6 @@ public class U_BookService {
 	
 	// 소셜 개인 북마크 리스트
 	public List<S_U_BookDTO> getSocialBookmarkList() {
-		U_BookDAO bookDAO = sqlsession.getMapper(U_BookDAO.class);
 		List<S_U_BookDTO> list = null;
 		
 		try {
@@ -89,7 +80,6 @@ public class U_BookService {
 	
 	// 소셜 개인 북마크 삭제
 	public int deleteSocialBookmark(int ubid) {
-		U_BookDAO bookDAO = sqlsession.getMapper(U_BookDAO.class);
 		int row = 0;
 		
 		try {
@@ -102,7 +92,6 @@ public class U_BookService {
 	
 	// 공유하지 않은 URL 추가하기
 	public int addUrlNotShare(U_BookDTO book) {
-		U_BookDAO bookDAO = sqlsession.getMapper(U_BookDAO.class);
 		int row = 0;
 		
 		try {
@@ -118,10 +107,9 @@ public class U_BookService {
 	// 마이북마크 왼쪽 폴더들만 보이는 JSTREE
 	public List<U_BookDTO> getCategoryList(String uid) {	//해당
 		
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		List<U_BookDTO> list = null;
 		try {
-			list = dao.getCategoryList(uid);
+			list = bookDAO.getCategoryList(uid);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} 
@@ -133,11 +121,10 @@ public class U_BookService {
 	@Transactional
 	public int insertRootFolder(String uid) {
 		
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int maxid = 0;
 		try {
-			dao.insertRootFolder(uid);
-			maxid = dao.getMaxId();
+			bookDAO.insertRootFolder(uid);
+			maxid = bookDAO.getMaxId();
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
@@ -149,10 +136,9 @@ public class U_BookService {
 	// JSTREE 노드 생성시 db 처리와 노드 뿌리는처리에서 id 값 가져오기
 	public int getmaxid() {
 
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int maxid = 0;
 		try {
-			maxid = dao.getMaxId();
+			maxid = bookDAO.getMaxId();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -164,11 +150,10 @@ public class U_BookService {
 	@Transactional
 	public int addFolderOrUrl(U_BookDTO dto) {
 
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int result = 0;
 		try {
-			dao.addFolderOrUrl(dto);
-			result = dao.getMaxId();
+			bookDAO.addFolderOrUrl(dto);
+			result = bookDAO.getMaxId();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -179,10 +164,9 @@ public class U_BookService {
 	// JSTREE 폴더 혹은 URL 삭제
 	public int deleteFolderOrUrl(String str) {
 		
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int result = 0;
 		try {
-			result = dao.deleteFolderOrUrl(str);
+			result = bookDAO.deleteFolderOrUrl(str);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} 
@@ -191,10 +175,9 @@ public class U_BookService {
 
 	public int editUrl(U_BookDTO dto) {
 
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int result = 0;
 		try {
-			result = dao.editUrl(dto);
+			result = bookDAO.editUrl(dto);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} 
@@ -205,10 +188,9 @@ public class U_BookService {
 	// 왼쪽 폴더(노드) 클릭시 하위 URL 리스트
 	public List<U_BookDTO> getUrl(int ubid) {
 
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		List<U_BookDTO> list = null;
 		try {
-			list = dao.getUrl(ubid);
+			list = bookDAO.getUrl(ubid);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -218,10 +200,9 @@ public class U_BookService {
 
 	// DND 처리 하기
 	public int dropNode(HashMap<String, String> param) {
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int result = 0;
 		try {
-			result = dao.dropNode(param);
+			result = bookDAO.dropNode(param);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -231,10 +212,9 @@ public class U_BookService {
 	// 마이북마크 노드 이름 수정
 	public int updateNodeText(HashMap<String, String> param) {
 		
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int result = 0;
 		try {
-			result = dao.updateNodeText(param);
+			result = bookDAO.updateNodeText(param);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -245,10 +225,9 @@ public class U_BookService {
 	// URL 공유 수정 삭제 추가
 	public int shareUrlEdit(U_BookDTO dto) {
 
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int result = 0;
 		try {
-			result = dao.shareUrlEdit(dto);
+			result = bookDAO.shareUrlEdit(dto);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -258,7 +237,6 @@ public class U_BookService {
 	// 완료된 그룹 URL 추가
 	public int insertUrlFromCompletedGroup(JSONArray jarr , String uid ) {
 
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		
 		List<U_BookDTO> list = new ArrayList<U_BookDTO>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -283,7 +261,7 @@ public class U_BookService {
 		
 		try {
 			if(list.size()!=0) {
-				result = dao.insertUrlFromCompletedGroup(map);
+				result = bookDAO.insertUrlFromCompletedGroup(map);
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -294,10 +272,9 @@ public class U_BookService {
 	// 소셜 조회수 증가 
 	public int updateViewCount(int ubid) {
 
-		U_BookDAO dao = sqlsession.getMapper(U_BookDAO.class);
 		int result = 0;
 		try {
-			result = dao.updateViewCount(ubid);
+			result = bookDAO.updateViewCount(ubid);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

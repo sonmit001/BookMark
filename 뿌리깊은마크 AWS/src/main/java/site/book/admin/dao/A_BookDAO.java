@@ -11,6 +11,8 @@ package site.book.admin.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.admin.dto.A_BookDTO;
 
 /**
@@ -18,6 +20,7 @@ import site.book.admin.dto.A_BookDTO;
  * @Date : 2018. 6. 7.
  * @Author : 김희준
  */
+@Repository
 public interface A_BookDAO {
 	
 	// 희준

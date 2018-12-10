@@ -11,6 +11,8 @@ package site.book.team.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.G_MemberDTO;
 import site.book.team.dto.G_MyAlarmDTO;
@@ -20,6 +22,7 @@ import site.book.team.dto.G_MyAlarmDTO;
  * @Date : 2018. 6. 8.
  * @Author : 김희준
  */
+@Repository
 public interface G_AlarmDAO {
 	
 	// 회원이 보내거나 받은 모든 그룹알림 지우기(블랙리스트시 사용)

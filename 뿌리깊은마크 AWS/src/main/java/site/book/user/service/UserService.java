@@ -16,7 +16,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.ibatis.session.SqlSession;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -49,24 +48,23 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	// 희준
-	@Autowired
-	private SqlSession sqlsession;
-	
 	@Autowired
 	private VelocityEngine velocityEngine;
 	
-	// 명수
+	@Autowired
+	private UserDAO userDAO;
 	
+	@Autowired
+	private G_BookDAO gbookDAO;
 	
-	// 변수 End
+	@Autowired
+	private G_MemberDAO gmemberDAO;
 	
-	// 함수 Start
-	
+	@Autowired
+	private G_AlarmDAO galaramDAO;
 	// 태웅
 	// Roll in ID check
 	public int checkUserID(String uid) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		int row = 0;
 		
 		try {
@@ -80,7 +78,6 @@ public class UserService {
 	
 	// Roll in Nickname check
 	public int checkUserNickname(String nname) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		int row = 0;
 		
 		try {
@@ -95,7 +92,6 @@ public class UserService {
 	// Roll in New User
 	public int rollinUser(UserDTO user) {
 		int row = 0;
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		ObjectMapper oMapper = new ObjectMapper();
 		
 		try {
@@ -116,7 +112,6 @@ public class UserService {
 	// Send authcode to User's email
 	// 인증번호 이메일로 보내기
 	public int confirmEmail(EmailAuthDTO authcode) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		String key = new RollinTempKey().getKey(10, false);
 		int row = 0;
 		System.out.println("userservice 회원가입 이메일 들어오는거 확인");
@@ -157,7 +152,6 @@ public class UserService {
 	
 	// Check Authcode
 	public int checkAuthcode(EmailAuthDTO authcode) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		int row = 0;
 
 		try {
@@ -171,7 +165,6 @@ public class UserService {
 	
 	// 한명의 회원정보 가져오기
 	public UserDTO getMember(String uid) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		UserDTO editedUser = null;
 
 		try {
@@ -185,7 +178,6 @@ public class UserService {
 	
 	// 한명의 회원정보 수정하기
 	public String editMember(HttpServletRequest request, UserDTO user, MultipartFile file) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		int result = 0;
 		String changed_file_name = "";
 		//System.out.println(user);
@@ -229,7 +221,6 @@ public class UserService {
 	
 	// 회원 탈퇴 서비스
 	public int deleteMember(String uid) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		int result = 0;
 
 		try {
@@ -243,7 +234,6 @@ public class UserService {
 	
 	// 비밀번호 찾기 서비스
 	public int findUserPwd(UserDTO user) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		int result = 0;
 		String pwd = new RollinTempKey().getKey(15, false).toLowerCase();
 		try {
@@ -278,7 +268,6 @@ public class UserService {
 	
 	// 회원(이메일) 확인 서비스
 	public int confirmUser(EmailAuthDTO user) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		String key = new RollinTempKey().getKey(10, false);
 		int result = 0;
 		
@@ -326,7 +315,6 @@ public class UserService {
 	
 	// 전 회원의 닉네임 가져오기 기능
 	public List<String> getAllUserNname(String nname) {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		List<String> result = null;
 		
 		try {
@@ -342,7 +330,6 @@ public class UserService {
 	
 	// 전체 회원수 가져오기
 	public int getAllUser() {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		int row = 0;
 		
 		try {
@@ -356,7 +343,6 @@ public class UserService {
 	
 	// 신규 가입자수 가져오기
 	public List<HashMap<String, String>> getNewUser() {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		List<HashMap<String, String>> list = null;
 		
 		try {
@@ -371,19 +357,15 @@ public class UserService {
 	// 블랙리스트 추가하기
 	@Transactional
 	public int blacklist(String uid) {
-		UserDAO userdao = sqlsession.getMapper(UserDAO.class);
-		G_BookDAO gbookdao = sqlsession.getMapper(G_BookDAO.class);
-		G_MemberDAO gmemberdao = sqlsession.getMapper(G_MemberDAO.class);
-		G_AlarmDAO galarmdao = sqlsession.getMapper(G_AlarmDAO.class);
 
 		int row = 0;
 		
 		try {
-			userdao.blacklist(uid);
-			userdao.deleteUserBook(uid);
-			gbookdao.deleteGroupBook(uid);
-			gmemberdao.leaveAllGroup(uid);
-			galarmdao.deleteAllGroupAlarm(uid);
+			userDAO.blacklist(uid);
+			userDAO.deleteUserBook(uid);
+			gbookDAO.deleteGroupBook(uid);
+			gmemberDAO.leaveAllGroup(uid);
+			galaramDAO.deleteAllGroupAlarm(uid);
 			row = 1;
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -394,7 +376,6 @@ public class UserService {
 	
 	// 블랙리스트가 아닌 회원 리스트 가져오기 
 	public List<UserDTO> getUserList() {
-		UserDAO userDAO = sqlsession.getMapper(UserDAO.class);
 		List<UserDTO> list = null;
 		
 		try {
@@ -406,9 +387,4 @@ public class UserService {
 		return list;
 	}
 	
-	
-	// 명수
-	
-	
-	// 함수 End
 }

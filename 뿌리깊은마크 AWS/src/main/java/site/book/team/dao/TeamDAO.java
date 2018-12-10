@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.S_TeamDTO;
 import site.book.team.dto.TeamDTO;
@@ -21,6 +23,7 @@ import site.book.team.dto.TeamDTO;
  * @Date : 2018. 6. 8.
  * @Author : 김희준, 김명수
  */
+@Repository
 public interface TeamDAO {
 	
 	// 희준

@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.team.dto.G_BookDTO;
 
 /**
@@ -11,7 +13,7 @@ import site.book.team.dto.G_BookDTO;
  * @Date : 2018. 6. 22.
  * @Author : 정민재
  */
-
+@Repository
 public interface S_BookmarkDAO {
 	
 	// 민재

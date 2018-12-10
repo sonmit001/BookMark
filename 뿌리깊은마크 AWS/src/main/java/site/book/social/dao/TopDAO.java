@@ -11,6 +11,8 @@ package site.book.social.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.social.dto.TopDTO;
 import site.book.user.dto.U_BookDTO;
 
@@ -19,6 +21,7 @@ import site.book.user.dto.U_BookDTO;
  * @Date : 2018. 6. 14.
  * @Author : 김희준
  */
+@Repository
 public interface TopDAO {
 	
 	// 개인 Top5 가져오기

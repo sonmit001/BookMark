@@ -32,21 +32,15 @@ import site.book.user.dto.U_BookDTO;
  */
 @Service
 public class G_BookService {
-	//희준
+
 	@Autowired
-	private SqlSession sqlsession;
-	
-	//태웅
-	
-	
-	//희준
+	private G_BookDAO g_bookDAO;
 	// 그룹이 추가한 북마크 수
 	public List<HashMap<String, String>> numOfBookByDate() {
-		G_BookDAO bookDAO = sqlsession.getMapper(G_BookDAO.class);
 		List<HashMap<String, String>> map = null;
 		
 		try {
-			map = bookDAO.numOfBookByDate();
+			map = g_bookDAO.numOfBookByDate();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -57,11 +51,10 @@ public class G_BookService {
 	// 완료된 그룹 북마크 가져오기
 	public List<G_BookDTO> getCompletedTeamBookmark(int gid) {
 		
-		G_BookDAO bookDAO = sqlsession.getMapper(G_BookDAO.class);
 		List<G_BookDTO> list = null;
 		
 		try {
-			list = bookDAO.getCompletedTeamBookmark(gid);
+			list = g_bookDAO.getCompletedTeamBookmark(gid);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -72,10 +65,9 @@ public class G_BookService {
 	//태웅
 	// 진행중인 그룹에서 카테고리만 가져오기
 	public List<G_BookDTO> getGroupCategoryList(String gid) {
-		G_BookDAO dao = sqlsession.getMapper(G_BookDAO.class);
 		List<G_BookDTO> list = null;
 		try {
-			list = dao.getGroupCategoryList(gid);
+			list = g_bookDAO.getGroupCategoryList(gid);
 		}catch (Exception e) {
 			/*e.printStackTrace();*/
 		}
@@ -87,11 +79,10 @@ public class G_BookService {
 	// 그룹 처음 생성 시, 루트 폴더 생성
 	@Transactional
 	public int getMaxIDandInsertRootFolder(String gid, String uid) {
-		G_BookDAO dao = sqlsession.getMapper(G_BookDAO.class);
 		int isInsert = 0;
 		try {
-			int gbid = dao.getMaxGBID();
-			isInsert = dao.insertRootFolder(gid, uid);
+			int gbid = g_bookDAO.getMaxGBID();
+			isInsert = g_bookDAO.insertRootFolder(gid, uid);
 			// Root 폴터 생성 성공이라면, 
 			if(isInsert > 0) {
 				isInsert = gbid; // GBID return;
@@ -105,11 +96,10 @@ public class G_BookService {
 	
 	// 한 URL을 자신의 그룹 북마크에 추가 
 	public int insertGroupBookmark(G_BookDTO gbook) {
-		G_BookDAO dao = sqlsession.getMapper(G_BookDAO.class);
 		int result = 0;
 		
 		try {
-			result = dao.insertGroupBookmark(gbook);
+			result = g_bookDAO.insertGroupBookmark(gbook);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,19 +110,18 @@ public class G_BookService {
 	//명수
 	//그룹페이지 jstree 가져오기
 	public JSONArray getTeamJstree(String gid, String uid) {
-		G_BookDAO dao = sqlsession.getMapper(G_BookDAO.class);
 		JSONArray jsonArray = new JSONArray();
 		
 		List<G_BookDTO> list;
 		
 		try {
-			list = dao.getTeamJstree(gid);
+			list = g_bookDAO.getTeamJstree(gid);
 			if(list.size() ==0) {
 				
 				JSONObject jsonobject = new JSONObject();
 				//그룹에 아무 카테고리가 없을 경우 root 생성
-				dao.insertRootFolder(gid, uid);
-				int gbid = dao.getCurrentGBID();
+				g_bookDAO.insertRootFolder(gid, uid);
+				int gbid = g_bookDAO.getCurrentGBID();
 				
 				jsonobject.put("id", gbid);
 				jsonobject.put("parent", "#");
@@ -178,10 +167,9 @@ public class G_BookService {
 	}
 	// 그룹 페이지 url 수정
 	public int editTeamUrl(HashMap<String, String> param) {
-		G_BookDAO dao = sqlsession.getMapper(G_BookDAO.class);
 		int result =0;
 		try {
-			result = dao.editTeamUrl(param);
+			result = g_bookDAO.editTeamUrl(param);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -192,7 +180,6 @@ public class G_BookService {
 	// 그룹페이제에서 jstree 노드 삭제하기
 	public int deleteTeamNode(String gbid) {
 
-		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
 		int result =0;
 		try {
 			result = g_bookDAO.deleteTeamNode(gbid);
@@ -206,7 +193,6 @@ public class G_BookService {
 	// 그룹페이지에서 jstree 노드 제목 수정
 	public int updateTeamNodeText(HashMap<String, String> param) {
 
-		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
 		int result = 0;
 		try {
 			result = g_bookDAO.updateTeamNodeText(param);
@@ -219,7 +205,6 @@ public class G_BookService {
 	// 그룹 페이지에서 jstree 폴더 혹은 url 추가하기
 	public int addTeamFolderOrUrl(G_BookDTO g_book) {
 		
-		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
 		int result = 0;
 		
 		try {
@@ -234,7 +219,6 @@ public class G_BookService {
 	// 그룹 페이제에서 DND
 	public int dropTeamNode(HashMap<String, String> param) {
 
-		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
 		int result = 0;
 		
 		try {
@@ -249,7 +233,6 @@ public class G_BookService {
 	//그룹 페이지에서 마이 북마크 전체 가져오기
 	public List<U_BookDTO> getMyCategoryList(String uid) {
 	
-		G_BookDAO g_bookDAO = sqlsession.getMapper(G_BookDAO.class);
 		List<U_BookDTO> list = null;
 		try {
 			list = g_bookDAO.getMyCategoryList(uid);

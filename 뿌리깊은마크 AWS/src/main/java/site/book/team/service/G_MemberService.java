@@ -25,15 +25,14 @@ import site.book.user.dto.UserDTO;
 public class G_MemberService {
 	
 	@Autowired
-	private SqlSession sqlsession;
+	private G_MemberDAO g_memberDAO;
 	
 	// 참여하고 있는 그룹 나가기
 	public int leaveGroup(G_MemberDTO member) {
-		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
 		int row = 0;
 		
 		try {
-			row = g_MemberDAO.leaveGroup(member);
+			row = g_memberDAO.leaveGroup(member);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -43,11 +42,10 @@ public class G_MemberService {
 	//준석
 	//그룹원 리스트 가져오기
 	public List<G_MemberDTO> selectGMemberlist(String gid){
-		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
 		List<G_MemberDTO> selectgmemberlist = null;
 		
 		try {
-			selectgmemberlist = g_MemberDAO.selectGMemberlist(gid);
+			selectgmemberlist = g_memberDAO.selectGMemberlist(gid);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();
@@ -59,11 +57,10 @@ public class G_MemberService {
 	//태웅
 	//그룹원 초대하기: 초대 쪽지 보내기
 	public int inviteUser(G_AlarmDTO alarm){
-		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
 		int result = 0;
 		
 		try {
-			result = g_MemberDAO.sendInviteMemo(alarm);
+			result = g_memberDAO.sendInviteMemo(alarm);
 		} catch (Exception e) {
 			/*e.printStackTrace();*/
 		}
@@ -74,11 +71,10 @@ public class G_MemberService {
 	//그룹원 강퇴하기 + 강퇴 쪽지 보내기
 	@Transactional
 	public int banMember(G_MemberDTO member_ban) {
-		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
 		int result = 0;
 		
 		try {
-			result = g_MemberDAO.banMember(member_ban);
+			result = g_memberDAO.banMember(member_ban);
 		} catch (Exception e) {
 			result = -1;
 			/*e.printStackTrace();*/
@@ -89,11 +85,10 @@ public class G_MemberService {
 	
 	// 닉네임으로 상대방 이메일 가져오기
 	public String getToUid(String nname) {
-		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
 		UserDTO member = null;
 		
 		try {
-			member = g_MemberDAO.getToUid(nname);
+			member = g_memberDAO.getToUid(nname);
 		} catch (Exception e) {
 			/*e.printStackTrace();*/
 		}
@@ -103,12 +98,11 @@ public class G_MemberService {
 	
 	// 그룹원 매니저 권한 주기
 	public int giveManager(G_MemberDTO member_auth) {
-		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
 		int result = 0;
 		
 		try {
 			member_auth.setGrid(2);
-			result = g_MemberDAO.giveManager(member_auth);
+			result = g_memberDAO.giveManager(member_auth);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,12 +112,11 @@ public class G_MemberService {
 	
 	// 그룹원 매니저 권한 뺏기
 	public int giveMember(G_MemberDTO member_auth) {
-		G_MemberDAO g_MemberDAO = sqlsession.getMapper(G_MemberDAO.class);
 		int result = 0;
 		
 		try {
 			member_auth.setGrid(3);
-			result = g_MemberDAO.giveManager(member_auth);
+			result = g_memberDAO.giveManager(member_auth);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

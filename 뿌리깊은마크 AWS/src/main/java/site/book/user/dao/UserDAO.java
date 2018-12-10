@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.user.dto.EmailAuthDTO;
 import site.book.user.dto.EmailAuthDTO;
 import site.book.user.dto.UserDTO;
@@ -14,6 +16,7 @@ import site.book.user.dto.UserDTO;
  * @Date : 2018. 6. 5.
  * @Author : 김희준, 김태웅
  */
+@Repository
 public interface UserDAO {
 	
 	// 태웅

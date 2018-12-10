@@ -18,7 +18,7 @@
     <meta property="og:description" content="개발자가 사용하기 좋은 사이트들을 제공해줍니다.자신만의 북마크를 꾸미세요">
     
     <!-- Latest compiled Bootstrap Common CSS -->
-    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Bootstrap Common CSS END -->
@@ -34,15 +34,15 @@
 	<!-- Google Icon CDN END -->
 
     <!-- Main Page CSS -->
-    <link href="css/mainpage/main.css?ver=2" rel="stylesheet">
-    <link href="css/mainpage/modal.css?ver=2" rel="stylesheet">
-    <link href="css/mainpage/header.css" rel="stylesheet">
-    <link href="css/mainpage/footer.css" rel="stylesheet">
-    <link href="css/mainpage/list_table.css?ver=1" rel="stylesheet">
-    <link href="css/mainpage/responsive.css" rel="stylesheet">
-    <link href="css/mainpage/login-register.css?ver=2" rel="stylesheet" />
-    <link href="css/addBookmarkStepModal-register.css" rel="stylesheet" />
-    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="/css/mainpage/main.css?ver=2" rel="stylesheet">
+    <link href="/css/mainpage/modal.css?ver=2" rel="stylesheet">
+    <link href="/css/mainpage/header.css" rel="stylesheet">
+    <link href="/css/mainpage/footer.css" rel="stylesheet">
+    <link href="/css/mainpage/list_table.css?ver=1" rel="stylesheet">
+    <link href="/css/mainpage/responsive.css" rel="stylesheet">
+    <link href="/css/mainpage/login-register.css?ver=2" rel="stylesheet" />
+    <link href="/css/addBookmarkStepModal-register.css" rel="stylesheet" />
+    <link href="/css/animate.min.css" rel="stylesheet">
     <!-- Main Page CSS END -->
     
     <!-- Text Effect(Alarm) -->

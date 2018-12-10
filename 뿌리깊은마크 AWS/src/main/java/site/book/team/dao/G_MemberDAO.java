@@ -11,6 +11,8 @@ package site.book.team.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.team.dto.G_AlarmDTO;
 import site.book.team.dto.G_MemberDTO;
 import site.book.team.dto.G_RoleDTO;
@@ -21,6 +23,7 @@ import site.book.user.dto.UserDTO;
  * @Date : 2018. 6. 8.
  * @Author : 김희준
  */
+@Repository
 public interface G_MemberDAO {
 	
 	// 회원이 진행하고 있는 모든 그룹 탈퇴(블랙리스트시 사용)

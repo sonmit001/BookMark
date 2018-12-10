@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.team.dto.G_BookDTO;
 import site.book.user.dto.U_BookDTO;
 
@@ -20,6 +22,7 @@ import site.book.user.dto.U_BookDTO;
  * @Date : 2018. 6. 7.
  * @Author : 김희준, 김태웅
  */
+@Repository
 public interface G_BookDAO {
 	//희준
 	// 그룹이 추가한 북마크 수

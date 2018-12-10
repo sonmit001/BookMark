@@ -28,6 +28,7 @@ public class CustomDispatcherServlet extends DispatcherServlet{
 				cnt = json.getInt("cnt")+1;
 			}
 		}
+		logger.info("요청 주소 {}", request.getRequestURL());
 		json.put("ms", ms);
 		json.put("cnt", cnt);
 		session.setAttribute("accessTime", json);

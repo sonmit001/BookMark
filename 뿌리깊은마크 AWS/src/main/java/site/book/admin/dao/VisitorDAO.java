@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.admin.dto.VisitorDTO;
 
 /**
@@ -19,6 +21,7 @@ import site.book.admin.dto.VisitorDTO;
  * @Date : 2018. 6. 10.
  * @Author : 김희준
  */
+@Repository
 public interface VisitorDAO {
 	
 	// 방문자 기록

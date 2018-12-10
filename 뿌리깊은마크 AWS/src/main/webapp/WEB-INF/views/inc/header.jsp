@@ -217,7 +217,8 @@
 								<img class="dropdown header-ico" src="${sessionScope.info_userprofile}" onerror="this.src='<%= request.getContextPath() %>/images/profile.png'">
 							</c:when>
 							<c:otherwise>
-								<img class="dropdown header-ico" src="<%= request.getContextPath() %>/images/profile/${sessionScope.info_userprofile}" onerror="this.src='<%= request.getContextPath() %>/images/profile.png'">
+								<%-- <img class="dropdown header-ico" src="<%= request.getContextPath() %>/images/profile/${sessionScope.info_userprofile}" onerror="this.src='<%= request.getContextPath() %>/images/profile.png'"> --%>
+								<img class="dropdown header-ico" src="<%= request.getContextPath() %>/images/profile.png">
 							</c:otherwise>
 						</c:choose>
 							&nbsp;${sessionScope.info_usernname}

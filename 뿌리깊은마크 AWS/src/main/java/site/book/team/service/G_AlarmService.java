@@ -22,15 +22,13 @@ import site.book.team.dto.G_MyAlarmDTO;
 
 @Service
 public class G_AlarmService {
-	//태웅
-	@Autowired
-	private SqlSession sqlsession;
 	
+	@Autowired
+	private G_AlarmDAO g_alarmDAO;
 	
 	// 태웅
 	// 쪽지 보내기 전 체크: 중복 초대/강퇴/완료 쪽지 보내기 처리하기
 	public boolean alreadySend(G_AlarmDTO alarm, String alarm_kind){
-		G_AlarmDAO g_alarmDAO = sqlsession.getMapper(G_AlarmDAO.class);
 		String kind = alarm_kind.toUpperCase();
 		boolean already_invite = false;
 		
@@ -52,7 +50,6 @@ public class G_AlarmService {
 	
 	// 내가 받은 그룹 초대/완료/강퇴 쪽지 리스트 출력
 	public List<G_MyAlarmDTO> getAlarmList(String uid){
-		G_AlarmDAO g_alarmDAO = sqlsession.getMapper(G_AlarmDAO.class);
 		List<G_MyAlarmDTO> alarm_list = new ArrayList<>();
 		
 		try {
@@ -66,7 +63,6 @@ public class G_AlarmService {
 	
 	// 쪽지 확인 후, 쪽지 자동 삭제
 	public int deleteMemo(G_AlarmDTO alarm) {
-		G_AlarmDAO g_alarmDAO = sqlsession.getMapper(G_AlarmDAO.class);
 		int isDelete = 0;
 
 		try {
@@ -80,7 +76,6 @@ public class G_AlarmService {
 	
 	// 그룹 초대 쪽지 승인, 그룹 가입
 	public int joinGroup(G_MemberDTO member) {
-		G_AlarmDAO g_alarmDAO = sqlsession.getMapper(G_AlarmDAO.class);
 		int isJoined = 0;
 
 		try {

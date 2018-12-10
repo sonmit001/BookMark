@@ -24,6 +24,10 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactoryBean"/>
 	</bean>
+	
+	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="site.book.*.dao"></property>
+	</bean>
 	<!-- Mybatis 설정 -->
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->

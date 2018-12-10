@@ -12,14 +12,17 @@ package site.book.user.dao;
  * @Date : 2018. 6. 6.
  * @Author : 김명수, 김희준, 김태웅
  */
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import site.book.user.dto.S_U_BookDTO;
 import site.book.user.dto.U_BookDTO;
-
+@Repository
 public interface U_BookDAO {
 	
 	// 태웅
