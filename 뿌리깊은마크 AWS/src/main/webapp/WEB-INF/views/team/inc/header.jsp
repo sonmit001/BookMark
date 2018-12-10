@@ -207,7 +207,7 @@
 					<!-- USER INFO START -->
 					<li>
 						<a class="username" href="#">
-							<img class="dropdown header-ico" src="<%= request.getContextPath() %>/images/profile/${sessionScope.info_userprofile}" onerror="this.src='<%= request.getContextPath() %>/images/profile.png'"> 
+							<img class="dropdown header-ico" src="<%= request.getContextPath() %>/images/profile/${sessionScope.info_userprofile}" onerror="this.onerror=null;this.src='<%= request.getContextPath() %>/images/profile.png'"> 
 							${sessionScope.info_usernname}
 						</a>
 						<ul role="menu" class="user sub-menu">

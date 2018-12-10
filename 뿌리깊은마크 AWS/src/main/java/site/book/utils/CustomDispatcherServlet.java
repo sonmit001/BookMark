@@ -46,8 +46,8 @@ public class CustomDispatcherServlet extends DispatcherServlet{
 	
 	@Override
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		//if( checkAccessTime(request) ) {
+		if( checkAccessTime(request) ) {
 		super.doDispatch(request, response);			
-		//}
+		}
 	}
 }

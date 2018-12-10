@@ -26,7 +26,7 @@
                         <label class="control-label" for="photo">Profile Photo</label>
                         <br>  
                         <center>
-                            <img class="currentProfileImg" id="currentProfileImg" src="images/profile/${sessionScope.info_userprofile}" onerror="images/profile.png">
+                            <img class="currentProfileImg" id="currentProfileImg" src="images/profile/${sessionScope.info_userprofile}" onerror="this.onerror=null;/images/profile.png">
                             <input type="file" id="profileImg" name="uploadFile" accept="image/jpeg, image/png" style="display: none;" onchange="profileImgUpLoad(this)">
                         </center>
                             
