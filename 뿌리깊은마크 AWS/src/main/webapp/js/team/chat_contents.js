@@ -17,12 +17,12 @@ $('#chat-textbox-text').keydown(function (e) {
         $('#chat-textbox-text').html('');
     }
 });
+
+var db;
 var messages; //새로운 메시지
 var jstreeFirebase;
 
 $(function() {
-	'use strict';
-
 	// Initialize Firebase
 	//firebase 초기화
 	var config = {
@@ -32,15 +32,13 @@ $(function() {
 	    projectId: "rootmark-chat",
 	    storageBucket: "rootmark-chat.appspot.com",
 	    messagingSenderId: "843207578967"
-	  };
+	};	
+	firebase.initializeApp(config);	 
 	
-	firebase.initializeApp(config);
-	  
-	var db = firebase.database().ref();
-	//초기화 끝
+	db = firebase.database().ref();
 	
-	//변수 , 상수 설정
-	
+	//초기화 끝	
+	//변수 , 상수 설정	
 	$(".chatting-contents").empty();//대화창 초기화
 	
 	startChat();
@@ -93,20 +91,21 @@ $(function() {
         chat_div += '</div>';
         
         $(".chatting-contents").append(chat_div);
-        $(".chat-element").scrollTop($(".chatting-contents").height());
-		
+        $(".chat-element").scrollTop($(".chatting-contents").height());		
 	};
 	
-	
-	var scrollTop = $('.chat-element').scrollTop();
-	
-	var scrollPos = $('.chat-element').scrollTop();
-    var date_eq = $(".chatting-contents").children(".divider").length - 1;
+	//var scrollTop = $('.chat-element').scrollTop();	
+	//var scrollPos = $('.chat-element').scrollTop();
+    //var date_eq = $(".chatting-contents").children(".divider").length - 1;
     
+    /*
 	$('.chat-element').scroll(function() {
         var curScrollPos = $(this).scrollTop();
         var date_line = $(".divider:eq(" + date_eq + ")").position().top;
-
+        
+        console.log($(".divider:eq(" + date_eq + ")").position());
+        
+        
         if (curScrollPos > scrollPos) { //Scrolling Down
             if(date_line <= 35 ) {
                 var temp = $(".divider:eq(" + date_eq + ") > span").text(); // 가장 맨 위의 내용
@@ -262,9 +261,9 @@ $(function() {
         			position = -1;
         		}
         	}
-        }*/
+        }
 	});
-	
+	*/
 	
 
 });
