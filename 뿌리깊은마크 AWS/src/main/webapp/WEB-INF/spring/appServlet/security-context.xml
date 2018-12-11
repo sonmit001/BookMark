@@ -23,10 +23,10 @@
 					 logout-success-url="/" />
 	
 	
-	<!-- <security:intercept-url pattern="/social/**" access="!hasRole('ROLE_ADMIN') and request.session.getAttribute('info_userid') != null" />
+	<security:intercept-url pattern="/social/**" access="!hasRole('ROLE_ADMIN') and request.session.getAttribute('info_userid') != null" />
 	<security:intercept-url pattern="/team/**" access="!hasRole('ROLE_ADMIN') and request.session.getAttribute('info_userid') != null" />
 	<security:intercept-url pattern="/user/**" access="!hasRole('ROLE_ADMIN') and request.session.getAttribute('info_userid') != null" />
-	<security:intercept-url pattern="/myinfo.do" access="hasRole('ROLE_USER')" /> -->
+	<security:intercept-url pattern="/myinfo.do" access="hasRole('ROLE_USER')" />
 	<security:intercept-url pattern="/" access="!hasRole('ROLE_ADMIN')" />
 	<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 	

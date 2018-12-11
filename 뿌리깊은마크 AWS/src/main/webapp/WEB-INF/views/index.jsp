@@ -83,8 +83,7 @@
                         
                         <%-- <se:authorize access="!hasRole('ROLE_USER')"> --%>
                         <c:if test="${sessionScope.info_userid == null}">
-                        <!-- <a href="javascript:void(0)" data-toggle="modal" onclick="openLoginModal();" class="btn btn-common">LOG IN</a> -->
-                        <a href="/joinus/loginTest.do" class="btn btn-common">LOG IN</a>
+                        <a href="javascript:void(0)" data-toggle="modal" onclick="openLoginModal();" class="btn btn-common">LOG IN</a>
                         <a href="javascript:void(0)" data-toggle="modal" onclick="openRegisterModal();" class="btn btn-common">SIGN UP</a>
                         </c:if>
                         <%-- </se:authorize> --%>
