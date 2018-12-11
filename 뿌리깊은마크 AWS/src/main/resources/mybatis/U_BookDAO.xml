@@ -42,7 +42,7 @@
 	</insert>
 	
 	<select id="getMaxId" resultType="int">
-		select from
+		select MAX(UBID) from U_BOOK
 	</select>
 	
 	<update id="updateNodeText" parameterType="hashMap">
