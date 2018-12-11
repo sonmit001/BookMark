@@ -115,17 +115,6 @@
 .vakata-context {
   display: none;
 }
-@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding');
-/* 'Nanum Gothic Coding', monospace , 
-font-family: 'Jua', sans-serif; **
-font-family: 'Song Myung', serif;
-font-family: 'Stylish', sans-serif; ***
-font-family: 'Cute Font', cursive;
-font-family: 'Gamja Flower', cursive;
-
-*/
-@import url('https://fonts.googleapis.com/css?family=Gugi|Jua');
-@import url('https://fonts.googleapis.com/css?family=Cute+Font|Gamja+Flower|Jua|Song+Myung|Stylish');
 .jstree {
 	font-family:   'Stylish', sans-serif; /* 폰트 */
     font-size: 15px;
@@ -1183,51 +1172,5 @@ filter: gray;
     margin-right: 0;
   }
 }
-/* 
 
-@font-face{
-font-family: ng;
-src:url(NanumGothic.eot);
-src:local(※), url(NanumGothic.woff) format(‘woff’);
-}
-@font-face {
-  font-family: 'Jeju Gothic';
-  src: url('//fonts.googleapis.com/earlyaccess/jejugothic.css');
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Titillium Web';
-  src: url('fonts/titillium/titilliumweb-regular-webfont.eot');
-  src: url('fonts/titillium/titilliumweb-regular-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/titillium/titilliumweb-regular-webfont.woff') format('woff'), url('fonts/titillium/titilliumweb-regular-webfont.ttf') format('truetype'), url('fonts/titillium/titilliumweb-regular-webfont.svg#titillium_webregular') format('svg');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Titillium Web';
-  src: url('fonts/titillium/titilliumweb-bold-webfont.eot');
-  src: url('fonts/titillium/titilliumweb-bold-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/titillium/titilliumweb-bold-webfont.woff') format('woff'), url('fonts/titillium/titilliumweb-bold-webfont.ttf') format('truetype'), url('fonts/titillium/titilliumweb-bold-webfont.svg#titillium_webbold') format('svg');
-  font-weight: 700;
-  font-style: normal;
-} */
-/* @media screen and (-webkit-min-device-pixel-ratio: 0) {
-  @font-face {
-    font-family: 'Titillium Web';
-    src: url('fonts/titillium/titilliumweb-extralight-webfont.svg#titillium_webthin') format('svg');
-    font-weight: 300;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Titillium Web';
-    src: url('fonts/titillium/titilliumweb-regular-webfont.svg#titillium_webregular') format('svg');
-    font-weight: 400;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Titillium Web';
-    src: url('fonts/titillium/titilliumweb-bold-webfont.svg#titillium_webbold') format('svg');
-    font-weight: 700;
-    font-style: normal;
-  }
-} */
 
