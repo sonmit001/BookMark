@@ -201,16 +201,17 @@ public class MainController {
 	
 	/* 테스트 용 로그인 */
 	@RequestMapping(value="/joinus/loginTest.do")
-	public String loginTest(HttpServletRequest request, HttpServletResponse response, 
-			HttpSession session) {
-		// process message from Handler and JSON data response
-		// 로그인 실패: 아이디 또는 비밀번호 잘못 입력
-			// set info session userid
+	public void loginTest(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession(true);		
 		session.setAttribute("info_userid", "sonmit001@naver.com");
 		session.setAttribute("info_usernname", "coding");
 		session.setAttribute("info_userprofile", "profile.png");
-
-		return "home.index";
+		
+		try {
+			response.getWriter().println("loginTest");
+		} catch (IOException e) {		
+			e.printStackTrace();
+		}
 	}
 	
 	/* Google Login API START */

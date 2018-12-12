@@ -3,6 +3,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>	
 <%@ taglib prefix="se" uri="http://www.springframework.org/security/tags" %>
 
+<script type="text/javascript">
+	$(function(){
+		$("#local_login").click(function(){
+			$.ajax({
+				url : "/joinus/loginTest.do",
+				type : "POST",				
+				success : function(data){
+					if($.trim(data) == "loginTest"){
+						alert("로컬 테스트 로그인");
+						location.reload();
+					}
+				}
+			});
+		})
+	});
+</script>
+
 	<!-- Main에서 개인 북마크로 가져가기 모달 START -->
 	<div id="mainIndiModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mainIndiModalLabel">
 		<div id="main-modal-controller">
@@ -84,7 +101,7 @@
                         <%-- <se:authorize access="!hasRole('ROLE_USER')"> --%>
                         <c:if test="${sessionScope.info_userid == null}">
                         <!-- <a href="javascript:void(0)" data-toggle="modal" onclick="openLoginModal();" class="btn btn-common">LOG IN</a> -->
-                        <a href="/joinus/loginTest.do" class="btn btn-common">LOG IN</a>
+                        <a id="local_login" href="javascript:void(0)" class="btn btn-common">LOG IN</a>
                         <a href="javascript:void(0)" data-toggle="modal" onclick="openRegisterModal();" class="btn btn-common">SIGN UP</a>
                         </c:if>
                         <%-- </se:authorize> --%>
