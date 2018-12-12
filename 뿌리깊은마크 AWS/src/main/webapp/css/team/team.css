@@ -520,3 +520,8 @@ a:active {
 .modal-body{
 	padding-top: 0px;
 }
+
+hr.message-line {
+	border-top: 1px dashed #8c8b8b;
+	border-bottom: 1px dashed #fff;
+}

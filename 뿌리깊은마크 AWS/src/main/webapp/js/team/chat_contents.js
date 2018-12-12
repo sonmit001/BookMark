@@ -75,22 +75,22 @@ $(function() {
 		
 		if(hour>12){
 			hour -= 12;
-			ampm ="pm";
+			ampm ="오후";
 		}else{
-			ampm = "am"
+			ampm = "오전"
 		}
 		
-		var chat_div = "";
-    	chat_div += '<img class="chatting-profile-img" onerror="this.src=\'/images/profile.png\'\;this.onerror=null\;" src="/images/profile/' + message.profile + '">';
-    	chat_div += '<div class="chatting-text-div">';
-    	chat_div += '<p class="chatting-userid">';
-    	chat_div += message.nname + '&nbsp;<span class="chatting-time">' + hour + "시&nbsp;" + min + '분&nbsp;' + ampm + '</span>';
-    	chat_div += '</p>';
-    	chat_div += '<span class="chatting-text">';
-        chat_div += message.text;
-        chat_div += '</span>';
-        chat_div += '</div>';
-        
+		var chat_div    = "";
+			  chat_div += '<img class="chatting-profile-img" onerror="this.src=\'/images/profile.png\'\;this.onerror=null\;" src="/images/profile/' + message.profile + '">';
+    		  chat_div += '<div class="chatting-text-div">';
+    		  chat_div += '<p class="chatting-userid">';
+    		  chat_div += '<b>'+message.nname + '</b>&nbsp;<span class="chatting-time">' + ampm + ' ' +hour + "시&nbsp;" + min + '분&nbsp;</span>';
+    		  chat_div += '</p>';
+    		  chat_div += '<span class="chatting-text">';
+    		  chat_div += message.text;
+    		  chat_div += '</span>';
+    		  chat_div += '</div>';
+    		  chat_div += '<hr class="message-line"/>';
         $(".chatting-contents").append(chat_div);
         $(".chat-element").scrollTop($(".chatting-contents").height());		
 	};
